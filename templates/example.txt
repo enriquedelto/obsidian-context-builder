@@ -1,0 +1,7 @@
+Basado en la siguiente estructura y contenido de notas extraído de Obsidian:
+
+--- INICIO CONTEXTO ---
+{contexto_extraido}
+--- FIN CONTEXTO ---
+
+Por favor, resume los puntos clave encontrados en estas notas.

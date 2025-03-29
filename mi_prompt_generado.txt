@@ -1,0 +1,2101 @@
+Basado en la siguiente estructura y contenido de notas extraído de Obsidian:
+
+--- INICIO CONTEXTO ---
+└── Asignaturas
+    └── Sistemas Operativos
+        ├── Sistemas Operativos (idx).md
+        ├── 1. Introducción
+        │   ├── 1 - Introducción y Objetivos.md
+        │   ├── 2 - El Sistema Operativo.md
+        │   ├── 3 - Objetivos y Funciones.md
+        │   ├── 4 - Evolución histórica.md
+        │   ├── 5 - Virtualización.md
+        │   ├── 6 - Categorías de Sistemas Operativos.md
+        │   ├── 7 - Sistemas Operativos de Consolas de Videojuegos.md
+        │   └── 1.1 Bloques Fundamentales
+        │       ├── Bloques Fundamentales.md
+        │       ├── Núcleo del Sistema Operativo (Kernel).md
+        │       ├── Shell o Intérprete de Comandos.md
+        │       └── 1.1.1 Servicios del Sistema Operativo
+        │           ├── Gestión de Entrada-Salida.md
+        │           ├── Gestión de comunicaciones y sincronización entre procesos.md
+        │           ├── Gestión de la Seguridad y protección.md
+        │           ├── Gestión de memoria.md
+        │           ├── Gestión de procesos.md
+        │           ├── Gestión del almacenamiento.md
+        │           └── Gestión del sistema de archivos.md
+        ├── 2. Estructura de los Sistemas Operativos
+        │   ├── 1 - Servicios del Sistema Operativo.md
+        │   ├── 2 - Interfaz de Usuario del Sistema Operativo.md
+        │   ├── 3 - Llamadas al Sistema.md
+        │   ├── 4 - Tipos de Llamadas al Sistema.md
+        │   └── 5 - La Estructura del Sistema Operativo.md
+        └── 3. Procesos e Hilos I
+            ├── 1 - Concepto de Proceso.md
+            ├── 2 - Estado de un Proceso.md
+            ├── 3 - Control de Procesos.md
+            └── 4 - Concepto de Hilo.md
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1 - Introducción y Objetivos.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción
+ 4 | ---
+ 5 | Un computador se compone de cuatro recursos principales:
+ 6 | 
+ 7 | - **[[Procesador]]:**  
+ 8 |   Es el "cerebro" de la máquina. Se encarga de controlar todas las funciones y ejecutar las operaciones de procesamiento sobre los datos.
+ 9 | 
+10 | - **[[Memoria Principal]]:**  
+11 |   También llamada memoria real o primaria, es donde se almacenan los programas en ejecución y los datos que utilizan dichos programas.
+12 | 
+13 | - **[[Módulo de Entrada/Salida (E/S)]]:**  
+14 |   Su función es transmitir datos entre el computador y el entorno externo, que incluye dispositivos de almacenamiento secundario (como discos duros), sistemas de comunicaciones y terminales.
+15 | 
+16 | - **[[Bus del Sistema]]:**  
+17 |   Actúa como el canal de comunicación que conecta el procesador, la memoria principal y el módulo de E/S, permitiendo el intercambio de información entre ellos.
+18 | 
+19 | ---
+20 | 
+21 | ### Objetivos del Tema
+22 | 
+23 | Al estudiar este tema introductorio, lograrás:
+24 | 
+25 | 1. **Comprender qué es un [[Sistema Operativo]]** y la misión que cumple en un sistema de computación.  
+26 |    - Se explorará cómo el sistema operativo actúa como intermediario entre el usuario y el hardware, facilitando la gestión de recursos y la ejecución de programas.
+27 | 
+28 | 2. **Conocer la [[Evolución Histórica de los Sistemas Operativos]] hasta la actualidad.**  
+29 |    - Se analizarán los hitos y avances tecnológicos que han permitido el desarrollo y mejora de los sistemas operativos, desde sus inicios hasta las versiones modernas.
+30 | 
+31 | 3. **Analizar los [[Bloques Fundamentales del Sistema Operativo]].**  
+32 |    - Esto incluye el estudio de los componentes esenciales (gestión de procesos, memoria, E/S, etc.) que colaboran para que el sistema operativo funcione correctamente.
+33 | 
+34 | 4. **Comprender los [[Objetivos y Funciones del Sistema Operativo]].**  
+35 |    - Se profundizará en las tareas principales, como la administración de recursos, la coordinación entre hardware y software, y las políticas de seguridad y eficiencia.
+36 | 
+37 | Este enfoque te permitirá tener una visión integral del funcionamiento interno de un computador y la importancia del sistema operativo en la gestión de todos sus recursos.
+38 | 
+39 | 
+40 | ---
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/1.1.1 Servicios del Sistema Operativo/Gestión de comunicaciones y sincronización entre procesos.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/servicios_del_sistema_operativo
+ 4 | ---
+ 5 | La **gestión de comunicación** es esencial para coordinar y sincronizar la interacción entre procesos y componentes del sistema. Mientras que la nota de _Gestión de comunicaciones y sincronización entre procesos_ introduce conceptos básicos, aquí se profundiza en los mecanismos y protocolos que permiten la transferencia de datos y la coordinación de tareas.
+ 6 | 
+ 7 | ## Mecanismos y Protocolos  
+ 8 | - **Comunicación Inter-Proceso (IPC):**  
+ 9 |   Se emplean técnicas como colas de mensajes, tuberías (pipes), memoria compartida y sockets para intercambiar información entre procesos.  
+10 | - **Sincronización:**  
+11 |   Los semáforos, mutexes y barreras ayudan a coordinar el acceso a recursos compartidos, evitando condiciones de carrera y garantizando la integridad de los datos.  
+12 | - **Protocolos de Comunicación en Red:**  
+13 |   En entornos distribuidos, se utilizan protocolos como TCP/IP y UDP para garantizar la comunicación fiable y eficiente entre sistemas, complementando la gestión local de procesos.
+14 | 
+15 | ## Aspectos Didácticos  
+16 | - **Ejemplo Práctico:**  
+17 |   Imagina dos procesos: uno encargado de generar datos y otro de procesarlos. La utilización de una cola de mensajes permite que el productor envíe datos de forma asíncrona, mientras el consumidor los recupera y procesa en el orden de llegada.  
+18 | - **Relación con otras notas:**  
+19 |   Para evitar redundancias, se recomienda consultar la nota _Gestión de comunicaciones y sincronización entre procesos_ para conceptos generales y centrar este contenido en la aplicación práctica y el diseño de mecanismos de comunicación.
+20 | 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/1.1.1 Servicios del Sistema Operativo/Gestión de Entrada-Salida.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/servicios_del_sistema_operativo
+ 4 | ---
+ 5 | La **gestión de Entrada y Salida (E/S)** es la puerta de enlace que conecta el sistema operativo con los dispositivos periféricos. Esta nota complementa la ya existente _Gestión de Entrada-Salida_, profundizando en los mecanismos de abstracción, controladores (drivers) y técnicas de optimización de rendimiento.
+ 6 | 
+ 7 | ## Componentes y Técnicas  
+ 8 | - **Abstracción de Hardware:**  
+ 9 |   El sistema operativo oculta la complejidad de los dispositivos físicos mediante capas de abstracción, permitiendo una interacción uniforme sin importar las características específicas del hardware.
+10 | - **Controladores y Buffers:**  
+11 |   Los drivers traducen las órdenes del sistema operativo a instrucciones que entiende el hardware. El uso de buffers y técnicas de spooling permite almacenar temporalmente los datos y gestionar eficientemente la velocidad de los dispositivos.
+12 | - **Técnicas de Optimización:**  
+13 |   Se implementan técnicas como interrupciones, acceso directo a memoria (DMA) y cachés para minimizar la latencia y mejorar la velocidad en la transferencia de datos.
+14 | 
+15 | ## Aspectos Didácticos  
+16 | - **Ejemplo Práctico:**  
+17 |   Considera el proceso de impresión de un documento. El sistema operativo utiliza un buffer para almacenar los datos enviados a la impresora y, mediante el driver, coordina la secuencia de impresión, permitiendo al usuario continuar trabajando mientras el proceso se completa en segundo plano.
+18 | - **Relación con otras notas:**  
+19 |   Esta nota se integra con la _Gestión de Entrada-Salida_ presente en otros módulos, evitando la duplicidad y enfatizando la abstracción y optimización de la comunicación con dispositivos.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/1.1.1 Servicios del Sistema Operativo/Gestión de la Seguridad y protección.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/servicios_del_sistema_operativo
+ 4 | ---
+ 5 | La **gestión de la seguridad y protección** es crítica para salvaguardar tanto los datos como los procesos en ejecución. Esta nota complementa la nota existente, profundizando en mecanismos, políticas y herramientas que aseguran la integridad y confidencialidad del sistema operativo.
+ 6 | 
+ 7 | ## Mecanismos y Herramientas  
+ 8 | - **Control de Acceso y Autenticación:**  
+ 9 |   Los mecanismos de autenticación (contraseñas, biometría, autenticación multifactor) y autorización (listas de control de acceso, roles de usuario) previenen accesos no autorizados.
+10 | - **Protección de Memoria y Recursos:**  
+11 |   El sistema operativo utiliza técnicas de aislamiento, como la separación de espacios de direcciones, para garantizar que un proceso no interfiera con otro.  
+12 | - **Auditoría y Monitorización:**  
+13 |   La implementación de logs, auditorías y sistemas de detección de intrusos permite identificar y responder a posibles amenazas en tiempo real.
+14 | - **Encriptación y Cifrado:**  
+15 |   El cifrado de datos, tanto en reposo como en tránsito, es fundamental para proteger la información sensible de ataques externos.
+16 | 
+17 | ## Aspectos Didácticos  
+18 | - **Ejemplo Práctico:**  
+19 |   En un entorno multiusuario, cada usuario dispone de un conjunto de permisos específicos. Un intento de acceder a archivos o recursos fuera de su ámbito genera alertas y se bloquean las operaciones, protegiendo la integridad del sistema.
+20 | - **Relación con otras notas:**  
+21 |   Se recomienda revisar la nota _Gestión de la Seguridad y protección_ para obtener una visión global, mientras que este contenido profundiza en las herramientas y políticas de seguridad actuales en sistemas operativos.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/1.1.1 Servicios del Sistema Operativo/Gestión de memoria.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/servicios_del_sistema_operativo
+ 4 | ---
+ 5 | La [gestión de memoria](https://es.wikipedia.org/wiki/Gesti%C3%B3n_de_memoria "Gestión de memoria") o administración de memoria es el acto de gestionar la [memoria](https://es.wikipedia.org/wiki/Memoria_\(inform%C3%A1tica\) "Memoria (informática)") de un dispositivo informático. El proceso de [asignación de memoria](https://es.wikipedia.org/wiki/Asignaci%C3%B3n_de_memoria "Asignación de memoria") a los programas que la solicitan.[9](https://es.wikipedia.org/wiki/Sistema_operativo#cite_note-10)​
+ 6 | 
+ 7 | Los sistemas de [memoria virtual](https://es.wikipedia.org/wiki/Memoria_virtual "Memoria virtual") separan las [direcciones de memoria](https://es.wikipedia.org/wiki/Direcci%C3%B3n_de_memoria "Dirección de memoria") utilizadas por un [proceso](https://es.wikipedia.org/wiki/Proceso_\(inform%C3%A1tica\) "Proceso (informática)") de las direcciones físicas reales, permitiendo la separación de procesos e incrementando la cantidad efectiva de [memoria de acceso aleatorio](https://es.wikipedia.org/wiki/Memoria_de_acceso_aleatorio "Memoria de acceso aleatorio") utilizando la [paginación](https://es.wikipedia.org/wiki/Paginaci%C3%B3n_de_memoria "Paginación de memoria"). La calidad de la gestión de la memoria es crucial para las prestaciones del sistema.
+ 8 | 
+ 9 | El [recolector de basura](https://es.wikipedia.org/wiki/Recolector_de_basura "Recolector de basura") es la asignación y liberación automática de los recursos de memoria para un programa. La implementación suele ser a nivel del lenguaje de programación en contraposición a la gestión manual de memoria, que asigna y libera los recursos de memoria de una computadora de forma explícita.
+10 | 
+11 | La administración de memoria se refiere a los distintos métodos y operaciones que se encargan de obtener la máxima utilidad de la [memoria](https://es.wikipedia.org/wiki/Memoria_\(inform%C3%A1tica\) "Memoria (informática)"), organizando los procesos y programas que se ejecutan de manera tal que se aproveche de la mejor manera posible el espacio disponible.
+12 | 
+13 | Para poder lograrlo, la operación principal que realiza es trasladar la información que deberá ser ejecutada por la [unidad central de procesamiento](https://es.wikipedia.org/wiki/Unidad_central_de_procesamiento "Unidad central de procesamiento") o procesador, a la [memoria principal](https://es.wikipedia.org/wiki/Memoria_principal "Memoria principal"). Actualmente esta administración se conoce como [memoria virtual](https://es.wikipedia.org/wiki/Memoria_virtual "Memoria virtual"), porque no es la memoria física del procesador sino una memoria virtual que la representa. Entre algunas ventajas, esta memoria permite que el sistema cuente con una memoria más extensa teniendo la misma memoria real, por lo que esta se puede utilizar de manera más eficiente. Y por supuesto, que los programas que son utilizados no ocupen lugar innecesario.
+14 | 
+15 | Las técnicas que existen para la carga de programas en la memoria son: partición fija, que es la división de la memoria libre en varias partes (de igual o distinto tamaño) y la partición dinámica, que son las particiones de la memoria en tamaños que pueden ser variables, según la cantidad de memoria que necesita cada proceso.
+16 | 
+17 | Entre las principales operaciones que desarrolla la administración de memoria se encuentran la reubicación, que consiste en trasladar procesos activos dentro y fuera de la memoria principal para maximizar la utilización del procesador; la protección, mecanismos que protegen los procesos que se ejecutan de interferencias de otros procesos; uso compartido de códigos y [datos](https://es.wikipedia.org/wiki/Datos "Datos"), con lo que el mecanismo de protección permite que ciertos procesos de un mismo programa que comparten una tarea tengan memoria en común.
+18 | 
+19 | ## Requisitos
+20 | 
+21 | Los sistemas de gestión de memoria de [sistemas operativos multitarea](https://es.wikipedia.org/wiki/Multitarea "Multitarea") normalmente tratan con las siguientes tareas.
+22 | 
+23 | ### Reasignación
+24 | 
+25 | En los sistemas con memoria virtual, los programas durante su ejecución pueden salir por un tiempo de la memoria y luego regresar, de modo que no pueden colocarse en el lugar que ocupaban previamente. Por ello debe ser posible que residan en diferentes partes de la memoria en diferentes momentos. Así, la gestión de memoria en el sistema operativo debe ser capaz de trasladar los programas en memoria y manejar referencias a la memoria y las direcciones en el código del programa para que siempre apunten a la ubicación correcta. La unidad de gestión de memoria virtual también debe hacer frente a la concurrencia.
+26 | 
+27 | ### Protección
+28 | 
+29 | Artículo principal: _[Protección de memoria](https://es.wikipedia.org/wiki/Protecci%C3%B3n_de_memoria "Protección de memoria")_
+30 | 
+31 | Los procesos no deberían poder referenciar la memoria de otros procesos sin permiso, para evitarlo existe la [protección de memoria](https://es.wikipedia.org/wiki/Protecci%C3%B3n_de_memoria "Protección de memoria"), que evita que código malicioso o erróneo de un programa interfiera con la operación de otros programas en ejecución.
+32 | 
+33 | ### Memoria compartida
+34 | 
+35 | Aunque la memoria utilizada por diferentes procesos suele estar protegida, algunos procesos puede que sí tengan que compartir información y, para ello, han de acceder la misma sección de memoria. La memoria compartida es una de las técnicas más rápidas para posibilitar la [comunicación entre procesos](https://es.wikipedia.org/wiki/Comunicaci%C3%B3n_entre_procesos "Comunicación entre procesos").
+36 | 
+37 | ### Organización lógica
+38 | 
+39 | Los programas a menudo están organizados en módulos, algunos de los cuales pueden ser compartidos por diferentes programas, algunos son de solo-lectura y otros contienen datos que se pueden modificar. Se escriben y se compilan independientemente. La gestión de memoria es responsable de manejar esta organización lógica, que se contrapone al espacio de direcciones físicas lineales. Una forma de lograrlo es mediante la [segmentación de memoria](https://es.wikipedia.org/wiki/Segmentaci%C3%B3n_de_memoria "Segmentación de memoria").
+40 | 
+41 | ### Organización física
+42 | 
+43 | La memoria suele dividirse en un almacenamiento primario de alta velocidad y uno secundario de menor velocidad. La gestión de memoria del sistema operativo se ocupa de trasladar la información entre estos dos niveles de memoria.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/1.1.1 Servicios del Sistema Operativo/Gestión de procesos.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/servicios_del_sistema_operativo
+ 4 | ---
+ 5 | Un [proceso](https://es.wikipedia.org/wiki/Proceso_\(inform%C3%A1tica\) "Proceso (informática)") es simplemente, un programa en ejecución que necesita recursos para realizar su tarea: [tiempo de CPU](https://es.wikipedia.org/wiki/Tiempo_de_CPU "Tiempo de CPU"), memoria, archivos y dispositivos de E/S. El SO es el responsable de lo siguiente:
+ 6 | 
+ 7 | - Crear y destruir procesos.
+ 8 | - Parar y reanudar procesos.
+ 9 | - Ofrecer mecanismos para que los procesos puedan comunicarse y se sincronicen.
+10 | 
+11 | La gestión de procesos podría ser similar al trabajo de oficina. Se puede tener una lista de tareas a realizar y a estas fijarles prioridades: alta, media, baja, por ejemplo. Debemos comenzar haciendo las tareas de prioridad alta primero y cuando se terminen seguir con las de prioridad media y después las de baja. Una vez realizada la tarea se tacha.
+12 | 
+13 | Esto puede traer un problema que las tareas de baja prioridad pueden que nunca lleguen a ejecutarse y permanezcan en la lista para siempre. Para solucionar esto, se puede asignar alta prioridad a las tareas más antiguas.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/1.1.1 Servicios del Sistema Operativo/Gestión del almacenamiento.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/servicios_del_sistema_operativo
+ 4 | ---
+ 5 | La **gestión del almacenamiento** se ocupa de la administración y organización del espacio en dispositivos de almacenamiento secundario. Complementa la nota existente, ampliando aspectos didácticos sobre técnicas de asignación, mantenimiento y optimización del espacio.
+ 6 | 
+ 7 | ## Estrategias y Técnicas  
+ 8 | - **Asignación de Espacio:**  
+ 9 |   Métodos de partición fija y dinámica permiten dividir el almacenamiento de acuerdo a las necesidades de los procesos, optimizando el uso del espacio disponible.  
+10 | - **Gestión de Bloques y Caching:**  
+11 |   La asignación de bloques físicos y la utilización de cachés ayudan a reducir los tiempos de acceso y mejoran el rendimiento en operaciones de lectura/escritura.
+12 | - **Mantenimiento y Recuperación:**  
+13 |   Estrategias como la desfragmentación, journaling y copias de seguridad garantizan la integridad de la información y facilitan la recuperación en caso de fallos.
+14 | 
+15 | ## Aspectos Didácticos  
+16 | - **Ejemplo Práctico:**  
+17 |   Durante una operación de copia de archivos, el sistema operativo organiza el espacio asignado mediante un sistema de índices y tablas, lo que permite una rápida localización y acceso a los datos almacenados.
+18 | - **Relación con otras notas:**  
+19 |   Esta nota se integra con la _Gestión del almacenamiento_ presentada en otros módulos, enfatizando la importancia de técnicas modernas de asignación y recuperación para maximizar la eficiencia del hardware.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/1.1.1 Servicios del Sistema Operativo/Gestión del sistema de archivos.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/servicios_del_sistema_operativo
+ 4 | ---
+ 5 | La **gestión del sistema de archivos** es la encargada de organizar y estructurar la información en dispositivos de almacenamiento. Esta nota complementa la nota existente, aportando un análisis detallado de los métodos de organización, seguridad y recuperación de datos.
+ 6 | 
+ 7 | ## Organización y Funcionalidades  
+ 8 | - **Estructura Lógica y Física:**  
+ 9 |   Los sistemas de archivos organizan los datos en forma de directorios y ficheros, proporcionando una estructura jerárquica que facilita la localización y gestión de la información.  
+10 | - **Gestión de Permisos y Seguridad:**  
+11 |   Se implementan mecanismos de control de acceso y encriptación para proteger la integridad y confidencialidad de los datos.  
+12 | - **Técnicas de Journaling y Versionado:**  
+13 |   El uso de journaling y snapshots permite mantener un registro de cambios y facilita la recuperación de información en caso de errores o fallos del sistema.
+14 | - **Compatibilidad y Portabilidad:**  
+15 |   Los sistemas de archivos modernos buscan ser compatibles entre diferentes sistemas operativos y hardware, garantizando la interoperabilidad en entornos heterogéneos.
+16 | 
+17 | ## Aspectos Didácticos  
+18 | - **Ejemplo Práctico:**  
+19 |   Al guardar un documento, el sistema de archivos asigna un bloque de datos y actualiza las tablas de índices para reflejar la ubicación física del archivo, asegurando que las operaciones de lectura y escritura se realicen de manera eficiente y segura.
+20 | - **Relación con otras notas:**  
+21 |   Para evitar redundancias, se recomienda consultar la nota _Gestión del sistema de archivos_ en el temario, utilizando este contenido para profundizar en aspectos de seguridad, recuperación y optimización de la estructura de datos.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/Bloques Fundamentales.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales/idx
+ 4 | ---
+ 5 | 
+ 6 | 
+ 7 | > [!example] Asignaturas / Sistemas operativos / Introducción / Bloques fundamentales
+ 8 | > - [[Núcleo del Sistema Operativo (Kernel)]]
+ 9 | > - [[Shell o Intérprete de Comandos]]
+10 | > - **Servicios del sistema operativo**
+11 | > 	- [[Gestión de comunicaciones y sincronización entre procesos]]
+12 | > 	- [[Gestión de Entrada-Salida]]
+13 | > 	- [[Gestión de la Seguridad y protección]]
+14 | > 	- [[Gestión de memoria]]
+15 | > 	- [[Gestión de procesos]]
+16 | > 	- [[Gestión del almacenamiento]]
+17 | > 	- [[Gestión del sistema de archivos]]
+18 | > 
+19 | > ^indexof-asignaturas-sistemas-operativos-introducci-n-bloques-fundamentales
+20 | 
+21 | Los **bloques fundamentales** de un sistema operativo son los componentes básicos o módulos esenciales que permiten realizar sus principales funciones. Generalmente se consideran los siguientes:
+22 | 
+23 | 1. **[[Núcleo del Sistema Operativo (Kernel)]]**
+24 |    - Es la parte central y fundamental del sistema.
+25 |    - Se encarga de comunicarse directamente con el hardware de la máquina.
+26 |    - Contiene procesos encargados de la gestión de recursos, el tratamiento de interrupciones y otros mecanismos esenciales para el funcionamiento del sistema.
+27 | 
+28 | 2. **Servicios del Sistema Operativo**
+29 |    - **[[Gestión de procesos]]**
+30 |      - Administración y control de procesos e hilos.
+31 |      - Planificación y ejecución eficiente de los procesos, que incluyen la generación y gestión de los mismos para ofrecer las funciones al usuario final.
+32 |    - **[[Gestión de memoria]]**
+33 |      - Administración de la memoria principal (RAM).
+34 |      - Asignación, protección y optimización del uso de la memoria, garantizando que los procesos en ejecución dispongan de los recursos necesarios.
+35 |    - **Gestión de almacenamiento y del sistema de archivos**
+36 |      - **[[Gestión del almacenamiento]]**
+37 |        - Administración del espacio en discos y otros medios de almacenamiento secundario.
+38 |        - Control de la asignación física de bloques en el dispositivo.
+39 |      - **[[Gestión del sistema de archivos]]**
+40 |        - Organización lógica y física de archivos.
+41 |        - Administración de directorios, ficheros y permisos, facilitando la lectura y escritura de información en el almacenamiento.
+42 |    - **[[Gestión de Entrada-Salida]] (E/S)**
+43 |      - Control y administración de dispositivos periféricos.
+44 |      - Coordinación de las operaciones de entrada/salida para garantizar un acceso ordenado a los recursos hardware.
+45 |    - **[[Gestión de comunicaciones y sincronización entre procesos]]**
+46 |      - Proporciona mecanismos que permiten a los procesos intercambiar información y coordinarse en la ejecución.
+47 |      - Facilita la colaboración entre procesos y ayuda a evitar condiciones de carrera.
+48 |    - **[[Gestión de la Seguridad y protección]]**
+49 |      - Control de accesos y asignación de privilegios.
+50 |      - Garantiza que cada usuario y proceso solo pueda acceder a los recursos que le están permitidos.
+51 | 
+52 | 1. **Interfaz de Usuario ([[Shell o Intérprete de Comandos]])**
+53 |    - Actúa como el medio de comunicación entre el usuario y el sistema operativo.
+54 |    - Puede presentarse en forma de interfaces gráficas (GUI) o de texto (CLI), entre otras.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/Núcleo del Sistema Operativo (Kernel).md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales
+ 4 | ---
+ 5 | El **kernel** es el componente central del [[Sistema Operativo]], encargado de gestionar directamente el hardware y de proporcionar los servicios básicos a los demás programas. Se ejecuta en **modo privilegiado** o **modo supervisor**, lo que le permite tener acceso total a los recursos del computador y ejecutar cualquier instrucción soportada por el hardware.
+ 6 | 
+ 7 | ## Funciones Principales del Kernel
+ 8 | 
+ 9 | 1. **Gestión de la Memoria:**  
+10 |    - Administra la memoria principal utilizando técnicas como paginación, segmentación y asignación dinámica. Para profundizar en este tema, consulta la nota [[Gestión de memoria]].
+11 |    - Se encarga de la reubicación de procesos y la protección de la memoria para evitar interferencias entre procesos.
+12 | 
+13 | 2. **Administración de Procesos:**  
+14 |    - Crea, destruye, pausa y reanuda procesos según sea necesario. Más detalles sobre este aspecto se pueden encontrar en [[Gestión de procesos]].
+15 |    - Utiliza algoritmos de planificación para asignar tiempos de CPU a cada proceso, garantizando un uso equitativo y eficiente del procesador.
+16 | 
+17 | 3. **Gestión de Dispositivos:**  
+18 |    - Controla el acceso a dispositivos de entrada/salida mediante controladores (drivers).
+19 |    - Coordina las operaciones de E/S, utilizando técnicas como interrupciones, buffering y DMA para optimizar la comunicación con el hardware.
+20 | 
+21 | 4. **Control de Acceso y Seguridad:**  
+22 |    - Implementa mecanismos de protección que aseguran que los procesos no interfieran entre sí, manteniendo la integridad y privacidad de la información.
+23 |    - Administra permisos y controla el acceso a recursos críticos, lo que se complementa con lo explicado en [[2 - El Sistema Operativo|El Sistema Operativo]].
+24 | 
+25 | 1. **Interfaz con el Sistema de Archivos:**  
+26 |    - Facilita la gestión de archivos y directorios, proporcionando abstracciones que permiten a los programas interactuar con el almacenamiento sin preocuparse por los detalles físicos.
+27 |    - Este manejo del sistema de archivos se amplía en [[3 - Objetivos y Funciones|Objetivo y Funciones]] del Sistema Operativo.
+28 | 
+29 | ## Importancia del Kernel
+30 | 
+31 | El kernel es esencial porque:
+32 | 
+33 | - **Abstrae la complejidad del hardware:**  
+34 |   Permite que los desarrolladores y usuarios interactúen con el computador sin necesidad de conocer los detalles técnicos subyacentes, siguiendo la filosofía presentada en [[2 - El Sistema Operativo|El Sistema Operativo]].
+35 | 
+36 | - **Garantiza la estabilidad y seguridad:**  
+37 |   Al ejecutarse en modo privilegiado, puede controlar y limitar el acceso a recursos críticos, protegiendo el sistema contra errores y actividades maliciosas.
+38 | 
+39 | - **Facilita el desarrollo de aplicaciones:**  
+40 |   Proporciona un entorno de ejecución controlado y seguro, permitiendo a los programas operar sin gestionar directamente la complejidad del hardware.
+41 | 
+42 | En resumen, el kernel es la piedra angular de cualquier sistema operativo, ya que asegura una gestión eficiente de los recursos y establece las bases para un entorno de ejecución robusto y seguro.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/Shell o Intérprete de Comandos.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción/bloques_fundamentales
+ 4 | ---
+ 5 | Es el proceso que permite introducir comandos en el sistema operativo para realizar
+ 6 | las tareas que demanda el usuario. Un mismo sistema puede ofrecer varios
+ 7 | intérpretes de comandos, o shells (llamados así por ser la capa más externa del
+ 8 | sistema operativo), que son la interfaz de usuario que ofrece el sistema operativo.
+ 9 | 
+10 | Existen dos tipos de intérpretes:
+11 | - En modo texto, o command-line interface (CLI).
+12 | - En modo gráfico, o graphical user interface (GUI).
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/2 - El Sistema Operativo.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción
+ 4 | ---
+ 5 | Un computador es un sistema complejo. Si los desarrolladores de aplicaciones tuvieran que conocer en detalle el funcionamiento de todas estas partes, sería muy difícil que escribieran código funcional de manera eficiente.
+ 6 | 
+ 7 | Afortunadamente, los computadores disponen de una capa de software, conocida como **[[Sistema Operativo]]**, que ofrece a las aplicaciones —y a los desarrolladores— un modelo simplificado de la máquina. Este software se encarga de la administración de los recursos hardware, permitiendo a los programas operar sin tener que lidiar con la complejidad inherente del hardware.
+ 8 | 
+ 9 | El [[Sistema Operativo]] se ejecuta en **modo [[Núcleo del Sistema Operativo (Kernel)]]** o supervisor, lo que le confiere acceso completo al hardware para ejecutar cualquier instrucción soportada por la máquina. En cambio, el resto de las aplicaciones se ejecutan en **modo [[Usuario]]**, y tienen restringido el acceso directo a instrucciones críticas, especialmente aquellas que afectan el control de la máquina o realizan operaciones de [[Entrada/Salida (E/S)]].
+10 | 
+11 | Otro componente importante es el programa de **[[Interfaz de Usuario]]**, ya sea una shell de línea de comandos o una interfaz gráfica, que facilita la ejecución de programas de manera cómoda.
+12 | 
+13 | ---
+14 | 
+15 | ## Definición y Concepto de Sistema Operativo
+16 | 
+17 | Stallings define el sistema operativo como:
+18 | 
+19 | > «un programa que controla la ejecución de otros programas y actúa como interfaz entre las aplicaciones y el hardware del computador»  
+20 | > *(Stallings, 2012, p. 48)*
+21 | 
+22 | El sistema operativo es esencial en cualquier sistema de computación, ya que ofrece el servicio fundamental de gestionar el hardware y de proporcionar una interfaz simplificada para que otros programas puedan acceder a los recursos del sistema.
+23 | 
+24 | Así, el [[Sistema Operativo]] cumple dos funciones principales (Tanenbaum, 2009):
+25 | 
+26 | 1. **Máquina Extendida:**  
+27 |    La arquitectura de un computador y el conjunto de instrucciones del lenguaje máquina son complejos. El sistema operativo crea una **[[Máquina Extendida]]** o máquina virtual, más sencilla de manejar, que abstrae la complejidad del hardware. Algunos autores hacen referencia a la **[[Máquina Desnuda]]** para describir un computador sin sistema operativo, resaltando que la máquina en sí no ejecuta acciones por sí sola, sino que requiere de un programa para indicar qué instrucciones ejecutar.
+28 | 
+29 | 2. **Administrador de Recursos:**  
+30 |    Los sistemas operativos modernos permiten la ejecución simultánea de varios programas. Para ello, se debe asignar de manera eficiente los recursos computacionales limitados. La administración de recursos incluye la **[[multiplexación]]** tanto en el tiempo (para el procesador) como en el espacio (en la memoria principal o en el almacenamiento secundario). El [[Sistema Operativo]] garantiza que todos los programas tengan acceso a los recursos que necesitan, adoptando un enfoque que va de abajo hacia arriba.
+31 | 
+32 | ---
+33 | 
+34 | ## Operaciones de Entrada/Salida
+35 | 
+36 | Las operaciones de lectura y escritura en disco, por ejemplo, requieren el uso de comandos básicos como **read** y **write**. Cada uno de estos comandos necesita parámetros específicos (como dirección de bloque, número de sectores por pista, espacio de separación entre sectores, etc.) para realizar la operación correctamente. Además, el chip del dispositivo controlador devuelve información sobre el estado y posibles errores.  
+37 | El [[Sistema Operativo]] enmascara esta complejidad ofreciendo una abstracción de alto nivel, permitiendo realizar operaciones de [[E/S]] de manera más sencilla y eficiente.
+38 | 
+39 | ---
+40 | 
+41 | Esta capa de software, el [[Sistema Operativo]], es fundamental para que los desarrolladores puedan crear aplicaciones sin tener que preocuparse por la gestión directa y compleja del hardware. Con ella, se logra un entorno de desarrollo más accesible y eficiente.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/3 - Objetivos y Funciones.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción
+ 4 | ---
+ 5 | ## Objetivos de los Sistemas Operativos
+ 6 | 
+ 7 | Los sistemas operativos tienen como finalidad principal gestionar de manera óptima los recursos de hardware y facilitar la interacción entre el usuario y la máquina. Podemos distinguir tres objetivos fundamentales (Stallings, 2012, p. 48):
+ 8 | 
+ 9 | - **Facilitar el uso del computador:**  
+10 |   El sistema operativo actúa como un intermediario entre el usuario y la máquina, ofreciendo una interfaz amigable que oculta la complejidad del hardware. Esta función se apoya en una jerarquía de capas en la que interactúan distintos tipos de usuarios:
+11 |   - **Usuarios finales:** Utilizan programas de aplicación para resolver tareas específicas, tanto en ámbitos laborales como de ocio.
+12 |   - **Programadores:** Además de usar aplicaciones, aprovechan herramientas de desarrollo (editores, compiladores, depuradores) ofrecidas por el sistema, sin necesidad de conocer a fondo el hardware.
+13 |   - **Diseñadores del sistema operativo:** Requieren un conocimiento profundo del hardware para desarrollar soluciones que gestionen los recursos de forma eficiente.  
+14 | 
+15 | - **Favorecer el uso eficiente de los recursos:**  
+16 |   El sistema operativo es responsable de repartir y administrar los recursos limitados (memoria, CPU, dispositivos de E/S, almacenamiento) entre todos los procesos que se ejecutan en un momento dado. Esto incluye:
+17 |   - La gestión compartida de la memoria principal, en la que el kernel y el hardware de gestión colaboran para mantener los programas en ejecución.
+18 |   - La asignación de tiempos de CPU a cada proceso, permitiendo que múltiples aplicaciones se ejecuten de forma concurrente.
+19 |   - La regulación del acceso a dispositivos de E/S y ficheros almacenados en disco.  
+20 | 
+21 | - **Evolucionar incorporando nuevas funcionalidades:**  
+22 |   La capacidad de adaptación y evolución del sistema operativo permite:
+23 |   - **Mantenimiento correctivo:** Corrección de errores y vulnerabilidades identificadas a lo largo del tiempo.
+24 |   - **Mantenimiento perfectivo:** Introducción de nuevos servicios y mejoras en respuesta a las necesidades de los usuarios.
+25 |   - **Mantenimiento adaptativo:** Soporte para nuevos tipos de hardware y aplicaciones, ampliando las posibilidades del sistema sin comprometer los servicios ya prestados.
+26 | 
+27 | ---
+28 | 
+29 | ## Funciones y Servicios Principales
+30 | 
+31 | Para alcanzar estos objetivos, los sistemas operativos ofrecen una amplia gama de funciones y servicios que se pueden agrupar en dos grandes áreas: la gestión de recursos y la provisión de un entorno de uso adecuado.
+32 | 
+33 | ### Gestión Eficiente de Recursos
+34 | 
+35 | 1. **Gestión de la memoria RAM:**  
+36 |    - Administración de la memoria principal mediante técnicas como paginación, segmentación y asignación dinámica.
+37 |    - Liberación y reciclaje de la memoria ocupada por procesos finalizados o inactivos.
+38 | 
+39 | 2. **Administración del procesador:**  
+40 |    - Utilización de algoritmos de planificación (Round-Robin, prioridades, planificación por lotes, multitarea cooperativa y preemptiva) para distribuir equitativamente el tiempo de CPU entre los procesos.
+41 | 
+42 | 3. **Gestión de dispositivos periféricos y E/S:**  
+43 |    - Manejo de la comunicación entre aplicaciones y dispositivos a través de controladores (drivers).
+44 |    - Uso de mecanismos como interrupciones, buffering y acceso directo a memoria (DMA) para optimizar operaciones de entrada/salida.
+45 | 
+46 | 4. **Gestión interna de datos para el control operativo:**  
+47 |    - Mantenimiento de estructuras críticas como la tabla de procesos, la tabla de archivos abiertos, índices de sistemas de archivos y registros de rendimiento.
+48 |    - Monitoreo constante a través de logs, control de errores y métricas para la prevención y recuperación ante fallos.
+49 | 
+50 | ### Provisión de Servicios y Entorno de Uso
+51 | 
+52 | 1. **Entorno de ejecución para programas:**  
+53 |    - Planificación y coordinación del uso de la CPU y la memoria.
+54 |    - Organización de procesos y orquestación de operaciones de E/S hacia dispositivos y ficheros.
+55 | 
+56 | 2. **Servicios y utilidades para el desarrollo de programas:**  
+57 |    - Herramientas de desarrollo como editores, compiladores y depuradores, que facilitan la creación de aplicaciones sin necesidad de conocer en profundidad el hardware.
+58 | 
+59 | 3. **Gestión de dispositivos de E/S:**  
+60 |    - Provisión de una interfaz de programación uniforme para interactuar con diversos dispositivos, permitiendo la integración y el manejo coherente de periféricos.
+61 | 
+62 | 4. **Gestión del acceso a ficheros:**  
+63 |    - Facilita la manipulación de la información almacenada en ficheros, controlando el acceso en sistemas multiusuario mediante técnicas como listas de control de acceso (ACL) y cifrado.
+64 | 
+65 | 5. **Control de acceso y seguridad del sistema:**  
+66 |    - Implementación de mecanismos de autenticación y autorización (usuarios, grupos, permisos).
+67 |    - Uso de técnicas de auditoría, autenticación multifactor y cifrado para salvaguardar la integridad y la privacidad de la información.
+68 | 
+69 | 6. **Detección y gestión de errores:**  
+70 |    - Identificación temprana de errores durante la ejecución del sistema.
+71 |    - Aplicación de respuestas automáticas para minimizar el impacto y permitir la continuidad operativa.
+72 | 
+73 | 7. **Contabilidad y auditoría:**  
+74 |    - Registro y análisis del uso de recursos para anticipar necesidades, optimizar el sistema e incluso facturar en entornos compartidos.
+75 | 
+76 | 8. **Administración avanzada del sistema de archivos:**  
+77 |    - Gestión completa de la creación, eliminación, búsqueda y asignación de bloques en archivos y directorios.
+78 |    - Implementación de sistemas de archivos robustos que soporten journaling, snapshots y cifrado para prevenir la corrupción de datos y facilitar la recuperación ante fallos.
+79 | 
+80 | ---
+81 | 
+82 | Esta nota consolidada integra tanto la visión tradicional de los objetivos y funciones de los sistemas operativos como las aportaciones del temario de Stallings, ofreciendo un panorama completo que abarca desde la eficiencia en el uso de recursos hasta la evolución y ampliación de las capacidades del sistema operativo.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/4 - Evolución histórica.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción
+ 4 | ---
+ 5 | En las primeras computadoras, que no tenían sistema operativo, cada programa necesitaba la más detallada especificación del hardware para [ejecutarse](https://es.wikipedia.org/wiki/Ejecutable "Ejecutable") correctamente y desarrollar [tareas](https://es.wikipedia.org/wiki/Hilo_$inform%C3%A1tica$ "Hilo (informática)") estándares, y sus propios [drivers](https://es.wikipedia.org/wiki/Controlador_de_dispositivos "Controlador de dispositivos") para los dispositivos [periféricos](https://es.wikipedia.org/wiki/Perif%C3%A9ricos "Periféricos") como [impresoras](https://es.wikipedia.org/wiki/Impresoras "Impresoras") y lectores de [tarjetas perforadas](https://es.wikipedia.org/wiki/Tarjeta_perforada "Tarjeta perforada"). El incremento de la complejidad del hardware y de los programas de aplicaciones finalmente hicieron del sistema operativo una necesidad.
+ 6 | 
+ 7 | Los primeros sistemas operativos fueron desarrollados por cada usuario para el uso de su propia [computadora central](https://es.wikipedia.org/wiki/Computadora_central "Computadora central"), y es en 1956 cuando la [General Motors](https://es.wikipedia.org/wiki/General_Motors "General Motors") desarrolla lo que es hoy considerado el primer sistema, el [GM-NAA I/O](https://es.wikipedia.org/wiki/GM-NAA_I/O "GM-NAA I/O"), para su [IBM 704](https://es.wikipedia.org/wiki/IBM_704 "IBM 704").
+ 8 | 
+ 9 | ## La década de 1940
+10 | 
+11 | En esta primera generación, los computadores como el ENIAC (1945), Colossus (1944) y el Mark I se programaban directamente mediante conexiones físicas en tableros y ajustes manuales en la consola. La interacción se realizaba a través de micro interruptores y otros dispositivos de control directo, lo que limitaba la ejecución a tareas secuenciales y la participación exclusiva de un programador a la vez.
+12 | 
+13 | ## La década de 1950 ([Sistema Batch](https://es.wikipedia.org/wiki/Procesamiento_por_lotes))
+14 | 
+15 | Con la introducción de tarjetas perforadas y cintas magnéticas, la aparición del transistor permitió que las máquinas pasaran de ser manipuladas directamente por el usuario a contar con un sistema básico de control, conocido como el **monitor residente**.  
+16 | - **Monitor residente:**  
+17 |   Se encargaba de cargar programas desde tarjetas o cintas a la memoria y ejecutarlos en secuencia. La optimización de los intervalos entre la finalización de un trabajo y la carga del siguiente fue uno de los primeros retos a resolver.  
+18 | - **Almacenamiento temporal:**  
+19 |   Técnicas como el [buffering](https://es.wikipedia.org/wiki/Buffer_de_datos "Buffer de datos") y el [spooling](https://es.wikipedia.org/wiki/Spooling "Spooling") permitieron que mientras se realizaban operaciones de entrada/salida, se preparara simultáneamente la siguiente tarea, reduciendo los tiempos muertos del procesador.
+20 | 
+21 | Esta generación, parte de la **segunda generación** (1955-1965) según estudios de [Tanenbaum](https://es.wikipedia.org/wiki/Tanenbaum) y [Stallings](https://es.wikipedia.org/wiki/Stallings), marcó el inicio de la separación entre el usuario y el manejo directo del hardware, al introducir lenguajes de programación como FORTRAN y ensamblador.
+22 | 
+23 | ## La década de 1960
+24 | 
+25 | El avance en la fabricación de circuitos integrados impulsó una nueva era en la computación:
+26 | - **Multiprogramación:**  
+27 |   La [memoria principal](https://es.wikipedia.org/wiki/Memoria_principal "Memoria principal") empezó a albergar múltiples programas de usuario. La CPU, al detectar operaciones de E/S lentas, cambiaba a la ejecución de otro programa. Este mecanismo permitía aprovechar de forma óptima el tiempo del procesador, reduciendo los tiempos de espera y aumentando la eficiencia.  
+28 | - **Tiempo compartido:**  
+29 |   Con la aparición del [tiempo compartido](https://es.wikipedia.org/wiki/Tiempo_compartido_$inform%C3%A1tica$ "Tiempo compartido (informática)"), se dio un paso más hacia la interactividad, permitiendo que varios usuarios con sus respectivos [terminales](https://es.wikipedia.org/wiki/Terminal_de_computadora "Terminal de computadora") accedieran simultáneamente a la máquina. Cada usuario recibía un "cuanto" de tiempo de procesamiento, simulando un entorno en paralelo y sentando las bases de la interactividad moderna.
+30 | 
+31 | Esta etapa, considerada parte de la **tercera generación** (1965-1980), consolidó técnicas que permitieron que, a pesar de ser sistemas de procesamiento por lotes, se optimizara el uso de recursos y se abriera el camino para sistemas operativos más interactivos y robustos.
+32 | 
+33 | ## La década de 1970
+34 | 
+35 | La aparición de sistemas operativos como el [Atlas Supervisor](https://es.wikipedia.org/wiki/Atlas_Supervisor "Atlas Supervisor"), el [OS/360](https://es.wikipedia.org/wiki/OS/360 "OS/360") y posteriormente **UNIX** y **Multics** marcaron un hito en la historia de los sistemas operativos.  
+36 | - **UNIX** destacó por estar escrito en un lenguaje de alto nivel, lo que facilitó su portabilidad y evolución, y por introducir conceptos que hoy forman parte del diseño de la mayoría de los SO modernos.  
+37 | - Paralelamente, surgieron nuevos paradigmas como la [programación lógica](https://es.wikipedia.org/wiki/Programaci%C3%B3n_l%C3%B3gica "Programación lógica") y la [orientación a objetos](https://es.wikipedia.org/wiki/Orientaci%C3%B3n_a_objetos "Orientación a objetos") con lenguajes como [Smalltalk](https://es.wikipedia.org/wiki/Smalltalk "Smalltalk").
+38 | 
+39 | ## La década de 1980
+40 | 
+41 | El auge de los circuitos LSI y la popularización de los microprocesadores transformaron la computación:
+42 | - **Computadores personales:**  
+43 |   Los microcomputadores, al ser más económicos, permitieron que la computación se extendiera al hogar. Los sistemas operativos de esta época, como [MS-DOS](https://es.wikipedia.org/wiki/MS-DOS "MS-DOS"), se diseñaron para ser amigables, introduciendo menús e [interfaces gráficas](https://es.wikipedia.org/wiki/Interfaz_gr%C3%A1fica "Interfaz gráfica").  
+44 | - **Redes y sistemas operativos distribuidos:**  
+45 |   A mediados de los 80, el desarrollo de redes de computadoras personales impulsó la creación de sistemas operativos capaces de operar en entornos conectados, lo que facilitó la colaboración y el intercambio de información.
+46 | 
+47 | ## La evolución según generaciones
+48 | 
+49 | Según el temario estudiado (Universidad Internacional de La Rioja), la evolución histórica de los sistemas operativos se puede resumir en las siguientes generaciones:
+50 | 
+51 | - **Primera generación (1945-1955):**  
+52 |   Computadores basados en tubos al vacío, programados directamente mediante conexiones físicas y sin lenguajes de programación estandarizados.  
+53 | - **Segunda generación (1955-1965):**  
+54 |   Introducción del transistor y la consolidación de técnicas de procesamiento por lotes (sistemas batch) mediante tarjetas perforadas y cintas magnéticas. Se inicia el concepto de mainframe y el sistema monitor rudimentario.  
+55 | - **Tercera generación (1965-1980):**  
+56 |   Uso de circuitos integrados que permiten la multiprogramación y el tiempo compartido, optimizando el uso del procesador y permitiendo la interacción de múltiples usuarios, a pesar de seguir operando en gran parte como sistemas de procesamiento por lotes.  
+57 | - **Cuarta generación (1980 en adelante):**  
+58 |   El auge de los computadores personales y la integración a gran escala de transistores en circuitos LSI hacen posible el desarrollo de sistemas operativos con interfaces gráficas, mayor interactividad y soporte para redes y sistemas distribuidos.
+59 | 
+60 | Esta evolución histórica muestra cómo la necesidad de optimizar el uso de recursos y facilitar la interacción con el hardware llevó a la creación y mejora progresiva de los sistemas operativos, transformándolos en la pieza fundamental que conocemos hoy en día.
+61 | 
+62 | Para profundizar más sobre estos temas, se recomienda revisar las notas de [[Gestión de memoria]], [[Gestión de procesos]] y [[Sistema Operativo]].
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/5 - Virtualización.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción
+ 4 | ---
+ 5 | La virtualización es una tecnología que permite ejecutar múltiples sistemas operativos y aplicaciones sobre un mismo hardware físico, creando entornos aislados que simulan máquinas completas. Esto contrasta con el método tradicional, en el que se instala un sistema operativo directamente en el hardware, estableciendo una relación uno a uno entre la máquina física y el sistema operativo.
+ 6 | 
+ 7 | ## ¿Qué es una Máquina Virtual?
+ 8 | 
+ 9 | Una **máquina virtual (VM)** es una emulación completa de un sistema informático creada por software. Esta emulación incluye componentes esenciales como el procesador, la memoria, el almacenamiento y dispositivos de red. Gracias a esta simulación, es posible ejecutar varios sistemas operativos de forma simultánea sobre un único equipo físico, cada uno funcionando como si estuviera instalado en una máquina independiente.
+10 | 
+11 | ## El Hipervisor o Monitor de Máquinas Virtuales (VMM)
+12 | 
+13 | El **Monitor de Máquinas Virtuales (VMM)**, conocido comúnmente como **hipervisor**, es el software responsable de gestionar y distribuir los recursos del hardware físico entre las distintas máquinas virtuales. Entre sus funciones principales se destacan:
+14 | 
+15 | - **Asignación de Recursos:** Distribuye dinámicamente la CPU, la memoria, el almacenamiento y las interfaces de red entre las VMs.
+16 | - **Aislamiento:** Asegura que cada máquina virtual funcione de forma independiente, evitando interferencias entre ellas.
+17 | - **Administración y Control:** Facilita la creación, configuración, supervisión y migración de las máquinas virtuales.
+18 | 
+19 | ## Tipos de Virtualización
+20 | 
+21 | Existen diversas formas de implementar la virtualización, y se pueden clasificar según el tipo de hipervisor y la forma en que interactúan con el hardware:
+22 | 
+23 | 1. **Hipervisores Tipo 0 (Basados en Hardware):**  
+24 |    - **Ejemplos:** LPAR de IBM, LDOM de Oracle.  
+25 |    - **Características:**  
+26 |      Se ejecutan directamente sobre el hardware sin necesidad de un sistema operativo intermediario, aprovechando funcionalidades específicas de la arquitectura para lograr una máxima eficiencia.
+27 | 
+28 | 2. **Hipervisores Tipo 1 (Bare-Metal):**  
+29 |    - **Ejemplos:**  
+30 |      - **Directos en el Hardware:** VMware ESXi, Citrix XenServer.  
+31 |      - **Integrados en el Sistema Operativo:** Hyper-V en Microsoft Windows Server, KVM en Linux.  
+32 |    - **Características:**  
+33 |      Operan sin depender de un sistema operativo anfitrión tradicional. Los que se ejecutan de forma "bare-metal" son soluciones autónomas que se instalan directamente sobre el hardware, mientras que los integrados en el kernel aprovechan la cercanía al hardware desde el núcleo del sistema operativo, lo que se traduce en un mejor rendimiento y seguridad.
+34 | 
+35 | 3. **Hipervisores Tipo 2 (Hosted):**  
+36 |    - **Ejemplos:** VMware Workstation, Oracle VirtualBox.  
+37 |    - **Características:**  
+38 |      Funcionan como aplicaciones dentro de un sistema operativo anfitrión, lo que los hace ideales para entornos de desarrollo y pruebas, aunque pueden presentar una ligera sobrecarga en el rendimiento debido a la capa adicional del sistema operativo.
+39 | 
+40 | ### Sistemas Operativos Anfitrión e Invitado
+41 | 
+42 | - **Sistema Operativo Anfitrión (Host):**  
+43 |   Es el sistema operativo que se instala directamente sobre el hardware físico y que soporta el hipervisor.
+44 | 
+45 | - **Sistemas Operativos Invitados (Guest):**  
+46 |   Son los sistemas operativos que se instalan en las máquinas virtuales. Estos pueden funcionar sin modificaciones o, en algunos casos, adaptarse para colaborar más eficientemente con el host.  
+47 |   - **Paravirtualización:** Se refiere a la modificación del sistema operativo invitado para mejorar su integración y comunicación con el sistema operativo anfitrión, optimizando el rendimiento en entornos virtualizados.
+48 | 
+49 | ## Virtualización con Contenedores
+50 | 
+51 | La **virtualización con contenedores**, también conocida como virtualización a nivel del sistema operativo, es una técnica que permite aislar aplicaciones y sus dependencias dentro de un único sistema operativo. En lugar de virtualizar todo el hardware, se crean entornos aislados denominados **contenedores**.
+52 | 
+53 | ### Características y Ventajas de los Contenedores
+54 | 
+55 | - **Eficiencia de Recursos:**  
+56 |   Dado que todos los contenedores comparten el mismo núcleo del sistema operativo, la sobrecarga es mucho menor en comparación con las máquinas virtuales tradicionales.
+57 | 
+58 | - **Aislamiento:**  
+59 |   Cada contenedor funciona en un entorno aislado, lo que minimiza conflictos y mejora la seguridad de las aplicaciones.
+60 | 
+61 | - **Portabilidad:**  
+62 |   Los contenedores pueden empaquetar una aplicación junto con todas sus dependencias, garantizando su ejecución consistente en cualquier entorno compatible.
+63 | 
+64 | ### Ejemplo Destacado: Docker
+65 | 
+66 | **Docker** es la plataforma de contenedores más reconocida en la actualidad. Lanzada en 2013, Docker permite empaquetar aplicaciones en contenedores que se pueden ejecutar de manera uniforme en diferentes servidores Linux, facilitando el despliegue, la escalabilidad y el mantenimiento de aplicaciones en entornos de producción y desarrollo.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/6 - Categorías de Sistemas Operativos.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción
+ 4 | ---
+ 5 | A lo largo de la evolución de la informática, los sistemas operativos se han especializado para satisfacer necesidades muy diversas. Desde gestionar enormes volúmenes de datos en ambientes críticos hasta controlar funciones específicas en dispositivos cotidianos, cada categoría está diseñada para optimizar el rendimiento, la eficiencia y la seguridad en su entorno particular. A continuación, se describen las principales categorías, organizadas desde los sistemas más complejos hasta los más simples.
+ 6 | 
+ 7 | ## Sistemas Operativos de Mainframes
+ 8 | 
+ 9 | Los **mainframes** son computadores de gran capacidad que destacan no solo por su procesamiento, sino también por su amplio almacenamiento y robustas capacidades de entrada/salida.  
+10 | - **Usos:**  
+11 |   Se emplean en grandes corporaciones para ejecutar aplicaciones críticas de gestión y procesamiento de grandes volúmenes de datos.  
+12 | - **Tipos de trabajos:**
+13 |   - **Trabajos por lotes (batch):** Procesos largos que se ejecutan sin intervención directa del usuario.
+14 |   - **Trabajos transaccionales:** Tareas de corta duración que se procesan inmediatamente.
+15 |   - **Trabajos de tiempo compartido (timesharing):** Procesos de duración intermedia que atienden a usuarios conectados simultáneamente.
+16 | - **Ejemplo:**  
+17 |   IBM Z/OS, sucesor del OS/390 y del OS/360, es uno de los sistemas operativos más reconocidos en el entorno de mainframes.
+18 | 
+19 | ## Sistemas Operativos de Supercomputadores
+20 | 
+21 | Los **supercomputadores** están diseñados para ejecutar cálculos complejos y procesar grandes volúmenes de datos en aplicaciones científicas y de ingeniería.  
+22 | - **Características:**
+23 |   - Poseen un gran número de procesadores y abundante memoria.
+24 |   - Suelen usar adaptaciones de Linux para aprovechar al máximo la potencia de procesamiento.
+25 | - **Usos:**  
+26 |   Se emplean en simulaciones científicas, modelado climático, análisis de datos masivos y otras tareas que requieren un elevado rendimiento computacional.
+27 | 
+28 | ## Sistemas Operativos de Servidor
+29 | 
+30 | Los **servidores** son equipos que gestionan servicios y recursos en red, respondiendo a las solicitudes de otros dispositivos o clientes.  
+31 | - **Variedad:**  
+32 |   Un servidor puede ser un mainframe o un PC, y su capacidad varía según la escala de usuarios y servicios que debe atender.  
+33 | - **Ejemplos comunes:**  
+34 |   Linux, FreeBSD, Solaris y Windows Server.
+35 | - **Usos:**  
+36 |   Proveen servicios que van desde la gestión de bases de datos y aplicaciones web hasta la coordinación de servicios empresariales a nivel global.
+37 | 
+38 | ## Sistemas Operativos de Computadores Personales
+39 | 
+40 | Diseñados para el uso individual, los **PC** (personal computers) están orientados a facilitar las tareas cotidianas de un único usuario.  
+41 | - **Usos:**  
+42 |   Permiten el acceso a Internet, la creación y edición de documentos, la ejecución de videojuegos, entre otras funciones.
+43 | - **Ejemplos comunes:**  
+44 |   Windows y macOS son los sistemas operativos más extendidos, aunque también se utilizan Linux y FreeBSD en ciertos nichos.
+45 | - **Características:**  
+46 |   Suelen ofrecer interfaces gráficas intuitivas y compatibilidad con una amplia gama de aplicaciones de productividad y entretenimiento.
+47 | 
+48 | ## Sistemas Operativos de Dispositivos Móviles
+49 | 
+50 | Los dispositivos móviles, como teléfonos inteligentes, tabletas y relojes inteligentes, requieren sistemas operativos optimizados para hardware compacto y funciones integradas.  
+51 | - **Características:**
+52 |   - Equipados con procesadores multicore, memoria y sensores (GPS, cámaras, etc.).
+53 |   - Capaces de ejecutar millones de aplicaciones a través de tiendas especializadas.
+54 | - **Ejemplos:**  
+55 |   Android de Google e iOS de Apple son los sistemas operativos predominantes en este segmento.
+56 | 
+57 | ## Sistemas Operativos de Tiempo Real
+58 | 
+59 | En ciertos sectores, es crucial que los sistemas operativos respondan a eventos externos sin ningún tipo de demora.  
+60 | - **Usos:**  
+61 |   Se aplican en entornos críticos como centrales nucleares, control de trenes y sistemas de telecomunicaciones, donde la latencia mínima es esencial.
+62 | - **Características:**  
+63 |   Estos sistemas están diseñados para garantizar tiempos de respuesta predecibles y muy rápidos, adaptándose a las necesidades específicas de cada industria.
+64 | 
+65 | ## Sistemas Operativos Embebidos
+66 | 
+67 | Los **sistemas operativos embebidos** están integrados en dispositivos con capacidades de procesamiento limitadas, pero suficientes para controlar funciones específicas mediante sensores y actuadores.  
+68 | - **Usos:**  
+69 |   Se encuentran en electrodomésticos (como frigoríficos y lavadoras), dispositivos de vigilancia, automóviles, impresoras, etc.
+70 | - **Ejemplo:**  
+71 |   Embedded Linux es uno de los sistemas operativos embebidos más utilizados, adaptado para operar en entornos con recursos restringidos.
+72 | - **Características:**  
+73 |   Optimización para tareas concretas, bajo consumo de recursos y, en muchos casos, conectividad a redes que permiten integrarlos en el Internet de las Cosas (IoT).
+74 | 
+75 | ## Sistemas Operativos de Tarjetas Inteligentes
+76 | 
+77 | Las **tarjetas inteligentes** son dispositivos de pequeño tamaño que incorporan una CPU integrada en un chip.  
+78 | - **Usos:**  
+79 |   Se utilizan en tarjetas de crédito, documentos de identidad (como el DNI electrónico en España) y tarjetas SIM para móviles.
+80 | - **Características:**  
+81 |   Estos dispositivos no cuentan con la capacidad de funcionar de manera independiente; dependen de un lector que suministra la energía necesaria para su operación.
+82 | - **Ejemplo:**  
+83 |   La tecnología Java Card incluye una máquina virtual de Java en la ROM del chip, permitiendo la ejecución de pequeños programas (applets) de forma segura.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/1. Introducción/7 - Sistemas Operativos de Consolas de Videojuegos.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/introducción
+ 4 | ---
+ 5 | Aunque tradicionalmente se asocian con la ejecución exclusiva de videojuegos, las consolas modernas comparten muchas características con los computadores personales de alta gama. Además de correr juegos, estas plataformas permiten la conexión a Internet, la descarga de contenidos desde tiendas especializadas y la ejecución de aplicaciones de vídeo en línea, entre otras funciones. Sin embargo, a diferencia de los PC, las videoconsolas están diseñadas para limitar la ejecución de programas de propósito general y presentan interfaces de usuario más restringidas.
+ 6 | 
+ 7 | La información detallada sobre la estructura y funcionamiento interno de estos sistemas operativos es en gran medida confidencial, ya que los fabricantes protegen celosamente estos detalles. Gran parte de lo que se conoce proviene de investigaciones y análisis realizados por la comunidad de entusiastas y hackers, quienes han logrado emular o modificar las consolas para estudiar su comportamiento.
+ 8 | 
+ 9 | A continuación, se presenta una descripción de los sistemas operativos de las principales consolas actuales: Xbox, PlayStation y Nintendo Switch.
+10 | 
+11 | ## Xbox
+12 | 
+13 | - **Sistema Operativo Basado en Windows:**  
+14 |   Las consolas Xbox utilizan un sistema operativo basado en Windows. Aunque inicialmente presentaban diferencias significativas en comparación con el Windows de los computadores personales, con el tiempo estas diferencias se han reducido para lograr una mayor compatibilidad entre las aplicaciones de ambas plataformas.
+15 | 
+16 | - **Integración de Software y Hardware:**  
+17 |   En las últimas generaciones, como Xbox Series S y Xbox Series X, se comparten numerosas aplicaciones (por ejemplo, Xbox Live y Xbox GamePass) entre el entorno de la consola y el de Windows, lo que facilita el desarrollo de software para ambas plataformas.
+18 | 
+19 | - **Hipervisor NanoVisor:**  
+20 |   El sistema operativo de Xbox incluye una versión altamente modificada del hipervisor Hyper-V de Microsoft, denominado **NanoVisor**. Este hipervisor gestiona dos entornos virtuales:
+21 |   - **Exclusive:** Diseñado exclusivamente para la ejecución de videojuegos.
+22 |   - **Shared:** Destinado a ejecutar aplicaciones adicionales, incluyendo la interfaz principal del sistema.
+23 | 
+24 | - **Soporte Gráfico con DirectX 12:**  
+25 |   Xbox utiliza DirectX, una colección de API gráficas desarrolladas por Microsoft. La versión utilizada en la última generación es DirectX 12, lo que permite un rendimiento óptimo en tareas multimedia y de renderizado de gráficos.
+26 | 
+27 | ## PlayStation
+28 | 
+29 | - **Orbis OS y su Origen en FreeBSD:**  
+30 |   El sistema operativo de la PlayStation 4, denominado **Orbis OS**, es un fork de FreeBSD, un sistema de código abierto derivado del BSD (Berkeley Software Distribution) y de las primeras versiones de Unix. Este vínculo con el software libre permite el uso de componentes probados y optimizados en el desarrollo de la consola.
+31 | 
+32 | - **Evolución en PlayStation 5:**  
+33 |   Aunque se sabe poco sobre el sistema operativo de la PlayStation 5, existen indicios de que mantiene características y una estructura similar a la de la PS4, aunque con mejoras y adaptaciones que responden a las necesidades de la nueva generación.
+34 | 
+35 | - **APIs Gráficas: Gnm y Gnmx:**  
+36 |   Orbis OS utiliza dos APIs gráficas:
+37 |   - **Gnm:** API de bajo nivel orientada a un control preciso del hardware.
+38 |   - **Gnmx:** API de alto nivel que facilita el desarrollo gráfico.
+39 |   
+40 |   Ambas se derivan de la API Mantle, que fue diseñada originalmente para videojuegos 3D. Además, la evolución de Mantle dio lugar a la creación de Vulkan, lo que sugiere que las soluciones gráficas de PlayStation comparten ciertos elementos conceptuales y técnicos con esta API. En la PlayStation 5, se utiliza una versión extendida de Gnm para aprovechar mejoras en el rendimiento gráfico.
+41 | 
+42 | ## Nintendo Switch
+43 | 
+44 | - **Sistema Operativo Horizon:**  
+45 |   La Nintendo Switch utiliza un sistema operativo llamado **Horizon**, el cual es una evolución del sistema empleado en la Nintendo 3DS.
+46 | 
+47 | - **Arquitectura de Micronúcleo:**  
+48 |   Horizon está basado en una arquitectura de micronúcleo (microkernel), lo que permite una mayor modularidad y flexibilidad en la gestión de procesos y recursos del sistema.
+49 | 
+50 | - **Combinación de Tecnologías:**  
+51 |   Horizon incorpora componentes tanto de FreeBSD como de Android:
+52 |   - Se cree que la pila de protocolos de red proviene del código de FreeBSD.
+53 |   - El controlador gráfico está influenciado por el sistema de renderizado de Android.
+54 |   
+55 | - **API Gráfica NVN:**  
+56 |   La API gráfica utilizada en Nintendo Switch se denomina **NVN**, la cual comparte similitudes con la API Vulkan, facilitando el desarrollo y optimización de gráficos en 3D.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/2. Estructura de los Sistemas Operativos/1 - Servicios del Sistema Operativo.md:
+--------------------------------------------------------------------------------
+  1 | ---
+  2 | tags:
+  3 |   - asignaturas/sistemas_operativos/estructura_de_los_sistemas_operativos
+  4 | ---
+  5 | Los servicios del sistema operativo constituyen el conjunto de funciones que facilitan el aprovechamiento de las capacidades del computador tanto para los desarrolladores de aplicaciones como para los usuarios finales. Estos servicios permiten interactuar con el hardware de forma sencilla y segura, contribuyendo a la correcta ejecución de los programas y a un uso óptimo de los recursos.
+  6 | 
+  7 | ---
+  8 | 
+  9 | ## 1. Servicios de Utilidad para el Usuario Final y el Programador
+ 10 | 
+ 11 | Estos servicios están orientados a mejorar la experiencia del usuario y simplificar el desarrollo de aplicaciones, proporcionando interfaces y mecanismos que permiten el acceso eficiente a las funcionalidades del sistema.
+ 12 | 
+ 13 | ### Interfaz de Usuario (UI)
+ 14 | 
+ 15 | El sistema operativo ofrece diversas modalidades para interactuar con el sistema:
+ 16 | 
+ 17 | - **Interfaz de Línea de Comandos (CLI):**  
+ 18 |   Permite introducir comandos mediante un teclado y visualizar resultados en formato de texto.
+ 19 | 
+ 20 | - **Interfaz de Procesamiento por Lotes (Batch Interface):**  
+ 21 |   Diseñada para leer y ejecutar instrucciones desde archivos, facilitando la automatización de tareas.
+ 22 | 
+ 23 | - **Interfaz Gráfica de Usuario (GUI):**  
+ 24 |   Basada en sistemas de ventanas y dispositivos señaladores (por ejemplo, ratón), ofrece una interacción visual e intuitiva.
+ 25 | 
+ 26 | ### Ejecución de Programas
+ 27 | 
+ 28 | El propósito fundamental del sistema operativo es facilitar la ejecución de aplicaciones. Para ello, se encarga de:
+ 29 | 
+ 30 | - **Carga y Ejecución:**  
+ 31 |   Cargar programas en memoria, iniciar su ejecución y gestionar su ciclo de vida. Esto incluye la [[Gestión de procesos]], que asegura que cada tarea reciba los recursos necesarios.
+ 32 | 
+ 33 | - **Finalización y Manejo de Errores:**  
+ 34 |   Terminar programas de forma controlada, ya sea por finalización normal o mediante la detección y registro de errores.
+ 35 | 
+ 36 | ### Operaciones de Entrada/Salida
+ 37 | 
+ 38 | Muchos programas necesitan interactuar con dispositivos periféricos para leer o escribir datos. El sistema operativo ofrece mecanismos para realizar estas operaciones de forma segura y eficiente, apoyándose en la [[Gestión de Entrada-Salida]] para:
+ 39 | 
+ 40 | - Acceder a dispositivos de almacenamiento.
+ 41 | - Comunicarse con periféricos (impresoras, escáneres, etc.).
+ 42 | 
+ 43 | ### Manipulación del Sistema de Archivos
+ 44 | 
+ 45 | La organización y gestión de datos es esencial. Los sistemas operativos facilitan:
+ 46 | 
+ 47 | - **Acceso y Organización de Datos:**  
+ 48 |   A través de distintos sistemas de archivos, permitiendo elegir el que mejor se adapte a necesidades específicas.
+ 49 |   
+ 50 | - **Integridad y Seguridad de la Información:**  
+ 51 |   Gestionando de forma eficiente la lectura, escritura y protección de datos mediante la [[Gestión del sistema de archivos]].
+ 52 | 
+ 53 | ### Servicios de Comunicaciones
+ 54 | 
+ 55 | La comunicación entre procesos es vital, especialmente en sistemas multiproceso o distribuidos. Los mecanismos principales incluyen:
+ 56 | 
+ 57 | - **Memoria Compartida:**  
+ 58 |   Permite que varios procesos accedan a una misma área de memoria para intercambiar información.
+ 59 | 
+ 60 | - **Paso de Mensajes:**  
+ 61 |   Los procesos se comunican enviando y recibiendo paquetes de datos en un formato predefinido. Este servicio se puede relacionar con la [[Gestión de comunicaciones y sincronización entre procesos]].
+ 62 | 
+ 63 | ### Detección de Errores
+ 64 | 
+ 65 | El sistema operativo supervisa continuamente el correcto funcionamiento del sistema, detectando y gestionando errores que pueden surgir tanto en los recursos computacionales (como CPU y memoria) como en la interacción con dispositivos periféricos.
+ 66 | 
+ 67 | ---
+ 68 | 
+ 69 | ## 2. Servicios para Asegurar la Eficiencia del Sistema
+ 70 | 
+ 71 | Estos servicios se enfocan en optimizar el rendimiento del sistema y garantizar un uso racional de los recursos, beneficiando indirectamente al usuario final, especialmente en entornos multiprogramados o multiusuario.
+ 72 | 
+ 73 | ### Asignación de Recursos
+ 74 | 
+ 75 | El sistema operativo administra y asigna los recursos físicos (memoria, tiempo de procesamiento, almacenamiento, dispositivos de comunicación) de forma que:
+ 76 | 
+ 77 | - Cada proceso o usuario reciba la cantidad necesaria de recursos.
+ 78 | - Se evite la sobrecarga del sistema.
+ 79 | - Se maximice el rendimiento general.
+ 80 | 
+ 81 | La [[Gestión de memoria]] y la [[Gestión de procesos]] son ejemplos fundamentales de esta asignación.
+ 82 | 
+ 83 | ### Contabilidad y Registro
+ 84 | 
+ 85 | Llevar un control del uso de recursos es importante para:
+ 86 | 
+ 87 | - **Finalidades Contables:**  
+ 88 |   Permitir la facturación o el control de costos en sistemas donde se cobra por el uso de recursos.
+ 89 | 
+ 90 | - **Optimización del Sistema:**  
+ 91 |   Analizar patrones de uso para mejorar el diseño y configuración del sistema.
+ 92 | 
+ 93 | ### Protección y Seguridad
+ 94 | 
+ 95 | En entornos multiusuario y en sistemas conectados en red, la protección de la información es crucial. Para ello, el sistema operativo implementa mecanismos que incluyen:
+ 96 | 
+ 97 | - **Control de Acceso:**  
+ 98 |   Restringe quién puede acceder a determinados datos o dispositivos.
+ 99 |   
+100 | - **Capas de Seguridad Adicionales:**  
+101 |   Sobre servicios críticos como la [[Gestión de Entrada-Salida]] y la [[Gestión del sistema de archivos]], se aplican políticas de seguridad para evitar accesos no autorizados, en línea con la [[Gestión de la Seguridad y protección]].
+102 | 
+103 | ### Gestión del Almacenamiento
+104 | 
+105 | La eficiencia en el manejo del almacenamiento se traduce en un acceso rápido y organizado a los datos. La [[Gestión del almacenamiento]] es esencial para:
+106 | 
+107 | - Optimizar la velocidad y capacidad de los dispositivos de almacenamiento.
+108 | - Garantizar la integridad y disponibilidad de la información.
+109 | 
+110 | ---
+111 | 
+112 | ## Conclusión
+113 | 
+114 | Los servicios del sistema operativo son la base sobre la que se construyen aplicaciones y se garantiza un funcionamiento seguro y eficiente del computador. Desde la interacción directa a través de diversas interfaces hasta la administración avanzada de recursos y la implementación de medidas de seguridad, cada servicio juega un papel crucial. La integración de componentes fundamentales, como el [[Núcleo del Sistema Operativo (Kernel)]], el [[Shell o Intérprete de Comandos]], y las diversas funciones de gestión (comunicaciones, entrada/salida, seguridad, memoria, procesos, almacenamiento y sistema de archivos) conforma un sistema robusto que respalda tanto el desarrollo de software como la experiencia del usuario.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/2. Estructura de los Sistemas Operativos/2 - Interfaz de Usuario del Sistema Operativo.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/estructura_de_los_sistemas_operativos
+ 4 | ---
+ 5 | # Métodos de Interacción con el Sistema Operativo
+ 6 | 
+ 7 | El usuario puede interactuar con el sistema operativo a través de diferentes métodos, siendo las dos alternativas más habituales la **Interfaz de Línea de Comandos (CLI)** y la **Interfaz Gráfica de Usuario (GUI)**. La elección entre estas opciones depende del nivel de conocimientos del usuario, sus preferencias personales y los objetivos al utilizar el computador.
+ 8 | 
+ 9 | ---
+10 | 
+11 | ## 1. Interfaz de Línea de Comandos (CLI)
+12 | 
+13 | La **CLI** o intérprete de comandos permite la introducción directa de órdenes en modo texto, siendo especialmente popular entre administradores de sistemas y usuarios avanzados. Algunas de sus principales características son:
+14 | 
+15 | - **Precisión y Control:**  
+16 |   Ofrece opciones avanzadas que en muchos casos no están disponibles en la interfaz gráfica.
+17 | 
+18 | - **Rendimiento:**  
+19 |   Al prescindir de la capa gráfica, algunas tareas pesadas se ejecutan más rápidamente, ya que se reducen los recursos utilizados por gráficos.
+20 | 
+21 | - **Automatización:**  
+22 |   Permite la creación de scripts (archivos de texto con secuencias de comandos) para automatizar tareas repetitivas.
+23 | 
+24 | ### Intérpretes de Comandos (Shell)
+25 | 
+26 | El **shell** es un programa especial que forma parte del sistema operativo y que se encarga de recibir y procesar los comandos escritos por el usuario. Entre sus funciones se encuentran:
+27 | 
+28 | - **Interpretación y Ejecución:**  
+29 |   Convierte los comandos en instrucciones que el sistema puede ejecutar. Por ejemplo, al ejecutar el siguiente comando en un sistema UNIX:
+30 | 
+31 |   ```bash
+32 |   cp archivo1.txt archivo2.txt
+33 |   ```
+34 | 
+35 |   El shell localiza el programa `cp` en el disco, lo carga en memoria y le pasa los parámetros `archivo1.txt` y `archivo2.txt` para que se ejecute la copia.
+36 | 
+37 | - **Prompt y Retroalimentación:**  
+38 |   Muestra un prompt en modo texto que puede incluir información como el nombre del equipo, el usuario activo o el directorio de trabajo.  
+39 |   - En muchos sistemas UNIX y derivados (como Linux), el prompt de un usuario normal finaliza con `$` o `%`, mientras que el de un superusuario (root) finaliza con `#`, lo que indica que se deben tener precauciones especiales con los comandos introducidos.
+40 | 
+41 | - **Implementaciones:**  
+42 |   Existen diversas formas de implementar un shell:
+43 |   - **Shell Interno:**  
+44 |     Contiene el código capaz de interpretar y ejecutar órdenes, lo que lo hace más voluminoso.
+45 |   - **Shell Delegado:**  
+46 |     Analiza el comando y localiza un programa externo adecuado para ejecutarlo. Este enfoque permite ampliar la funcionalidad del sistema sin modificar el shell en sí.
+47 | 
+48 | - **Opciones Disponibles:**  
+49 |   La mayoría de los sistemas operativos ofrecen varias alternativas de shells, especialmente en entornos UNIX y Linux. Para más detalles, se puede consultar una tabla de intérpretes de comandos habituales en estos sistemas.
+50 | 
+51 | ---
+52 | 
+53 | ## 2. Interfaz Gráfica de Usuario (GUI)
+54 | 
+55 | La **GUI** es la opción más extendida en ordenadores de escritorio y está orientada a facilitar el uso de aplicaciones y servicios mediante elementos visuales. Entre sus características destacan:
+56 | 
+57 | - **Interacción Intuitiva:**  
+58 |   Utiliza la metáfora del escritorio, mostrando iconos que representan archivos, carpetas, la papelera de reciclaje y otros elementos, lo que resulta especialmente amigable para el usuario doméstico.
+59 | 
+60 | - **Popularización del Computador Personal:**  
+61 |   La GUI fue uno de los factores clave para la penetración en el mercado de los computadores personales.  
+62 |   - El **Xerox Alto** (1973) fue el primer computador equipado con GUI.
+63 |   - En la década de 1980, el **Apple Macintosh** popularizó las interfaces gráficas, y desde entonces Mac OS ha evolucionado, siendo **Aqua** la versión utilizada desde Mac OS X.
+64 |   - En el caso de Microsoft, la primera versión de Windows (1.01) surgió como una capa gráfica sobre MS-DOS.
+65 | 
+66 | ### Alternativas Gráficas en Sistemas UNIX y Linux
+67 | 
+68 | Aunque en sistemas UNIX la CLI ha sido históricamente predominante, han surgido diversas alternativas gráficas, tales como:
+69 | 
+70 | - [Common Desktop Environment (CDE)](https://sourceforge.net/projects/cdesktopenv/)
+71 | - [X Window System](https://www.x.org/)
+72 | 
+73 | En Linux, además, existen múltiples entornos de escritorio, entre los que destacan:
+74 | 
+75 | - [K Desktop Environment (KDE)](https://kde.org/)
+76 | - [GNOME](https://www.gnome.org/)
+77 | 
+78 | ---
+79 | 
+80 | ## 3. Métodos Alternativos de Interacción
+81 | 
+82 | El desarrollo tecnológico y la necesidad de facilitar el uso de los sistemas de computación a personas con discapacidades han propiciado otros métodos de interacción, entre los que se incluyen:
+83 | 
+84 | - **Interfaz Cerebro-Computador (BCI):**  
+85 |   Permite enviar órdenes al sistema operativo mediante la lectura de ondas cerebrales captadas con un dispositivo específico en el cráneo.
+86 | 
+87 | - **Interfaz de Usuario por Voz (VUI):**  
+88 |   Utiliza el reconocimiento del lenguaje natural para interpretar comandos y la síntesis de voz para devolver resultados.
+89 | 
+90 | - **Interfaz de Usuario Tangible (TUI):**  
+91 |   Facilita la interacción mediante la manipulación directa de objetos físicos, aprovechando la interacción táctil.
+92 | 
+93 | ---
+94 | 
+95 | ## Conclusión
+96 | 
+97 | La elección entre una interfaz de línea de comandos y una interfaz gráfica depende fundamentalmente de las preferencias del usuario, su nivel de conocimiento y los objetivos que tenga al utilizar el computador. Mientras que la CLI es valorada por su eficiencia, control y capacidad de automatización, la GUI ofrece una experiencia más intuitiva y visualmente atractiva para el usuario promedio. Además, la incorporación de métodos alternativos, como las interfaces por voz o cerebro-computador, demuestra cómo la tecnología continúa adaptándose para mejorar la accesibilidad y la interacción con los sistemas operativos.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/2. Estructura de los Sistemas Operativos/3 - Llamadas al Sistema.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/estructura_de_los_sistemas_operativos
+ 4 | ---
+ 5 | # Llamadas al Sistema y el Proceso de Copia de Archivos
+ 6 | 
+ 7 | Las **llamadas al sistema** constituyen la interfaz que permite a las aplicaciones de usuario acceder a los servicios que ofrece el sistema operativo. Cuando se ejecuta una operación como copiar un archivo, el proceso se apoya en una serie de llamadas al sistema que gestionan la interacción con el hardware y los recursos del sistema.
+ 8 | 
+ 9 | ## Proceso de Copia de un Archivo
+10 | 
+11 | Cuando copiamos un archivo de un origen a un destino, se pueden producir varias situaciones y se invocan múltiples llamadas al sistema. A continuación se describe un proceso típico de copia de archivo.
+12 | 
+13 | 1. **Apertura del Archivo Origen**  
+14 |    Se realiza una llamada al sistema (por ejemplo, `open` en sistemas POSIX o `CreateFile` en Windows) para abrir el archivo que se desea copiar.  
+15 |    - **Posibles incidencias:**  
+16 |      - El archivo no existe o no se tienen los permisos necesarios.
+17 |      - El archivo puede estar en uso por otra aplicación.
+18 | 
+19 | 2. **Creación/Apertura del Archivo Destino**  
+20 |    Se efectúa otra llamada al sistema para abrir o crear el archivo destino donde se copiarán los datos.  
+21 |    - **Posibles incidencias:**  
+22 |      - El sistema puede no disponer de espacio suficiente en disco.
+23 |      - Pueden surgir problemas de permisos o conflictos si el archivo ya existe y no se permite su sobrescritura.
+24 | 
+25 | 3. **Lectura del Archivo Origen**  
+26 |    Una vez abierto, se utilizan llamadas como `read` para extraer datos del archivo origen en bloques de memoria.  
+27 |    - **Posibles incidencias:**  
+28 |      - Errores de lectura debidos a daños en el archivo o problemas en el dispositivo de almacenamiento.
+29 |      - La velocidad de lectura puede verse afectada por la latencia del disco o por operaciones concurrentes.
+30 | 
+31 | 4. **Escritura en el Archivo Destino**  
+32 |    Los datos leídos se transfieren al archivo destino mediante llamadas como `write`.  
+33 |    - **Posibles incidencias:**  
+34 |      - Fallos al escribir los datos si el dispositivo de destino presenta errores o si se interrumpe la conexión en dispositivos de red.
+35 |      - Pérdida de datos si la operación de escritura se interrumpe inesperadamente.
+36 | 
+37 | 5. **Cierre de Archivos**  
+38 |    Finalmente, se cierran ambos archivos mediante llamadas al sistema como `close`, liberando los recursos asignados.  
+39 |    - **Posibles incidencias:**  
+40 |      - Fallos en el cierre pueden retrasar la liberación de recursos, aunque generalmente estos son casos poco comunes.
+41 | 
+42 | ## Detalles de las Llamadas al Sistema
+43 | 
+44 | Cada llamada al sistema se acompaña de una serie de parámetros que especifican el comportamiento deseado, tales como:
+45 | - **Identificadores de archivo:** Para distinguir el archivo origen del destino.
+46 | - **Modos de acceso:** Indicando si se abrirá para lectura, escritura o ambos.
+47 | - **Bloques de datos:** En operaciones de lectura y escritura, los datos se pasan mediante bloques de memoria o a través de parámetros en registros o la pila.
+48 | 
+49 | Las APIs (como la API POSIX, la API de Windows o la API de Java) encapsulan estas llamadas al sistema, permitiendo al programador realizar operaciones complejas sin necesidad de interactuar directamente con el kernel. Por ejemplo, en Windows, la función `CreateProcess()` se encarga de invocar internamente la llamada `NTCreateProcess()`.
+50 | 
+51 | El uso de estas bibliotecas proporciona ventajas significativas:
+52 | - **Portabilidad:** El código se puede compilar y ejecutar en diferentes plataformas que soporten la misma API.
+53 | - **Simplicidad:** Se abstraen las complejidades de las llamadas directas al sistema operativo, facilitando el desarrollo de aplicaciones.
+54 | 
+55 | ## Conclusión
+56 | 
+57 | Cuando se copia un archivo, el proceso involucra una secuencia de llamadas al sistema que abren, leen, escriben y finalmente cierran los archivos involucrados. Cada una de estas operaciones puede dar lugar a distintos escenarios de error, dependiendo de factores como permisos, disponibilidad de recursos o fallos en el hardware. La utilización de APIs estandarizadas no solo simplifica la programación, sino que también garantiza una mayor portabilidad y robustez en las aplicaciones, permitiendo al desarrollador centrarse en la lógica de la aplicación sin preocuparse por los detalles de bajo nivel de las operaciones en el sistema operativo.
+58 | 
+59 | la interfaz que permite a las aplicaciones de usuario acceder a los servicios que ofrece el sistema operativo
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/2. Estructura de los Sistemas Operativos/4 - Tipos de Llamadas al Sistema.md:
+--------------------------------------------------------------------------------
+  1 | ---
+  2 | tags:
+  3 |   - asignaturas/sistemas_operativos/estructura_de_los_sistemas_operativos
+  4 | ---
+  5 | Recordemos que las [[3 - Llamadas al Sistema|llamadas al sistema son la interfaz que permite a las aplicaciones de usuario acceder a los servicios que ofrece el sistema operativo]]. Estos [[1 - Servicios del Sistema Operativo|Servicios del Sistema Operativo]] se pueden agrupar en dos grandes categorías:  
+  6 | 
+  7 | - **Servicios de Utilidad para el Usuario Final y el Programador:**  
+  8 |   Estos servicios facilitan la interacción del usuario y simplifican el desarrollo y ejecución de aplicaciones. Incluyen la interfaz de usuario (CLI, Batch o GUI), la ejecución de programas, las operaciones de entrada/salida, la manipulación del sistema de archivos, los servicios de comunicación entre procesos y la detección de errores.
+  9 | 
+ 10 | - **Servicios para Asegurar la Eficiencia del Sistema:**  
+ 11 |   Estos se centran en optimizar la administración y el uso de los recursos, comprendiendo la asignación de recursos (memoria, CPU y almacenamiento), la contabilidad y registro, la protección y seguridad, y la gestión del almacenamiento.
+ 12 | 
+ 13 | Para que las aplicaciones puedan utilizar esta funcionalidad, el sistema operativo ofrece un conjunto de llamadas al sistema, que actúan como puntos de acceso controlados y seguros para interactuar con el hardware y otros recursos críticos.
+ 14 | 
+ 15 | ---
+ 16 | 
+ 17 | ## Control de Procesos
+ 18 | 
+ 19 | Cualquier programa puede finalizar su ejecución de dos maneras:
+ 20 | 
+ 21 | - **De manera normal:**  
+ 22 |   Cuando el proceso termina su ejecución proporcionando el resultado esperado (por ejemplo, mediante `end()`).
+ 23 | 
+ 24 | - **De manera anómala:**  
+ 25 |   Cuando el proceso encuentra un error irrecuperable y finaliza con `abort()`. En este caso, el sistema operativo captura información para la depuración (por ejemplo, volcado de memoria y mensajes de error).
+ 26 | 
+ 27 | Además, un proceso en ejecución puede:
+ 28 | - Solicitar el inicio de otro proceso mediante la carga del código (`load()`) y la petición de ejecución (`execute()`).
+ 29 | - Coordinar la colaboración con otros procesos utilizando mecanismos de sincronización, como `acquire_lock()` y `release_lock()`.
+ 30 | 
+ 31 | Finalmente, se ofrecen servicios para obtener o modificar atributos del proceso, tales como la prioridad, el tiempo máximo de ejecución o el identificador del proceso.
+ 32 | 
+ 33 | ---
+ 34 | 
+ 35 | ## Manipulación de Archivos
+ 36 | 
+ 37 | Existen diversas llamadas al sistema para gestionar archivos (que contienen información en disco u otros soportes físicos):
+ 38 | 
+ 39 | - **Creación y Eliminación:**  
+ 40 |   - Crear archivos: `create()`  
+ 41 |   - Eliminar archivos: `delete()`
+ 42 | 
+ 43 | - **Apertura y Cierre:**  
+ 44 |   - Abrir un archivo para su uso: `open()`  
+ 45 |   - Cerrar el archivo al finalizar las operaciones: `close()`
+ 46 | 
+ 47 | - **Lectura, Escritura y Reposicionamiento:**  
+ 48 |   Una vez abierto, el archivo se puede:  
+ 49 |   - Leer: `read()`  
+ 50 |   - Escribir: `write()`  
+ 51 |   - Reposicionar el punto de lectura/escritura: `reposition()`
+ 52 | 
+ 53 | Estas operaciones se extienden también a los directorios, permitiendo obtener o modificar atributos como nombre, tipo, fecha de modificación o permisos de acceso. Además, muchos sistemas ofrecen funciones adicionales, como copiar (`copy()`) o mover (`move()`) archivos.
+ 54 | 
+ 55 | ---
+ 56 | 
+ 57 | ## Manipulación de Dispositivos
+ 58 | 
+ 59 | Cualquier recurso del ordenador puede considerarse un dispositivo, ya sean la memoria principal, discos, impresoras o tarjetas de red. Para acceder a estos dispositivos:
+ 60 | 
+ 61 | - **Solicitud y Liberación:**  
+ 62 |   - Solicitar el acceso al dispositivo: `request()`  
+ 63 |   - Liberar el dispositivo cuando ya no se necesite: `release()`
+ 64 | 
+ 65 | Este mecanismo es conceptualmente similar al manejo de archivos (mediante `open()` y `close()`) y se utiliza también para operaciones de lectura, escritura o reposicionamiento sobre dispositivos. De hecho, en muchos sistemas (como UNIX y Linux), los dispositivos externos se tratan como archivos especiales ubicados en la estructura de directorios.
+ 66 | 
+ 67 | ---
+ 68 | 
+ 69 | ## Mantenimiento de Información
+ 70 | 
+ 71 | Muchos procesos requieren conocer información específica del sistema, como:
+ 72 | - Fecha y hora actuales.
+ 73 | - Nombre del equipo.
+ 74 | - Nombre y versión del sistema operativo.
+ 75 | - Número y nombres de usuarios.
+ 76 | - Cantidad de memoria y espacio en disco disponibles.
+ 77 | 
+ 78 | El sistema operativo también ofrece llamadas al sistema para obtener información sobre los procesos en ejecución, como:
+ 79 | - Obtener un volcado de la memoria del proceso (`dump()`).
+ 80 | - Conocer el tiempo total de utilización de recursos (CPU).
+ 81 | - Obtener o establecer atributos del proceso.
+ 82 | 
+ 83 | ---
+ 84 | 
+ 85 | ## Comunicaciones e Intercambio de Información entre Procesos
+ 86 | 
+ 87 | Para que dos o más procesos puedan intercambiar información, se utilizan dos modelos tradicionales:
+ 88 | 
+ 89 | - **Memoria Compartida:**  
+ 90 |   Permite que un proceso acceda a la memoria asignada a otro mediante llamadas como `shared_memory_create()` y `shared_memory_attach()`. Es necesario que ambos procesos acuerden compartir esa memoria, utilizando un formato común para asegurar la integridad de los datos.
+ 91 | 
+ 92 | - **Paso de Mensajes:**  
+ 93 |   Los procesos se comunican intercambiando paquetes de información en un formato o protocolo común. Esta comunicación puede realizarse de forma directa o mediante un proceso intermediario (buzón de correo).  
+ 94 |   Conceptos importantes en este modelo incluyen:  
+ 95 |   - **Nombre de host:** Denominación única de cada computador en la red.  
+ 96 |   - **Identificador de proceso:** Cada proceso tiene un nombre e identificador único, lo que facilita su gestión.
+ 97 | 
+ 98 | Para obtener esta información se usan llamadas al sistema como `get_hostid()` y `get_processid()`. Además, existen llamadas para iniciar o finalizar una comunicación, ya sean genéricas (`open()` y `close()`) o específicas (`open_connection()` y `close_connection()`).
+ 99 | 
+100 | ---
+101 | 
+102 | ## El Concepto de Servicio o Daemon
+103 | 
+104 | En muchos sistemas operativos, existe un tipo especial de proceso dedicado a ofrecer servicios a otros procesos. Estos procesos, conocidos como **servicios**, **programas residentes** o **daemons**, actúan como servidores que esperan la conexión de procesos clientes.
+105 | 
+106 | ---
+107 | 
+108 | ## Protección
+109 | 
+110 | La protección es fundamental para controlar el acceso a los recursos del computador. Esto es especialmente relevante en entornos multiusuario o conectados a Internet. Las llamadas al sistema relacionadas con la protección permiten:
+111 | 
+112 | - Manipular los permisos de acceso a los recursos:  
+113 |   - Establecer permisos: `set_permission()`  
+114 |   - Obtener permisos: `get_permission()`
+115 | - Controlar el acceso de usuarios específicos:  
+116 |   - Permitir acceso: `allow_user()`  
+117 |   - Denegar acceso: `deny_user()`
+118 | 
+119 | ---
+120 | 
+121 | ## Comparativa de Llamadas al Sistema: Windows vs. Unix
+122 | 
+123 | |                              | **Windows**                                                                                  | **Unix**                                      |
+124 | | ---------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------- |
+125 | | **Control de procesos**      | `CreateProcess()`<br>`ExitProcess()`<br>`WaitForSingleObject()`                               | `fork()`<br>`exit()`<br>`wait()`                |
+126 | | **Manipulación de archivos** | `CreateFile()`<br>`ReadFile()`<br>`WriteFile()`<br>`CloseHandle()`                              | `open()`<br>`read()`<br>`write()`<br>`close()`   |
+127 | | **Manipulación de dispositivos** | `SetConsoleMode()`<br>`ReadConsole()`<br>`WriteConsole()`                                   | `ioctl()`<br>`read()`<br>`write()`              |
+128 | | **Manipulación de información** | `GetCurrentProcessID()`<br>`SetTimer()`<br>`Sleep()`                                         | `getpid()`<br>`alarm()`<br>`sleep()`             |
+129 | | **Comunicaciones**           | `CreatePipe()`<br>`CreateFileMapping()`<br>`MapViewOfFile()`                                   | `pipe()`<br>`shm_open()`<br>`mmap()`              |
+130 | | **Protección**               | `SetFileSecurity()`<br>`InitializeSecurityDescriptor()`<br>`SetSecurityDescriptorGroup()`      | `chmod()`<br>`umask()`<br>`chown()`               |
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/2. Estructura de los Sistemas Operativos/5 - La Estructura del Sistema Operativo.md:
+--------------------------------------------------------------------------------
+ 1 | ---
+ 2 | tags:
+ 3 |   - asignaturas/sistemas_operativos/estructura_de_los_sistemas_operativos
+ 4 | ---
+ 5 | # Arquitecturas en Sistemas Operativos Modernos
+ 6 | 
+ 7 | Los sistemas operativos actuales son, en muchos casos, grandes y complejos. Para asegurar su correcto funcionamiento, facilitar su mantenimiento, mejorar su rendimiento y permitir su expansión, se diseñan siguiendo estructuras modulares. En lugar de una única estructura monolítica, se dividen en componentes o módulos con alta cohesión y con interfaces de entrada y salida claramente definidas.
+ 8 | 
+ 9 | Es común encontrar varios de estos modelos combinados en un mismo sistema, reflejando la evolución histórica y la adaptación a las nuevas necesidades tecnológicas.
+10 | 
+11 | ---
+12 | 
+13 | ## 1. Estructuras Sencillas
+14 | 
+15 | En los inicios de la informática, algunos sistemas operativos nacieron con el propósito de resolver problemas específicos con el menor tamaño y complejidad posible. Con el tiempo, al ganar popularidad, su funcionalidad se amplió, lo que llevó a una evolución en su estructura interna.
+16 | 
+17 | - **MS-DOS:**  
+18 |   - Se dividió en varios módulos, pero sin una separación clara de funciones.
+19 |   - Permite que programas de aplicación accedan directamente a rutinas básicas (por ejemplo, entrada/salida), lo que puede generar vulnerabilidades frente a aplicaciones maliciosas.
+20 | 
+21 | - **UNIX:**  
+22 |   - Desde su inicio, se estructuró en dos partes: el kernel y los programas de sistema.
+23 |   - Con el tiempo, el kernel monolítico fue subdividiéndose en interfaces y manejadores de dispositivos, adoptando un modelo de capas que, si bien integraba mucha funcionalidad, resultaba difícil de mantener y evolucionar.
+24 | 
+25 | ---
+26 | 
+27 | ## 2. Estructura de Capas
+28 | 
+29 | Con la evolución del hardware, se hizo posible diseñar sistemas operativos que aprovechan mejor el control sobre el hardware y ofrecen servicios de forma más sofisticada. La idea principal es modularizar las funcionalidades distribuyéndolas en capas jerárquicas.
+30 | 
+31 | - **Concepto:**  
+32 |   - La **capa 0** es el hardware.
+33 |   - La **capa N** es la interfaz de usuario.
+34 |   - Entre ambas, cada capa ofrece servicios a la siguiente y utiliza los servicios de la inferior.
+35 | 
+36 | - **Ventajas:**  
+37 |   - Facilita la mejora y depuración de cada capa de forma independiente.
+38 |   - Permite una separación lógica de funcionalidades.
+39 | 
+40 | - **Desventajas:**  
+41 |   - Puede ser complicado definir qué funcionalidades corresponde a cada capa.
+42 |   - La comunicación entre capas introduce sobrecarga y retardo, lo que puede afectar la eficiencia.
+43 | 
+44 | Debido a estos inconvenientes, en implementaciones modernas se ha tendido a limitar el número de capas, aumentando la complejidad y funcionalidad de cada una para optimizar el rendimiento.
+45 | 
+46 | ---
+47 | 
+48 | ## 3. Microkernels
+49 | 
+50 | Una de las alternativas para enfrentar el crecimiento del tamaño y la complejidad de un kernel monolítico es el uso de **microkernels**. La idea es mantener en el kernel únicamente la funcionalidad estrictamente necesaria, trasladando otros servicios a módulos que se ejecutan en modo usuario.
+51 | 
+52 | - **Características del Microkernel:**  
+53 |   - Gestión básica de memoria y procesos.
+54 |   - Comunicación entre módulos a través del paso de mensajes.
+55 |   - Las aplicaciones no interactúan directamente con los servicios (por ejemplo, lectura de archivos) sino que lo hacen mediante el intercambio de mensajes con el microkernel.
+56 | 
+57 | - **Ventajas:**  
+58 |   - Facilita la extensión del sistema operativo mediante nuevos módulos.
+59 |   - Reduce la cantidad de código en modo kernel, lo que mejora la seguridad y confiabilidad.
+60 |   - Simplifica la portabilidad a diferentes plataformas hardware.
+61 | 
+62 | - **Ejemplos de Sistemas con Microkernel:**  
+63 |   - **Tru64 UNIX**: Construido sobre el microkernel Mach.
+64 |   - **Darwin**: Kernel de Mac OS X, que utiliza componentes basados en Mach.
+65 |   - **Neutrino**: Microkernel de QNX, orientado a sistemas operativos de tiempo real.
+66 | 
+67 | ---
+68 | 
+69 | ## 4. Arquitectura Modular
+70 | 
+71 | Los sistemas operativos modernos tienden a incorporar módulos que el kernel puede cargar dinámicamente según se requiera.
+72 | 
+73 | - **Características:**  
+74 |   - Permite mantener un kernel compacto con funciones fundamentales.
+75 |   - La funcionalidad adicional se añade como módulos, que pueden cargarse durante el arranque o en tiempo de ejecución.
+76 |   
+77 | - **Ejemplos:**  
+78 |   - Implementaciones modernas de **UNIX** como Solaris, **Linux** o **Mac OS X**.
+79 |   - Sistemas **Windows** que, aunque en gran medida monolíticos, también admiten la carga dinámica de módulos.
+80 | 
+81 | ---
+82 | 
+83 | ## 5. Sistemas Híbridos
+84 | 
+85 | En la práctica, pocos sistemas operativos siguen un único modelo de arquitectura. La mayoría combina varias estrategias para cumplir con requisitos de rendimiento, seguridad y usabilidad.
+86 | 
+87 | - **Características de los Sistemas Híbridos:**  
+88 |   - **Monolíticos en Espacio de Memoria:**  
+89 |     Sistemas como Linux y Solaris operan en un único espacio de memoria, lo que mejora la eficiencia.
+90 |   
+91 |   - **Nodulares:**  
+92 |     Permiten la incorporación dinámica de nuevos módulos al kernel.
+93 |   
+94 |   - **Ejemplo de Windows:**  
+95 |     Es considerado, en gran medida, un sistema monolítico, pero también permite la carga dinámica de módulos para ampliar la funcionalidad.
+96 | 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso.md:
+--------------------------------------------------------------------------------
+  1 | ---
+  2 | tags:
+  3 |   - sistemas_operativos
+  4 |   - asignaturas/sistemas_operativos/procesos_e_hilos_I
+  5 |   - concepto
+  6 |   - proceso
+  7 |   - pcb
+  8 | ---
+  9 | # Concepto de Proceso
+ 10 | 
+ 11 | ## Definición
+ 12 | 
+ 13 | Informalmente, un **proceso** se define como un [[Programa]] en ejecución (Silberschatz et al., 2011, p. 106). Este término fue acuñado por los diseñadores del sistema [[Multics]] en la década de 1960.
+ 14 | 
+ 15 | Podemos entender un proceso de las siguientes maneras (Stallings, 2005, p. 68):
+ 16 | 
+ 17 | > *   Una instancia de un [[Programa]] que se ejecuta en un [[Computador]].
+ 18 | > *   Una unidad de actividad caracterizada por la ejecución de una secuencia de instrucciones, un [[Estado de proceso|estado actual]] y un conjunto de [[Recursos del sistema]] asociados.
+ 19 | 
+ 20 | Alternativamente, un proceso es una entidad asignable y ejecutable en un [[Procesador]], compuesta por código de programa y un conjunto de [[Datos]] asociados.
+ 21 | 
+ 22 | ## Distinción entre Programa y Proceso
+ 23 | 
+ 24 | Es fundamental distinguir entre un [[Programa]] y un proceso:
+ 25 | 
+ 26 | *   **Programa:** Es una entidad **pasiva**. Se materializa como un [[Archivo ejecutable]] que contiene una lista de instrucciones almacenada en disco.
+ 27 | *   **Proceso:** Es una entidad **activa**. Se crea cuando un [[Archivo ejecutable]] se carga en la [[Memoria principal|Memoria]] para su ejecución. Un proceso tiene asociado un [[Contador de Programa]] (Program Counter, PC) que indica la próxima instrucción a ejecutar, y otra información de [[Contexto de ejecución]].
+ 28 | 
+ 29 | ## El Contexto de Ejecución y la Multiprogramación
+ 30 | 
+ 31 | La [[Multiprogramación]] es una técnica clave que permite compartir el [[Procesador]] y otros [[Recursos del sistema]] (como los [[Dispositivos de E S|Dispositivos de E/S]]) entre varios procesos, maximizando su utilización. Esto se logra mediante dos herramientas fundamentales (Stallings, 2005, p. 68):
+ 32 | 
+ 33 | ### Herramientas Fundamentales
+ 34 | 
+ 35 | 1.  **[[Interrupción|Interrupciones]]:** Señales que recibe el [[Procesador]] ante eventos importantes (p. ej., finalización de una operación de [[Gestión de Entrada-Salida|E/S]] esperada por un proceso). Permiten al [[Sistema Operativo]] tomar el control y gestionar los procesos.
+ 36 | 2.  **[[Contexto de ejecución]]:** Información esencial que describe el estado de un proceso en un momento dado. Es indispensable para guardar el estado de un proceso interrumpido y poder restaurarlo posteriormente para continuar su ejecución desde el mismo punto.
+ 37 | 
+ 38 | El [[Contexto de ejecución]] es crucial para monitorizar y controlar la ejecución concurrente de múltiples programas.
+ 39 | 
+ 40 | ## Componentes de un Proceso
+ 41 | 
+ 42 | Podemos considerar que un proceso se compone fundamentalmente de:
+ 43 | 
+ 44 | 1.  Un [[Programa ejecutable]].
+ 45 | 2.  Los [[Datos]] asociados a ese programa (variables, buffers, etc.).
+ 46 | 3.  El [[Contexto de ejecución]] del programa.
+ 47 | 
+ 48 | El [[Contexto de ejecución]] se gestiona separadamente del [[Programa]] y los [[Datos]], y contiene toda la información que el [[Sistema Operativo]] necesita para administrar el proceso y que el [[Procesador]] necesita para ejecutarlo.
+ 49 | 
+ 50 | ## Gestión de Procesos por el Sistema Operativo y el Procesador
+ 51 | 
+ 52 | El [[Sistema Operativo]] mantiene información sobre los procesos activos para su gestión:
+ 53 | 
+ 54 | *   En su espacio de [[Memoria principal|memoria]], el [[Sistema Operativo]] suele mantener una [[Lista de procesos]] en ejecución.
+ 55 | *   Cada entrada en esta lista contiene un [[Puntero]] a la ubicación del bloque de memoria que aloja el programa, los datos y la información de contexto de cada proceso.
+ 56 | *   El [[Contexto de ejecución]] de cada proceso puede guardarse total o parcialmente aquí.
+ 57 | 
+ 58 | El [[Procesador]] utiliza registros específicos para gestionar la ejecución del proceso actual:
+ 59 | 
+ 60 | *   **Índice de procesos:** Puede contener el [[Identificador de proceso]] del proceso actualmente en ejecución.
+ 61 | *   **[[Contador de Programa]] (PC):** Apunta a la siguiente instrucción a ejecutar dentro del proceso actual.
+ 62 | *   **[[Registro base]]:** Contiene la dirección de [[Memoria principal|memoria]] donde comienza el proceso.
+ 63 | *   **[[Registro límite]]:** Contiene el tamaño de la región de memoria asignada al proceso.
+ 64 | *   El valor del PC es relativo al [[Registro base]] y no puede exceder el [[Registro límite]], asegurando la [[Gestión de la Seguridad y protección|protección de memoria]] entre procesos.
+ 65 | 
+ 66 | *Nota: La Figura 1 mencionada en el texto fuente ilustra cómo dos procesos (A y B) residen en memoria principal con sus bloques de programa, datos y contexto, y cómo el SO mantiene una lista de procesos y el procesador utiliza registros (PC, base, límite) para gestionar la ejecución.*
+ 67 | 
+ 68 | ## Caracterización de un Proceso: Bloque de Control de Proceso (PCB)
+ 69 | 
+ 70 | En cualquier instante, un proceso se caracteriza por un conjunto de elementos que se almacenan en una estructura de datos fundamental denominada **[[Bloque de Control de Proceso (PCB)]]** (Process Control Block). También se conoce como BCP (Bloque de Control de Proceso). (Silberschatz et al., 2013, p. 108; Stallings, 2012, p. 109).
+ 71 | 
+ 72 | ### Contenido del PCB
+ 73 | 
+ 74 | El PCB contiene típicamente la siguiente información:
+ 75 | 
+ 76 | *   **[[Identificador de proceso]]:** Un identificador único (PID) que distingue al proceso de todos los demás.
+ 77 | *   **[[Estado de proceso]]:** El estado actual del proceso (p. ej., nuevo, en ejecución, esperando, listo, terminado). Se analizará en detalle en [[Estado de proceso]].
+ 78 | *   **[[Prioridad de proceso]]:** Un valor que indica la prioridad del proceso en relación con otros, utilizado por el [[Planificación de procesos|planificador]].
+ 79 | *   **[[Contador de Programa]] (PC):** La dirección de la próxima instrucción a ejecutar para este proceso.
+ 80 | *   **[[Punteros de memoria]]:** Direcciones de memoria que delimitan el código, los datos y la pila del proceso. Puede incluir información sobre [[Memoria compartida]].
+ 81 | *   **[[Datos de contexto]]:** Valores de los [[Registros del procesador]] cuando el proceso fue interrumpido. Deben guardarse para restaurar el proceso.
+ 82 | *   **Información de estado de E/S:** Incluye [[Dispositivos de E/S]] asignados al proceso, una lista de [[Ficheros]] abiertos, peticiones de E/S pendientes, etc.
+ 83 | *   **Información contable:** Datos sobre el uso de [[Recursos del sistema]], como tiempo de CPU consumido, límites de tiempo, número de proceso, etc.
+ 84 | 
+ 85 | ## Importancia del PCB
+ 86 | 
+ 87 | El [[Bloque de Control de Proceso (PCB)]] es la manifestación concreta del [[Contexto de ejecución]] de un proceso. Almacena toda la información necesaria para:
+ 88 | 
+ 89 | *   Interrumpir la ejecución de un proceso sin pérdida de información.
+ 90 | *   Restaurar su estado de ejecución posteriormente, como si nunca se hubiera detenido.
+ 91 | 
+ 92 | Por lo tanto, el PCB es la herramienta esencial que posibilita la [[Multiprogramación]] y la gestión eficaz de procesos por parte del [[Sistema Operativo]].
+ 93 | 
+ 94 | ## Referencias
+ 95 | 
+ 96 | *   Silberschatz, A., Galvin, P. B., & Gagne, G. (2011, 2013). *Operating System Concepts*. Wiley.
+ 97 | *   Stallings, W. (2005, 2012). *Operating Systems: Internals and Design Principles*. Prentice Hall.
+ 98 | 
+ 99 | ## Conceptos Relacionados
+100 | 
+101 | *   [[Sistema Operativo]]
+102 | *   [[Programa]]
+103 | *   [[Archivo ejecutable]]
+104 | *   [[Memoria principal]]
+105 | *   [[Procesador]]
+106 | *   [[Multiprogramación]]
+107 | *   [[Interrupción]]
+108 | *   [[Contexto de ejecución]]
+109 | *   [[Bloque de Control de Proceso (PCB)]]
+110 | *   [[Estado de proceso]]
+111 | *   [[Planificación de procesos]]
+112 | *   [[Gestión de memoria]]
+113 | *   [[Gestión de Entrada-Salida]]
+114 | *   [[Recursos del sistema]]
+115 | *   [[Multics]] (Contexto histórico)
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/2 - Estado de un Proceso.md:
+--------------------------------------------------------------------------------
+  1 | ---
+  2 | tags:
+  3 |   - Asignaturas/Sistemas_Operativos/3_Procesos_e_Hilos_I
+  4 |   - Asignaturas/Sistemas_Operativos
+  5 |   - estado_proceso
+  6 |   - proceso
+  7 |   - ciclo_vida_proceso
+  8 |   - modelo_estados
+  9 |   - planificacion_procesos
+ 10 |   - sistema_operativo
+ 11 |   - gestion_procesos
+ 12 |   - pcb
+ 13 | ---
+ 14 | 
+ 15 | # Estado de un Proceso
+ 16 | 
+ 17 | ## Introducción
+ 18 | 
+ 19 | Como se vio en [[1 - Concepto de Proceso]], un proceso es un [[Programa]] en ejecución al que se asocian recursos (como espacio en [[Memoria principal]]) e información de contexto almacenada en su [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|Bloque de Control de Proceso (PCB)]]. Esta información permite al [[Sistema Operativo]] gestionar el proceso e interrumpir y reanudar su ejecución.
+ 20 | 
+ 21 | A lo largo de su ciclo de vida, un proceso transita por varios **estados** conceptualmente distintos, que reflejan su actividad actual o su disposición para ser ejecutado. Comprender estos estados y las transiciones entre ellos es fundamental para entender la [[Gestión de procesos]] y la [[Enciclopedia/Informática/Sistemas Operativos/Planificación de procesos|Planificación de procesos]] en un [[Sistema Operativo]].
+ 22 | 
+ 23 | El [[Sistema Operativo]], a través de componentes como el [[Planificador]] (a veces llamado *dispatcher* o activador), se encarga de gestionar estas transiciones, decidiendo qué proceso utilizará el [[Procesador]] en cada momento y manteniendo la información de estado actualizada en el [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|PCB]] de cada proceso.
+ 24 | 
+ 25 | ## Modelo de Proceso de 2 Estados
+ 26 | 
+ 27 | El modelo más simple considera únicamente dos estados para un proceso:
+ 28 | 
+ 29 | 1.  **Ejecutando (Running):** El proceso está actualmente utilizando la [[CPU]] y ejecutando sus instrucciones.
+ 30 | 2.  **No Ejecutando (Not Running):** El proceso existe pero no está utilizando la CPU en este instante. Puede estar listo para ejecutarse o esperando algún evento.
+ 31 | 
+ 32 | Cuando el [[Sistema Operativo]] crea un nuevo proceso, este entra inicialmente en el estado "No Ejecutando". Se coloca en una cola de espera. El [[Planificador]] seleccionará eventualmente un proceso de esta cola para pasarlo al estado "Ejecutando". Cuando el proceso en ejecución es interrumpido (por ejemplo, por agotar su [[Quantum (planificación)|quantum]] de tiempo) o debe esperar por un evento (como una operación de [[Dispositivos de E S|E/S]]), vuelve al estado "No Ejecutando".
+ 33 | 
+ 34 | ```mermaid
+ 35 | graph TD
+ 36 |     subgraph Modelo de 2 Estados
+ 37 |         B(No Ejecutando) -->|Despacho Dispatch| A(Ejecutando);
+ 38 |         A -->|Expira Tiempo / Espera| B;
+ 39 |     end
+ 40 |     subgraph Diagrama de Encolado
+ 41 |         direction LR
+ 42 |         ColaEspera --> Proceso1(PCB)
+ 43 |         ColaEspera --> Proceso2(PCB)
+ 44 |         ColaEspera --> ProcesoN(PCB)
+ 45 |         CPU(Procesador)
+ 46 |         style ColaEspera fill:#eee,stroke:#333
+ 47 |     end
+ 48 | 
+ 49 |     A -.-> CPU
+ 50 |     B -.-> ColaEspera
+ 51 | ```
+ 52 | *Figura: Modelo de proceso de dos estados y diagrama de encolado simple.*
+ 53 | 
+ 54 | Este modelo introduce dos eventos fundamentales en la vida de un proceso:
+ 55 | 
+ 56 | ### Creación de un Proceso
+ 57 | 
+ 58 | Implica añadir un nuevo proceso al conjunto gestionado por el SO, crear sus estructuras de control ([[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|PCB]]) y asignarle [[Recursos del sistema|recursos]] (como memoria). Causas comunes incluyen:
+ 59 | *   Inicio del sistema (creación de procesos del SO).
+ 60 | *   Ejecución de una orden de [[Usuario]] para ejecutar un [[Programa]].
+ 61 | *   Un proceso existente crea un nuevo proceso hijo ([[Llamadas al Sistema|Llamada al sistema]] `fork` o `CreateProcess`).
+ 62 | *   Inicio de un trabajo por lotes (Batch).
+ 63 | 
+ 64 | ### Terminación de un Proceso
+ 65 | 
+ 66 | Un proceso puede finalizar por diversas razones:
+ 67 | 
+ 68 | *   **Salida Normal (Voluntaria):** El proceso completa su tarea satisfactoriamente y realiza una [[Llamadas al Sistema|llamada al sistema]] para terminar (e.g., `exit`).
+ 69 | *   **Salida por Error (Voluntaria):** El proceso detecta un error que no puede manejar (e.g., fichero de entrada no encontrado) y decide terminar, usualmente indicando un código de error.
+ 70 | *   **[[Error fatal]] (Involuntaria):** Se produce un error grave no previsto por el programador (e.g., referencia a memoria inválida, división por cero). El SO suele terminar el proceso.
+ 71 | *   **Terminado por Otro Proceso (Involuntaria):** Un proceso con autoridad (e.g., el [[Proceso padre]] o el [[Shell o Intérprete de Comandos]]) solicita al SO que termine el proceso (e.g., comando `kill`).
+ 72 | *   **Otras causas:** Fallo de hardware, terminación del [[Proceso padre]] (que puede causar la terminación de los hijos), intervención del administrador.
+ 73 | 
+ 74 | ## Modelo de Proceso de 5 Estados
+ 75 | 
+ 76 | El modelo de 2 estados es insuficiente porque no distingue entre procesos que están listos para ejecutarse y aquellos que están esperando un evento externo. El modelo de 5 estados refina esto:
+ 77 | 
+ 78 | 1.  **[[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Nuevo (New)]]:** El proceso ha sido creado (el SO ha reconocido su existencia, se ha creado el [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|PCB]]), pero aún no ha sido admitido en el conjunto de procesos ejecutables (puede faltar carga en memoria o asignación inicial de recursos).
+ 79 | 2.  **[[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Listo (Ready)]]:** El proceso está cargado en [[Memoria principal]] y dispone de todos los [[Recursos del sistema|recursos]] necesarios para ejecutarse, excepto la [[CPU]]. Está esperando a que el [[Planificador]] le asigne el procesador.
+ 80 | 3.  **[[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Ejecución (Running)]]:** Las instrucciones del proceso están siendo ejecutadas por la [[CPU]].
+ 81 | 4.  **[[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Bloqueado (Blocked / Waiting)]]:** El proceso no puede continuar su ejecución porque está esperando que ocurra algún evento externo (e.g., finalización de una operación de [[Dispositivos de E S|E/S]], recepción de una [[Señal]], disponibilidad de un recurso). No puede pasar a Ejecución aunque la CPU esté libre.
+ 82 | 5.  **[[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Terminado (Terminated / Exit)]]:** El proceso ha finalizado su ejecución (normalmente o por error) y está siendo eliminado del sistema. Sus [[Recursos del sistema|recursos]] son liberados por el SO.
+ 83 | 
+ 84 | ```mermaid
+ 85 | graph TD
+ 86 |     N(Nuevo) -->|Admitir| R(Listo);
+ 87 |     R -->|Planificador asigna CPU Dispatch| E(Ejecución);
+ 88 |     E -->|Fin de quantum / Interrupción| R;
+ 89 |     E -->|Solicitud E/S / Espera evento| B(Bloqueado);
+ 90 |     E -->|Finalización / Error Exit| T(Terminado);
+ 91 |     B -->|Evento completado e.g., E/S finalizada| R;
+ 92 | 
+ 93 |     style N fill:#f9f,stroke:#333,stroke-width:2px
+ 94 |     style R fill:#ccf,stroke:#333,stroke-width:2px
+ 95 |     style E fill:#9cf,stroke:#333,stroke-width:2px
+ 96 |     style B fill:#fcc,stroke:#333,stroke-width:2px
+ 97 |     style T fill:#ccc,stroke:#333,stroke-width:2px
+ 98 | ```
+ 99 | *Figura: Modelo de proceso de cinco estados.*
+100 | 
+101 | ### Eventos de Transición (Modelo de 5 Estados)
+102 | 
+103 | *   **Null ➔ Nuevo:** Creación de un nuevo proceso (ver causas en modelo de 2 estados).
+104 | *   **Nuevo ➔ Listo:** El SO admite el proceso en el pool de procesos listos para competir por la CPU. Esto puede depender de la disponibilidad de [[Memoria principal]] o del grado de [[Multiprogramación]] deseado.
+105 | *   **Listo ➔ Ejecutando:** El [[Planificador]] selecciona este proceso para asignarle la [[CPU]].
+106 | *   **Ejecutando ➔ Terminado:** El proceso finaliza (ver causas en modelo de 2 estados).
+107 | *   **Ejecutando ➔ Listo:**
+108 |     *   **[[Interrupción]] por reloj (Time Slice Expired):** El proceso agota su [[Quantum (planificación)|quantum]] de tiempo asignado en sistemas de [[Tiempo compartido]].
+109 |     *   **Preferencia (Preemption):** Un proceso con [[Enciclopedia/Informática/Sistemas Operativos/Prioridad de proceso|mayor prioridad]] pasa al estado Listo, y el SO desaloja al proceso actual (de menor prioridad).
+110 | *   **Ejecutando ➔ Bloqueado:** El proceso solicita un servicio que requiere espera, típicamente mediante una [[Llamadas al Sistema|llamada al sistema]] (e.g., iniciar una operación de [[Dispositivos de E S|E/S]], esperar por un [[Semaforo]], solicitar [[Memoria principal|memoria]]).
+111 | *   **Bloqueado ➔ Listo:** Ocurre el evento que el proceso estaba esperando (e.g., la operación de E/S finaliza, llega la [[Señal]] esperada, se libera el recurso). El proceso ahora está listo para competir por la CPU nuevamente.
+112 | *   **Bloqueado ➔ Terminado / Listo ➔ Terminado:** Estas transiciones pueden ocurrir si un [[Proceso padre]] termina a un hijo, o por intervención del administrador, independientemente del estado actual del proceso hijo (excepto Nuevo o Terminado).
+113 | 
+114 | ## Gestión de Colas de Procesos
+115 | 
+116 | Para gestionar los procesos en los diferentes estados (excluyendo Ejecutando y Nuevo/Terminado), el [[Sistema Operativo]] utiliza colas:
+117 | 
+118 | *   **Cola de Listos (Ready Queue):** Contiene los [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|PCB]] de todos los procesos en estado Listo. El [[Planificador]] selecciona de esta cola.
+119 | *   **Colas de Bloqueados (Blocked/Wait Queues):** Puede haber una o varias colas para los procesos en estado Bloqueado. A menudo, hay una cola separada para cada evento o recurso por el que se espera (e.g., una cola para procesos esperando por el disco X, otra para procesos esperando por el teclado). Cuando ocurre un evento, solo los procesos en la cola correspondiente a ese evento son movidos a la Cola de Listos.
+120 | 
+121 | ```mermaid
+122 | graph LR
+123 |     subgraph Colas de Estados
+124 |         CPU(CPU) <--> |Dispatch / Timeout / Preempt| ColaListos(Cola de Listos);
+125 |         ColaListos -- Solicitud Evento --> ColasBloqueados((Colas de Bloqueados));
+126 |         ColasBloqueados -- Evento Ocurre --> ColaListos;
+127 | 
+128 |         subgraph Colas de Bloqueados Detalle
+129 |             direction TB
+130 |             CB_Evento1[Cola Espera Evento 1]
+131 |             CB_Evento2[Cola Espera Evento 2]
+132 |             CB_EventoN[Cola Espera Evento N]
+133 |         end
+134 | 
+135 |         style ColaListos fill:#ccf,stroke:#333
+136 |         style ColasBloqueados fill:#fcc,stroke:#333
+137 |     end
+138 | ```
+139 | *Figura: Esquema de gestión de colas para estados Listo y Bloqueado.*
+140 | 
+141 | La forma en que se gestionan estas colas ([[FIFO]], por [[Enciclopedia/Informática/Sistemas Operativos/Prioridad de proceso|prioridad]], etc.) depende del [[Algoritmo de planificación]] implementado por el [[Sistema Operativo]].
+142 | 
+143 | ## Véase También
+144 | 
+145 | *   [[1 - Concepto de Proceso]]
+146 | *   [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|Bloque de Control de Proceso (PCB)]]
+147 | *   [[Sistema Operativo]]
+148 | *   [[Gestión de procesos]]
+149 | *   [[Enciclopedia/Informática/Sistemas Operativos/Planificación de procesos|Planificación de procesos]]
+150 | *   [[Planificador]]
+151 | *   [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Estado de proceso (Enciclopedia)]] (Visión general)
+152 | *   [[CPU]] / [[Procesador]]
+153 | *   [[Memoria principal]]
+154 | *   [[Dispositivos de E S]]
+155 | *   [[Interrupción]]
+156 | *   [[Llamadas al Sistema]]
+157 | *   [[Recursos del sistema]]
+158 | *   [[Multiprogramación]]
+159 | *   [[Tiempo compartido]]
+160 | *   [[Quantum (planificación)]]
+161 | *   [[Enciclopedia/Informática/Sistemas Operativos/Prioridad de proceso|Prioridad de proceso]]
+162 | *   [[Proceso padre]]
+163 | *   [[Señal]]
+164 | *   [[Error fatal]]
+165 | *   [[Algoritmo de planificación]]
+166 | *   [[FIFO]]
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/3 - Control de Procesos.md:
+--------------------------------------------------------------------------------
+  1 | ---
+  2 | tags:
+  3 |   - Asignaturas/Sistemas_Operativos/3_Procesos_e_Hilos_I
+  4 |   - Asignaturas/Sistemas_Operativos
+  5 |   - control_procesos
+  6 |   - gestion_procesos
+  7 |   - sistema_operativo
+  8 |   - pcb
+  9 |   - modo_usuario
+ 10 |   - modo_kernel
+ 11 |   - cambio_contexto
+ 12 |   - creacion_proceso
+ 13 |   - terminacion_proceso
+ 14 |   - interrupcion
+ 15 |   - llamada_sistema
+ 16 |   - trap
+ 17 | ---
+ 18 | 
+ 19 | # Control de Procesos
+ 20 | 
+ 21 | ## Introducción
+ 22 | 
+ 23 | El **Control de Procesos** es una de las funciones más críticas del [[Enciclopedia/Informática/Sistema Operativo|Sistema Operativo]] (SO). Se refiere al conjunto de mecanismos y políticas que el SO utiliza para gestionar el ciclo de vida y la ejecución de los [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|procesos]]. Dado que los procesos compiten por los [[Enciclopedia/Informática/Sistemas Operativos/Recursos del sistema|recursos del sistema]] (como la [[Enciclopedia/Informática/Hardware/Procesador|CPU]] y la [[Enciclopedia/Informática/Hardware/Memoria principal|memoria]]) y pueden interferir entre sí, el SO debe ejercer un control estricto para asegurar la eficiencia, la protección y el orden en el sistema.
+ 24 | 
+ 25 | Una base fundamental para este control es la existencia de diferentes **modos de ejecución** en el [[Enciclopedia/Informática/Hardware/Procesador|procesador]].
+ 26 | 
+ 27 | ## Modos de Ejecución
+ 28 | 
+ 29 | La mayoría de las arquitecturas de [[Enciclopedia/Informática/Hardware/Procesador|CPU]] soportan al menos dos modos de ejecución para proteger al [[Enciclopedia/Informática/Sistema Operativo|SO]] y al [[Enciclopedia/Informática/Hardware|hardware]] de acciones indebidas por parte de los [[Enciclopedia/Informática/Programa|programas]] de [[Enciclopedia/Informática/Usuario|usuario]]:
+ 30 | 
+ 31 | 1.  **[[Modo usuario]] (User Mode):**
+ 32 |     *   Modo con privilegios restringidos.
+ 33 |     *   Es el modo en el que se ejecutan la mayoría de las aplicaciones y [[Enciclopedia/Informática/Programa|programas]] de [[Enciclopedia/Informática/Usuario|usuario]].
+ 34 |     *   Las instrucciones que podrían comprometer el sistema (e.g., acceso directo a [[Enciclopedia/Informática/Hardware/Dispositivos de E S|hardware]], modificación de tablas de memoria del SO, deshabilitar [[Enciclopedia/Informática/Sistemas Operativos/Interrupción|interrupciones]]) están prohibidas en este modo.
+ 35 |     *   Para realizar operaciones privilegiadas, un proceso en modo usuario debe solicitar el servicio al SO a través de una [[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|Llamada al Sistema]].
+ 36 | 
+ 37 | 2.  **[[Modo kernel]] (Kernel Mode, Modo Núcleo, Modo Sistema, Modo Privilegiado):**
+ 38 |     *   Modo con privilegios completos sobre el [[Enciclopedia/Informática/Hardware|hardware]] y el sistema.
+ 39 |     *   Es el modo en el que se ejecuta el [[Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/Núcleo del Sistema Operativo (Kernel)|Núcleo (Kernel)]] del [[Enciclopedia/Informática/Sistema Operativo|Sistema Operativo]].
+ 40 |     *   Permite ejecutar todas las instrucciones de la máquina, incluyendo las privilegiadas.
+ 41 |     *   El SO cambia a modo kernel para manejar [[Enciclopedia/Informática/Sistemas Operativos/Interrupción|interrupciones]], [[Trap|excepciones (traps)]] y [[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|llamadas al sistema]].
+ 42 | 
+ 43 | Esta dualidad de modos es esencial para la [[Protección (Sistemas Operativos)]].
+ 44 | 
+ 45 | ## Operaciones Fundamentales de Control de Procesos
+ 46 | 
+ 47 | El SO realiza varias operaciones clave para controlar los procesos:
+ 48 | 
+ 49 | ### 1. Creación de Procesos
+ 50 | 
+ 51 | Cuando se necesita crear un nuevo proceso (ver [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/2 - Estado de un Proceso#Creación de un Proceso|causas de creación]]), el SO realiza los siguientes pasos:
+ 52 | 
+ 53 | 1.  **Asignar un [[Enciclopedia/Informática/Sistemas Operativos/Identificador de proceso|Identificador de Proceso (PID)]] único:** Se añade una nueva entrada a la [[Enciclopedia/Informática/Sistemas Operativos/Lista de procesos|tabla de procesos]] del sistema.
+ 54 | 2.  **Reservar Espacio en [[Enciclopedia/Informática/Hardware/Memoria principal|Memoria]]:** Se asigna memoria para la imagen del proceso (código, datos, pila, heap) y para su [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|Bloque de Control de Proceso (PCB)]].
+ 55 | 3.  **Inicializar el [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|PCB]]:** Se rellenan los campos del PCB con información inicial: [[Enciclopedia/Informática/Sistemas Operativos/Identificador de proceso|PID]], [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Estado]] (normalmente [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Nuevo]] o [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Listo]]), [[Enciclopedia/Informática/Sistemas Operativos/Contador de Programa|Contador de Programa]] (apuntando al punto de entrada), [[Enciclopedia/Informática/Sistemas Operativos/Prioridad de proceso|prioridad]], información del [[Proceso padre]], límites de recursos, etc.
+ 56 | 4.  **Establecer Enlaces:** Se enlaza el nuevo PCB a las [[Cola de procesos|colas]] o listas apropiadas (e.g., la Cola de Listos si el proceso es admitido inmediatamente).
+ 57 | 5.  **Actualizar Otras Estructuras:** Se pueden actualizar estructuras de datos para contabilidad o monitorización del sistema.
+ 58 | 
+ 59 | En sistemas tipo [[Enciclopedia/Informática/Sistemas Operativos/Unix|Unix]], la creación se realiza típicamente con la [[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|llamada al sistema]] `fork()`, que crea una copia del proceso padre, seguida a menudo por `exec()` para cargar un nuevo [[Enciclopedia/Informática/Programa|programa]] en el proceso hijo. En [[Enciclopedia/Informática/Sistemas Operativos/Windows|Windows]], se utiliza `CreateProcess()`.
+ 60 | 
+ 61 | ### 2. Terminación de Procesos
+ 62 | 
+ 63 | El SO debe gestionar la finalización de los procesos, liberando todos los [[Enciclopedia/Informática/Sistemas Operativos/Recursos del sistema|recursos]] que tenían asignados (memoria, [[Enciclopedia/Informática/Sistemas Operativos/Ficheros|ficheros]] abiertos, [[Enciclopedia/Informática/Hardware/Dispositivos de E S|dispositivos]]). Las causas de terminación se detallan en [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/2 - Estado de un Proceso#Terminación de un Proceso|Estado de un Proceso]].
+ 64 | 
+ 65 | ### 3. Cambio de Contexto (Context Switch)
+ 66 | 
+ 67 | Es el mecanismo por el cual el SO conmuta la [[Enciclopedia/Informática/Hardware/Procesador|CPU]] de un proceso a otro. Es una operación fundamental para la [[Enciclopedia/Informática/Sistemas Operativos/Multiprogramación|multiprogramación]] y el [[Enciclopedia/Informática/Sistemas Operativos/Tiempo compartido|tiempo compartido]].
+ 68 | 
+ 69 | *   **¿Cuándo ocurre?** El cambio de contexto es disparado por eventos que hacen que el proceso actualmente en ejecución deje la CPU:
+ 70 |     *   **[[Enciclopedia/Informática/Sistemas Operativos/Interrupción|Interrupción]] de reloj:** El [[Quantum (planificación)|quantum]] de tiempo del proceso expira.
+ 71 |     *   **[[Enciclopedia/Informática/Sistemas Operativos/Interrupción|Interrupción]] de E/S:** Un dispositivo finaliza una operación, lo que puede despertar a un proceso bloqueado (posiblemente de mayor prioridad).
+ 72 |     *   **[[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|Llamada al Sistema]]:** El proceso solicita un servicio al SO que requiere espera (e.g., iniciar E/S).
+ 73 |     *   **[[Trap]] o Excepción:** El proceso comete un error ([[Enciclopedia/Informática/Sistemas Operativos/Error fatal|fatal]] o no) que requiere intervención del SO.
+ 74 |     *   **[[Enciclopedia/Informática/Sistemas Operativos/Interrupción|Interrupción]] por [[Fallo de página]] (Memory Fault):** Acceso a [[Enciclopedia/Informática/Sistemas Operativos/Memoria virtual|memoria virtual]] no presente en [[Enciclopedia/Informática/Hardware/Memoria principal|memoria física]].
+ 75 | 
+ 76 | *   **¿Qué implica?** Requiere guardar el [[Enciclopedia/Informática/Sistemas Operativos/Contexto de ejecución|contexto de ejecución]] completo del proceso que sale y restaurar el del proceso que entra. Los pasos típicos, realizados por el [[Enciclopedia/Informática/Sistemas Operativos/Dispatcher|Dispatcher]] (parte del [[Enciclopedia/Informática/Sistemas Operativos/Planificador|Planificador]]), son:
+ 77 |     1.  **Guardar Contexto:** Salvar el estado del [[Enciclopedia/Informática/Hardware/Procesador|procesador]] (registros, [[Enciclopedia/Informática/Sistemas Operativos/Contador de Programa|PC]], [[Enciclopedia/Informática/Sistemas Operativos/Registro de estado|PSW]]) en el [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|PCB]] del proceso saliente.
+ 78 |     2.  **Actualizar PCB Saliente:** Cambiar el [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|estado]] del proceso saliente (a [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Listo]], [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Bloqueado]], etc.) y mover su PCB a la [[Cola de procesos|cola]] apropiada.
+ 79 |     3.  **Seleccionar Nuevo Proceso:** El [[Enciclopedia/Informática/Sistemas Operativos/Planificador|Planificador a corto plazo]] elige el siguiente proceso de la Cola de Listos.
+ 80 |     4.  **Actualizar PCB Entrante:** Cambiar el [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|estado]] del proceso seleccionado a [[Enciclopedia/Informática/Sistemas Operativos/Estado de proceso|Ejecución]].
+ 81 |     5.  **Actualizar Estructuras de Memoria:** Si es necesario (e.g., cambiar tablas de páginas).
+ 82 |     6.  **Restaurar Contexto:** Cargar el estado del [[Enciclopedia/Informática/Hardware/Procesador|procesador]] desde el PCB del proceso entrante.
+ 83 | 
+ 84 | *   **Cambio de Modo vs. Cambio de Proceso:**
+ 85 |     *   Un **cambio de modo** (Mode Switch) de [[Modo usuario]] a [[Modo kernel]] ocurre siempre que el SO toma el control (interrupción, trap, llamada al sistema).
+ 86 |     *   Un **cambio de proceso** (Process Switch) implica guardar el contexto de un proceso y cargar el de otro.
+ 87 |     *   **Importante:** Un cambio de modo *no siempre* implica un cambio de proceso. El SO puede manejar una interrupción brevemente en modo kernel y luego devolver el control al *mismo* proceso que se estaba ejecutando (solo requiere guardar y restaurar el estado mínimo para la interrupción, no todo el contexto del proceso). Un cambio de proceso siempre implica cambios de modo.
+ 88 | 
+ 89 | El cambio de contexto tiene un [[Overhead|coste]] (tiempo durante el cual no se ejecuta trabajo útil), por lo que debe ser lo más eficiente posible.
+ 90 | 
+ 91 | ## Mecanismos de Transición de Control (Usuario -> SO)
+ 92 | 
+ 93 | El control pasa del modo usuario al modo kernel a través de tres mecanismos principales:
+ 94 | 
+ 95 | 1.  **[[Enciclopedia/Informática/Sistemas Operativos/Interrupción|Interrupciones]]:** Señales generadas por el [[Enciclopedia/Informática/Hardware|hardware]] (reloj, [[Enciclopedia/Informática/Hardware/Dispositivos de E S|dispositivos de E/S]]) indicando que un evento requiere atención inmediata del SO. Son asíncronas respecto a la ejecución del proceso.
+ 96 | 2.  **[[Trap|Traps]] (Excepciones):** Interrupciones generadas por software, sincrónicas a la ejecución del proceso, usualmente debido a un error o condición excepcional detectada por la [[Enciclopedia/Informática/Hardware/Procesador|CPU]] durante la ejecución de una instrucción (e.g., división por cero, acceso ilegal a memoria).
+ 97 | 3.  **[[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|Llamadas al Sistema]] (System Calls):** Solicitudes explícitas realizadas por un proceso en modo usuario para que el SO realice un servicio privilegiado en su nombre (e.g., leer un fichero, crear un proceso hijo).
+ 98 | 
+ 99 | En los tres casos, el [[Enciclopedia/Informática/Hardware|hardware]] transfiere el control a una rutina específica del SO (manejador de interrupción/excepción/llamada) y cambia el modo de ejecución a [[Modo kernel]].
+100 | 
+101 | ## Información de Control: El PCB
+102 | 
+103 | Como se ha visto, toda la información necesaria para controlar un proceso (estado, PID, PC, registros, límites de memoria, ficheros abiertos, etc.) se almacena en su [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|Bloque de Control de Proceso (PCB)]]. Es la estructura de datos central para el control de procesos por parte del [[Enciclopedia/Informática/Sistema Operativo|Sistema Operativo]].
+104 | 
+105 | ## Véase También
+106 | 
+107 | *   [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|Concepto de Proceso]]
+108 | *   [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/2 - Estado de un Proceso|Estado de un Proceso]]
+109 | *   [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|Bloque de Control de Proceso (PCB)]]
+110 | *   [[Enciclopedia/Informática/Sistema Operativo|Sistema Operativo]]
+111 | *   [[Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/Núcleo del Sistema Operativo (Kernel)|Núcleo del Sistema Operativo (Kernel)]]
+112 | *   [[Modo usuario]]
+113 | *   [[Modo kernel]]
+114 | *   [[Enciclopedia/Informática/Sistemas Operativos/Cambio de contexto|Cambio de contexto]]
+115 | *   [[Enciclopedia/Informática/Sistemas Operativos/Dispatcher|Dispatcher]]
+116 | *   [[Enciclopedia/Informática/Sistemas Operativos/Planificador|Planificador]]
+117 | *   [[Enciclopedia/Informática/Sistemas Operativos/Interrupción|Interrupción]]
+118 | *   [[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|Llamadas al Sistema]]
+119 | *   [[Trap]]
+120 | *   [[Protección (Sistemas Operativos)]]
+121 | *   [[Enciclopedia/Informática/Hardware/Procesador|Procesador (CPU)]]
+122 | *   [[Enciclopedia/Informática/Sistemas Operativos/Identificador de proceso|Identificador de proceso (PID)]]
+123 | *   [[Cola de procesos]]
+124 | *   [[Proceso padre]]
+125 | *   [[Fork (llamada al sistema)]]
+126 | *   [[Exec (llamada al sistema)]]
+127 | *   [[CreateProcess]]
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/4 - Concepto de Hilo.md:
+--------------------------------------------------------------------------------
+  1 | ---
+  2 | tags:
+  3 |   - Asignaturas/Sistemas_Operativos/3_Procesos_e_Hilos_I
+  4 |   - Asignaturas/Sistemas_Operativos
+  5 |   - hilo
+  6 |   - thread
+  7 |   - proceso_ligero
+  8 |   - multihilo
+  9 |   - concurrencia
+ 10 |   - paralelismo
+ 11 |   - gestion_procesos
+ 12 |   - sistema_operativo
+ 13 |   - contexto_ejecucion
+ 14 |   - recursos_compartidos
+ 15 |   - escalabilidad
+ 16 |   - tcb
+ 17 | ---
+ 18 | 
+ 19 | # Concepto de Hilo (Thread)
+ 20 | 
+ 21 | ## Introducción y Motivación
+ 22 | 
+ 23 | Hasta ahora, hemos tratado el [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|proceso]] como la unidad básica de ejecución, asumiendo que cada proceso realiza una única tarea a la vez (un solo hilo de ejecución). Este modelo es suficiente para muchas aplicaciones, especialmente las puramente secuenciales o interactivas simples.
+ 24 | 
+ 25 | Sin embargo, para mejorar la eficiencia, la responsividad y aprovechar las arquitecturas [[Multiprocesador|multinúcleo]], los [[Enciclopedia/Informática/Sistema Operativo|sistemas operativos]] modernos extienden el [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|concepto de proceso]] separando dos de sus características fundamentales:
+ 26 | 
+ 27 | 1.  **Propiedad de Recursos:** Un [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|proceso]] se define como la unidad a la que se asignan [[Enciclopedia/Informática/Sistemas Operativos/Recursos del sistema|recursos]] (espacio de direcciones virtuales, [[Enciclopedia/Informática/Sistemas Operativos/Ficheros|ficheros]] abiertos, [[Enciclopedia/Informática/Hardware/Dispositivos de E S|dispositivos]], etc.) y que sirve como contenedor protegido para estos recursos.
+ 28 | 2.  **Planificación y Ejecución:** La unidad que es planificada por el [[Enciclopedia/Informática/Sistemas Operativos/Planificador|planificador]] y despachada para ejecutarse en la [[Enciclopedia/Informática/Hardware/Procesador|CPU]].
+ 29 | 
+ 30 | En los sistemas modernos, la unidad de planificación/ejecución se denomina **hilo** (thread) o **proceso ligero** (lightweight process, LWP). La unidad de propiedad de recursos sigue siendo el [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|proceso]] (a veces llamado tarea).
+ 31 | 
+ 32 | Un [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|proceso]] tradicional equivale a un proceso con un único hilo. La **ejecución multihilo** (multithreading) permite que un único [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|proceso]] contenga *múltiples* hilos que se ejecutan (aparentemente o realmente) en paralelo, compartiendo los recursos del proceso pero siguiendo cada uno su propia secuencia de ejecución.
+ 33 | 
+ 34 | ## Definición
+ 35 | 
+ 36 | Un **hilo** (thread) es la **unidad básica de utilización de la [[Enciclopedia/Informática/Hardware/Procesador|CPU]]**. Representa un flujo de control secuencial *dentro* de un [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|proceso]]. Cada hilo tiene su propio:
+ 37 | 
+ 38 | *   **Identificador de Hilo (TID):** Un identificador único dentro del proceso.
+ 39 | *   **[[Enciclopedia/Informática/Sistemas Operativos/Contador de Programa|Contador de Programa (PC)]]:** Indica la siguiente instrucción a ejecutar por *ese* hilo.
+ 40 | *   **Conjunto de [[Enciclopedia/Informática/Hardware/Registros del procesador|Registros]]:** Almacena el [[Enciclopedia/Informática/Sistemas Operativos/Contexto de ejecución|contexto de ejecución]] del hilo (valores de registros de propósito general, índice, etc.).
+ 41 | *   **[[Pila (estructura de datos)|Pila (Stack)]]:** Un espacio de memoria privado para las variables locales, parámetros de función y direcciones de retorno de las llamadas realizadas por *ese* hilo.
+ 42 | 
+ 43 | ## Recursos Compartidos por Hilos (Dentro del Proceso)
+ 44 | 
+ 45 | Mientras que cada hilo tiene su propio estado de ejecución (PC, registros, pila), **todos los hilos pertenecientes al mismo [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|proceso]] comparten**:
+ 46 | 
+ 47 | *   El **espacio de direcciones** del proceso:
+ 48 |     *   Segmento de Código (las instrucciones del [[Enciclopedia/Informática/Programa|programa]]).
+ 49 |     *   Segmento de Datos (variables globales y estáticas).
+ 50 |     *   [[Heap (memoria dinámica)|Heap]] (memoria asignada dinámicamente durante la ejecución).
+ 51 | *   **[[Enciclopedia/Informática/Sistemas Operativos/Ficheros|Ficheros]] abiertos** por el proceso.
+ 52 | *   **[[Señal|Señales]]** y manejadores de señales.
+ 53 | *   Otros [[Enciclopedia/Informática/Sistemas Operativos/Recursos del sistema|recursos]] asignados al proceso por el [[Enciclopedia/Informática/Sistema Operativo|SO]] (e.g., [[Enciclopedia/Informática/Hardware/Dispositivos de E S|dispositivos]]).
+ 54 | 
+ 55 | ```mermaid
+ 56 | graph TD
+ 57 |     P(Proceso PID=123)
+ 58 |     subgraph Espacio de Direcciones Compartido
+ 59 |         Codigo(Código)
+ 60 |         Datos(Datos Globales)
+ 61 |         Heap(Heap)
+ 62 |         Ficheros(Ficheros Abiertos)
+ 63 |     end
+ 64 | 
+ 65 |     subgraph Hilo 1 (TID=1)
+ 66 |         PC1(PC_1)
+ 67 |         Reg1(Registros_1)
+ 68 |         Pila1(Pila_1)
+ 69 |     end
+ 70 | 
+ 71 |     subgraph Hilo 2 (TID=2)
+ 72 |         PC2(PC_2)
+ 73 |         Reg2(Registros_2)
+ 74 |         Pila2(Pila_2)
+ 75 |     end
+ 76 | 
+ 77 |     subgraph Hilo N (TID=N)
+ 78 |         PCN(PC_N)
+ 79 |         RegN(Registros_N)
+ 80 |         PilaN(Pila_N)
+ 81 |     end
+ 82 | 
+ 83 |     P --> Codigo; P --> Datos; P --> Heap; P --> Ficheros;
+ 84 |     P --> Hilo1; P --> Hilo2; P --> HiloN;
+ 85 | 
+ 86 |     Hilo1 --> Codigo; Hilo1 --> Datos; Hilo1 --> Heap; Hilo1 --> Ficheros;
+ 87 |     Hilo2 --> Codigo; Hilo2 --> Datos; Hilo2 --> Heap; Hilo2 --> Ficheros;
+ 88 |     HiloN --> Codigo; HiloN --> Datos; HiloN --> Heap; HiloN --> Ficheros;
+ 89 | 
+ 90 | 
+ 91 |     style P fill:#ddd,stroke:#333,stroke-width:2px
+ 92 |     style Codigo fill:#ccf,stroke:#333
+ 93 |     style Datos fill:#ccf,stroke:#333
+ 94 |     style Heap fill:#ccf,stroke:#333
+ 95 |     style Ficheros fill:#ccf,stroke:#333
+ 96 |     style Hilo1 fill:#cfc,stroke:#333
+ 97 |     style Hilo2 fill:#cfc,stroke:#333
+ 98 |     style HiloN fill:#cfc,stroke:#333
+ 99 | ```
+100 | *Figura: Estructura de un proceso multihilo. Los hilos comparten código, datos, heap y ficheros, pero cada uno tiene su propio PC, registros y pila.*
+101 | 
+102 | ## Proceso vs. Hilo: Resumen
+103 | 
+104 | | Característica         | Proceso                               | Hilo (Thread)                                     |
+105 | | :--------------------- | :----------------------------------------- | :-------------------------------------------------------- |
+106 | | **Definición**         | Instancia de un programa en ejecución   | Flujo de ejecución dentro de un proceso           |
+107 | | **Unidad de...**       | Propiedad de recursos                      | Ejecución / Planificación                         |
+108 | | **Peso**               | Pesado (Heavyweight)                       | Ligero (Lightweight)                              |
+109 | | **Creación/Terminación** | Lenta / Costosa                          | Rápida / Barata                                   |
+110 | | **Cambio de Contexto** | Lento / Costoso                          | Rápido / Barato                                   |
+111 | | **Recursos**           | Propio espacio de direcciones, ficheros, etc. | Comparte recursos del proceso; pila y registros propios |
+112 | | **Comunicación**       | IPC (compleja, requiere SO: memoria compartida, paso de mensajes | Directa (a través de memoria compartida del proceso) |
+113 | | **Independencia**      | Alta (protegidos entre sí por el SO)     | Baja (un hilo puede afectar a otros del mismo proceso) |
+114 | 
+115 | ## Beneficios de los Hilos (Multihilo)
+116 | 
+117 | El uso de múltiples hilos dentro de un proceso ofrece ventajas significativas:
+118 | 
+119 | 1.  **Responsividad (Capacidad de Respuesta):** Permite que una aplicación continúe interactuando con el [[Enciclopedia/Informática/Usuario|usuario]] (e.g., a través de su [[Enciclopedia/Informática/Interfaz de Usuario|interfaz gráfica]]) mientras otras partes de la aplicación realizan tareas largas en segundo plano. Un hilo maneja la [[GUI]], otro realiza cálculos o [[Enciclopedia/Informática/Hardware/Dispositivos de E S|E/S]].
+120 | 2.  **Compartición de Recursos:** Los hilos comparten memoria y recursos del proceso por defecto, simplificando enormemente la comunicación y el intercambio de [[Enciclopedia/Informática/Conceptos Fundamentales/Datos|datos]] entre tareas concurrentes dentro de la misma aplicación, en comparación con la [[Enciclopedia/Informática/Sistemas Operativos/Comunicación entre procesos|IPC]].
+121 | 3.  **Economía:**
+122 |     *   **Creación/Terminación:** Crear y destruir hilos es mucho menos costoso en términos de tiempo y recursos del SO que crear/destruir [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|procesos]].
+123 |     *   **Cambio de Contexto:** Cambiar entre hilos del mismo proceso es más rápido que cambiar entre [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|procesos]], ya que no requiere cambiar el mapa de memoria u otros recursos pesados del proceso.
+124 | 4.  **Escalabilidad (Utilización de Multiprocesadores):** En sistemas con múltiples [[Enciclopedia/Informática/Hardware/Procesador|CPU]] o núcleos ([[Multiprocesador]]), los hilos de un mismo proceso pueden ejecutarse *realmente* en **[[Paralelismo|paralelo]]**, cada uno en un núcleo distinto, mejorando significativamente el rendimiento de aplicaciones que pueden descomponerse en tareas paralelas.
+125 | 
+126 | ## Modelos de Hilos
+127 | 
+128 | Existen principalmente dos modelos para implementar y gestionar hilos:
+129 | 
+130 | 1.  **[[Hilos a nivel de usuario]] (User-Level Threads - ULTs):**
+131 |     *   Gestionados completamente por una biblioteca de hilos en el espacio de [[Enciclopedia/Informática/Usuario|usuario]], sin conocimiento del [[Asignaturas/Sistemas Operativos/1. Introducción/1.1 Bloques Fundamentales/Núcleo del Sistema Operativo (Kernel)|kernel]].
+132 |     *   **Ventajas:** Creación, sincronización y cambio de contexto muy rápidos (no requieren [[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|llamadas al sistema]] ni cambio de modo). Portables.
+133 |     *   **Desventajas:** Si un hilo realiza una [[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|llamada al sistema]] bloqueante, todo el proceso se bloquea, incluyendo los demás hilos. No pueden aprovechar el [[Paralelismo]] en sistemas multinúcleo (el kernel solo ve un proceso/hilo).
+134 | 
+135 | 2.  **[[Hilos a nivel de núcleo]] (Kernel-Level Threads - KLTs):**
+136 |     *   Gestionados directamente por el [[Enciclopedia/Informática/Sistema Operativo|Sistema Operativo]]. El kernel conoce cada hilo y lo planifica de forma independiente.
+137 |     *   **Ventajas:** Si un hilo se bloquea, el kernel puede planificar otro hilo (del mismo proceso o de otro). Pueden ejecutarse en [[Paralelismo]] real en sistemas multinúcleo. Son el estándar en SO modernos (Windows, Linux, macOS, etc.).
+138 |     *   **Desventajas:** La creación, terminación y cambio de contexto son más lentos que en ULTs, ya que requieren [[Enciclopedia/Informática/Sistemas Operativos/Llamadas al Sistema|llamadas al sistema]] y [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/3 - Control de Procesos#Modos de Ejecución|cambios de modo]].
+139 | 
+140 | Existen también **modelos híbridos** que intentan combinar las ventajas de ambos, mapeando múltiples ULTs a un conjunto menor de KLTs.
+141 | 
+142 | ## Véase También
+143 | 
+144 | *   [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/1 - Concepto de Proceso|Concepto de Proceso]]
+145 | *   [[Enciclopedia/Informática/Sistema Operativo|Sistema Operativo]]
+146 | *   [[Multihilo]]
+147 | *   [[Concurrencia]]
+148 | *   [[Paralelismo]]
+149 | *   [[Enciclopedia/Informática/Sistemas Operativos/Planificación de procesos|Planificación de procesos]] (y planificación de hilos)
+150 | *   [[Enciclopedia/Informática/Sistemas Operativos/Bloque de Control de Proceso (PCB)|Bloque de Control de Proceso (PCB)]]
+151 | *   [[TCB (Thread Control Block)]]
+152 | *   [[Enciclopedia/Informática/Sistemas Operativos/Contexto de ejecución|Contexto de ejecución]]
+153 | *   [[Pila (estructura de datos)|Pila]]
+154 | *   [[Enciclopedia/Informática/Sistemas Operativos/Contador de Programa|Contador de Programa]]
+155 | *   [[Enciclopedia/Informática/Hardware/Registros del procesador|Registros]]
+156 | *   [[Enciclopedia/Informática/Sistemas Operativos/Memoria compartida|Memoria compartida]]
+157 | *   [[Enciclopedia/Informática/Sistemas Operativos/Comunicación entre procesos|Comunicación entre procesos (IPC)]]
+158 | *   [[Hilos a nivel de usuario]]
+159 | *   [[Hilos a nivel de núcleo]]
+160 | *   [[Asignaturas/Sistemas Operativos/3. Procesos e Hilos I/2 - Estado de un Proceso|Estado de un Proceso]] (y estado de un hilo)
+161 | *   [[Enciclopedia/Informática/Sistemas Operativos/Cambio de contexto|Cambio de contexto]]
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+/Asignaturas/Sistemas Operativos/Sistemas Operativos (idx).md:
+--------------------------------------------------------------------------------
+  1 | ---
+  2 | tags:
+  3 |   - asignaturas/sistemas_operativos/idx
+  4 |   - asignaturas/sistemas_operativos
+  5 | ---
+  6 | 
+  7 | 
+  8 | > [!example] Asignaturas / Sistemas operativos
+  9 | > - [[2 - Estado de un Proceso]]
+ 10 | > - [[3 - Control de Procesos]]
+ 11 | > - [[4 - Concepto de Hilo]]
+ 12 | > - **3 procesos e hilos i**
+ 13 | > 	- [[2 - Estado de un Proceso]]
+ 14 | > 	- [[3 - Control de Procesos]]
+ 15 | > 	- [[4 - Concepto de Hilo]]
+ 16 | > - **Estructura de los sistemas operativos**
+ 17 | > 	- [[1 - Servicios del Sistema Operativo]]
+ 18 | > 	- [[2 - Interfaz de Usuario del Sistema Operativo]]
+ 19 | > 	- [[3 - Llamadas al Sistema]]
+ 20 | > 	- [[4 - Tipos de Llamadas al Sistema]]
+ 21 | > 	- [[5 - La Estructura del Sistema Operativo]]
+ 22 | > - **Introducción**
+ 23 | > 	- [[Asignaturas/Sistemas Operativos/1. Introducción/1 - Introducción y Objetivos|1 - Introducción y Objetivos]]
+ 24 | > 	- [[2 - El Sistema Operativo]]
+ 25 | > 	- [[3 - Objetivos y Funciones]]
+ 26 | > 	- [[4 - Evolución histórica]]
+ 27 | > 	- [[5 - Virtualización]]
+ 28 | > 	- [[6 - Categorías de Sistemas Operativos]]
+ 29 | > 	- [[7 - Sistemas Operativos de Consolas de Videojuegos]]
+ 30 | > 	- **Bloques fundamentales**
+ 31 | > 		- [[Núcleo del Sistema Operativo (Kernel)]]
+ 32 | > 		- [[Shell o Intérprete de Comandos]]
+ 33 | > 		- [[Bloques Fundamentales]]
+ 34 | > 		- **Servicios del sistema operativo**
+ 35 | > 			- [[Gestión de comunicaciones y sincronización entre procesos]]
+ 36 | > 			- [[Gestión de Entrada-Salida]]
+ 37 | > 			- [[Gestión de la Seguridad y protección]]
+ 38 | > 			- [[Gestión de memoria]]
+ 39 | > 			- [[Gestión de procesos]]
+ 40 | > 			- [[Gestión del almacenamiento]]
+ 41 | > 			- [[Gestión del sistema de archivos]]
+ 42 | > - **Procesos e hilos i**
+ 43 | > 	- [[1 - Concepto de Proceso]]
+ 44 | > 
+ 45 | > ^indexof-asignaturas-sistemas-operativos
+ 46 | 
+ 47 | ## Tema 1: Introducción a los sistemas operativos
+ 48 | 
+ 49 | - **Introducción y objetivos**
+ 50 | - Concepto del sistema operativo
+ 51 | - Objetivos y funciones
+ 52 | - Evolución histórica
+ 53 | - Bloques fundamentales
+ 54 | - Cuaderno de ejercicios
+ 55 | - Referencias
+ 56 | 
+ 57 | ## Tema 2: Estructura de los sistemas operativos
+ 58 | 
+ 59 | - **Introducción y objetivos**
+ 60 | - Servicios del SO
+ 61 | - Interfaz de usuario
+ 62 | - Llamadas al sistema:
+ 63 |     - Tipos
+ 64 | - Estructura general
+ 65 | - Cuaderno de ejercicios
+ 66 | - Referencias
+ 67 | 
+ 68 | ## Tema 3: Procesos e hilos
+ 69 | 
+ 70 | - **Introducción y objetivos**
+ 71 | - Proceso:
+ 72 |     - Concepto
+ 73 |     - Estados
+ 74 |     - Control
+ 75 | - Concepto de hilo
+ 76 | - Cuaderno de ejercicios
+ 77 | - Referencias
+ 78 | 
+ 79 | ## Tema 4: Planificación de la CPU
+ 80 | 
+ 81 | - **Introducción y objetivos**
+ 82 | - Conceptos básicos
+ 83 | - Criterios de planificación
+ 84 | - Algoritmos principales
+ 85 | - Cuaderno de ejercicios
+ 86 | - Referencias
+ 87 | 
+ 88 | ## Tema 5: Concurrencia y sincronización
+ 89 | 
+ 90 | - **Introducción y objetivos**
+ 91 | - Principios básicos
+ 92 | - Semáforos
+ 93 | - Comunicación entre procesos
+ 94 | - Interbloqueos:
+ 95 |     - Fundamentos
+ 96 |     - Estrategias de manejo
+ 97 | - Cuaderno de ejercicios
+ 98 | - Referencias
+ 99 | 
+100 | ## Tema 6: Manejo de GNU/Linux
+101 | 
+102 | - **Introducción y objetivos**
+103 | - Aspectos generales
+104 | - Directorios y ficheros
+105 | - Redirecciones
+106 | - Gestión de procesos
+107 | - Administración básica
+108 | - Cuaderno de ejercicios
+109 | - Referencias
+110 | 
+111 | ## Tema 7: Gestión de memoria
+112 | 
+113 | - **Introducción y objetivos**
+114 | - Conceptos fundamentales
+115 | - Requisitos de gestión
+116 | - Modelo de memoria del proceso
+117 | - Técnicas:
+118 |     - Intercambio (Swapping)
+119 |     - Participación
+120 |     - Asignación contigua
+121 |     - Segmentación
+122 |     - Paginación
+123 |     - Segmentación paginada
+124 | - Cuaderno de ejercicios
+125 | - Referencias
+126 | 
+127 | ## Tema 8: Memoria virtual
+128 | 
+129 | - **Introducción y objetivos**
+130 | - Fundamentos
+131 | - Paginación bajo demanda
+132 | - Administración:
+133 |     - Política de extracción
+134 |     - Política de ubicación
+135 |     - Política de reemplazo
+136 | - Cuaderno de ejercicios
+137 | - Referencias
+138 | 
+139 | ## Tema 9: Sistema de entrada/salida
+140 | 
+141 | - **Introducción y objetivos**
+142 | - Dispositivos E/S
+143 | - Organización del sistema E/S
+144 | - Uso de búferes
+145 | - Interfaz del SO para E/S
+146 | - Disco magnético
+147 | - Cuaderno de ejercicios
+148 | - Referencias
+149 | 
+150 | ## Tema 10: El sistema de archivos
+151 | 
+152 | - **Introducción y objetivos**
+153 | - Concepto de archivo
+154 | - Métodos de acceso
+155 | - Estructura de directorios
+156 | - Estructura del sistema de archivos
+157 | - Implementación:
+158 |     - Sistema de archivos
+159 |     - Directorios
+160 |     - Métodos de asignación
+161 |     - Gestión del espacio libre
+162 | - Cuaderno de ejercicios
+163 | - Referencias
+164 | 
+165 | 
+166 | 
+--------------------------------------------------------------------------------
+
+--- FIN CONTEXTO ---
+
+Por favor, resume los puntos clave encontrados en estas notas.
