@@ -55,3 +55,20 @@ def inject_context(template_string: str, context_block: str, placeholder: str) -
 
     print(f"Inyectando contexto en el placeholder: '{placeholder}'")
     return template_string.replace(placeholder, context_block)
+
+
+def inject_context_multi(template: str, replacements: dict[str, str]) -> str:
+    """
+    Inyecta múltiples valores en sus respectivos placeholders en la plantilla.
+    
+    Args:
+        template: String con múltiples placeholders
+        replacements: Diccionario de placeholders y sus valores
+    
+    Returns:
+        String con todos los reemplazos realizados
+    """
+    result = template
+    for placeholder, value in replacements.items():
+        result = result.replace(placeholder, value)
+    return result

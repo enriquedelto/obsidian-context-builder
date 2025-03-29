@@ -9,8 +9,14 @@ import tree_generator
 import formatter
 import prompt_handler
 
-# Definir el placeholder por defecto
-DEFAULT_PLACEHOLDER = "{contexto_extraido}"
+# Definir los placeholders por defecto
+DEFAULT_PLACEHOLDERS = {
+    "contexto_extraido": "{contexto_extraido}",
+    "ruta_destino": "{ruta_destino}",
+    "etiqueta_1": "{etiqueta_1}",
+    "etiqueta_2": "{etiqueta_2}",
+    "etiqueta_3": "{etiqueta_3}"
+}
 DEFAULT_EXTENSIONS = ['.md']
 
 def parse_arguments() -> argparse.Namespace:
@@ -68,14 +74,20 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--placeholder",
         type=str,
-        default=DEFAULT_PLACEHOLDER,
-        help=f"El texto exacto a reemplazar en la plantilla con el contexto. Por defecto: '{DEFAULT_PLACEHOLDER}'"
+        default=DEFAULT_PLACEHOLDERS["contexto_extraido"],
+        help=f"El texto exacto a reemplazar en la plantilla con el contexto. Por defecto: '{DEFAULT_PLACEHOLDERS['contexto_extraido']}'"
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=None,
         help="Archivo opcional donde guardar el prompt final generado. Si no se especifica, se imprime en la consola."
+    )
+    parser.add_argument(
+        "--output-note-path",
+        type=Path,
+        required=True,
+        help="Ruta relativa dentro de la bóveda donde se creará la nueva nota."
     )
     parser.add_argument(
         '--version',
@@ -95,6 +107,12 @@ def parse_arguments() -> argparse.Namespace:
     args.vault = args.vault.resolve()
 
     return args
+
+def extract_hierarchical_tags(path: Path) -> List[str]:
+    """Extrae etiquetas jerárquicas de una ruta."""
+    parts = path.parent.parts
+    # Ignorar partes vacías o el nombre de la bóveda
+    return [part for part in parts if part and part != path.parent.anchor]
 
 def main():
     """Función principal que orquesta el proceso."""
@@ -142,8 +160,23 @@ def main():
         print(f"\nError: {e}", file=sys.stderr)
         sys.exit(1)
 
-    # 6. Inyectar contexto en la plantilla
-    final_prompt = prompt_handler.inject_context(template_string, context_block, args.placeholder)
+    # 6. Preparar valores para los placeholders
+    ruta_destino_relativa = args.output_note_path.relative_to(args.vault).as_posix()
+    tags = extract_hierarchical_tags(args.output_note_path)
+    
+    # Crear diccionario de reemplazos
+    replacements = {
+        DEFAULT_PLACEHOLDERS["contexto_extraido"]: context_block,
+        DEFAULT_PLACEHOLDERS["ruta_destino"]: ruta_destino_relativa,
+    }
+    
+    # Añadir etiquetas jerárquicas disponibles
+    for i, tag in enumerate(tags[:3], 1):
+        placeholder = DEFAULT_PLACEHOLDERS[f"etiqueta_{i}"]
+        replacements[placeholder] = tag
+
+    # Inyectar todos los placeholders
+    final_prompt = prompt_handler.inject_context_multi(template_string, replacements)
 
     # 7. Mostrar o guardar resultado
     if args.output:
