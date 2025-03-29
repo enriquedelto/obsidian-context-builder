@@ -1,122 +1,142 @@
 # Obsidian Context Builder
 
-**Filosofía:**
+**Obsidian Context Builder** es un script de Python diseñado para automatizar la creación de prompts para Modelos de Lenguaje Grandes (LLMs). Extrae información específica (estructura de directorios y/o contenido de archivos) de tu bóveda de Obsidian, la formatea y la inyecta en plantillas de prompt predefinidas.
 
-*   **Modularidad:** Separar las responsabilidades en diferentes archivos (módulos) para que el código sea más fácil de entender, probar y mantener.
-*   **Claridad:** Usar nombres descriptivos para variables, funciones y archivos.
-*   **Robustez:** Manejar posibles errores (p. ej., rutas no encontradas, problemas de permisos, errores de codificación).
-*   **Configurabilidad:** Usar argumentos de línea de comandos para que el script sea flexible.
+Esto te permite generar rápidamente prompts contextualizados para tareas como:
 
-**Estructura de Carpetas y Archivos Propuesta:**
+*   Resumir notas existentes.
+*   Generar contenido para nuevas notas basadas en el contexto circundante.
+*   Identificar conexiones entre temas.
+*   Crear preguntas de estudio sobre un conjunto de notas.
+*   ¡Y mucho más!
+
+## Características Principales
+
+*   **Exploración Flexible:** Recorre tu bóveda de Obsidian (o cualquier directorio).
+*   **Filtrado Preciso:** Selecciona el contexto basándote en:
+    *   **Directorios/Archivos Específicos (`--target`):** Enfoca el análisis solo en las partes relevantes de tu bóveda.
+    *   **Extensiones de Archivo (`--ext`):** Extrae información de archivos `.md`, `.canvas`, o cualquier otra extensión que necesites (por defecto: `.md`).
+*   **Extracción de Contexto:** Genera automáticamente:
+    *   Una representación visual de la **estructura de directorios** (`tree`).
+    *   El **contenido formateado** de los archivos seleccionados, con numeración de líneas.
+*   **Modo de Salida Configurable (`--output-mode`):** Elige qué incluir en el contexto inyectado: solo la estructura (`tree`), solo el contenido (`content`), o ambos (`both`).
+*   **Inyección en Plantillas:** Carga tus plantillas de prompt (desde un archivo o directamente en la línea de comandos) y reemplaza placeholders específicos con la información extraída.
+*   **Placeholders Múltiples:** Soporta varios placeholders para inyectar no solo el contexto principal, sino también metadatos como la ruta de la nota destino o etiquetas jerárquicas derivadas.
+*   **Salida Flexible:** Imprime el prompt final en la consola o guárdalo directamente en un archivo (`--output`).
+
+## Requisitos
+
+*   **Python:** Versión 3.7 o superior.
+*   **Bibliotecas Externas:** Actualmente no se requieren bibliotecas externas (solo la biblioteca estándar de Python).
+
+## Instalación
+
+1.  **Clona el repositorio** (o descarga los archivos):
+    ```bash
+    git clone https://github.com/enriquedelto/obsidian-context-builder.git # Reemplaza con tu URL real si es diferente
+    cd obsidian-context-builder
+    ```
+2.  (Opcional) Crea y activa un entorno virtual:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate # En Linux/macOS
+    # venv\Scripts\activate # En Windows
+    ```
+
+## Uso Básico
+
+El script se ejecuta desde la línea de comandos usando `python main.py`. La estructura general es:
+
+```bash
+python main.py --vault <ruta_a_tu_boveda> [opciones] <opcion_de_plantilla>
+```
+
+## Argumentos de Línea de Comandos
+
+*   `--vault PATH`: **(Obligatorio)** Ruta al directorio raíz de tu bóveda de Obsidian.
+*   `--target RUTA_RELATIVA`: (Opcional) Ruta relativa dentro de la bóveda para incluir en el contexto. Puedes usar este argumento varias veces para incluir múltiples carpetas o archivos. Si no se especifica, se procesa toda la bóveda.
+*   `--ext .EXTENSION`: (Opcional) Extensión de archivo a incluir (ej: `.md`, `.canvas`). Puedes usarlo varias veces. Si no se especifica, por defecto es `.md`.
+*   `--prompt-template "PLANTILLA"`: (Obligatorio, si no usas `--prompt-file`) La plantilla del prompt como una cadena de texto. Debe contener los placeholders que el script reemplazará.
+*   `--prompt-file RUTA_ARCHIVO_PLANTILLA`: (Obligatorio, si no usas `--prompt-template`) Ruta a un archivo de texto (`.txt`) que contiene la plantilla del prompt.
+*   `--output-mode {tree,content,both}`: (Opcional) Define qué incluir en el placeholder `{contexto_extraido}`:
+    *   `tree`: Solo la estructura del árbol de directorios/archivos.
+    *   `content`: Solo el contenido formateado de los archivos.
+    *   `both`: Estructura del árbol seguida del contenido (valor por defecto).
+*   `--output-note-path RUTA_RELATIVA_NOTA`: (Obligatorio para ciertas plantillas, como la de creación de notas) Ruta relativa *dentro* de la bóveda donde se crearía/ubicaría la nota objetivo. Esta ruta se usa para:
+    *   Informar al LLM sobre el tema/ubicación de la nota a generar.
+    *   Generar automáticamente etiquetas jerárquicas para inyectar en la plantilla.
+*   `--output RUTA_ARCHIVO_SALIDA`: (Opcional) Ruta al archivo donde se guardará el prompt final generado. Si no se especifica, el prompt se imprimirá en la consola.
+*   `--version`: Muestra la versión del script.
+*   `-h`, `--help`: Muestra este mensaje de ayuda y los detalles de los argumentos.
+
+## Placeholders en Plantillas
+
+Las plantillas (`--prompt-template` o `--prompt-file`) deben contener "placeholders" (marcadores de texto) que el script reemplazará con la información generada. Los placeholders estándar son:
+
+*   `{contexto_extraido}`: Será reemplazado por la estructura del árbol, el contenido de los archivos, o ambos, según lo especificado por `--output-mode`.
+*   `{ruta_destino}`: Será reemplazado por la ruta relativa proporcionada en `--output-note-path`.
+*   `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, `{etiqueta_jerarquica_3}`, ... : Serán reemplazados por las etiquetas jerárquicas extraídas de la ruta `--output-note-path`. El script intenta rellenar tantos placeholders de este tipo como encuentre definidos en `DEFAULT_PLACEHOLDERS` (en `main.py`) y como niveles de directorio existan en la ruta. La etiqueta `_1` suele ser la más específica (el directorio padre directo), `_2` la superior, etc. (el orden exacto depende de la implementación de `generate_hierarchical_tags`).
+
+Puedes definir tus propias plantillas usando estos placeholders.
+
+## Ejemplos de Uso
+
+*   **Generar prompt para crear una nueva nota en `Asignaturas/SO/ConceptosClave.md`, usando contexto de `Asignaturas/SO` y plantilla de archivo:**
+    ```bash
+    python main.py \
+        --vault "/ruta/completa/a/mi/boveda" \
+        --target "Asignaturas/Sistemas Operativos" \
+        --output-note-path "Asignaturas/Sistemas Operativos/ConceptosClave.md" \
+        --prompt-file "templates/crear_nota_template.txt" \
+        --output prompt_para_crear_ConceptosClave.txt
+    ```
+
+*   **Generar prompt para resumir notas, incluyendo SÓLO la estructura del árbol de la carpeta `Proyectos`:**
+    ```bash
+    python main.py \
+        --vault "/ruta/completa/a/mi/boveda" \
+        --target "Proyectos" \
+        --output-mode tree \
+        --output-note-path "ResumenProyectos.md" \
+        --prompt-template "Resume la organización de la carpeta Proyectos basada en esta estructura: {contexto_extraido}"
+    ```
+    *(Nota: `--output-note-path` todavía se necesita aquí si la plantilla usa `{ruta_destino}` o etiquetas, aunque el contexto sea solo el árbol)*
+
+*   **Generar prompt con SÓLO el contenido de dos notas diarias específicas:**
+    ```bash
+    python main.py \
+        --vault "/ruta/completa/a/mi/boveda" \
+        --target "Notas Diarias/2023-11-01.md" \
+        --target "Notas Diarias/2023-11-02.md" \
+        --ext .md \
+        --output-mode content \
+        --output-note-path "ResumenNoviembreInicio.md" \
+        --prompt-template "Resume los eventos principales de estos días: {contexto_extraido}" \
+        --output prompt_resumen_diario.txt
+    ```
+
+*   **Procesar toda la bóveda (archivos .md), contexto completo, usando plantilla inline:**
+    ```bash
+    python main.py \
+        --vault "/ruta/completa/a/mi/boveda" \
+        --output-note-path "AnalisisGlobal.md" \
+        --prompt-template "Analiza las conexiones principales en mi bóveda: {contexto_extraido}. La nota se llamaría {ruta_destino}."
+    ```
+
+## Estructura del Proyecto
 
 ```
 obsidian-context-builder/
 │
-├── main.py                     # Punto de entrada principal, maneja CLI y orquesta el flujo
-├── file_handler.py             # Funciones para encontrar y leer archivos
-├── tree_generator.py           # Lógica para generar la estructura de árbol
-├── formatter.py                # Funciones para formatear el contenido de los archivos
-├── prompt_handler.py           # Funciones para manejar la plantilla del prompt
+├── main.py             # Punto de entrada principal, maneja CLI
+├── file_handler.py     # Encuentra y lee archivos
+├── tree_generator.py   # Genera la estructura de árbol
+├── formatter.py        # Formatea el contenido de archivos
+├── prompt_handler.py   # Carga plantillas e inyecta contexto
 │
-├── templates/                  # (Opcional) Carpeta para guardar plantillas de prompt
-│   └── example_template.txt
+├── templates/          # Carpeta opcional para guardar plantillas
+│   └── crear_nota_template.txt # Ejemplo
 │
-├── README.md                   # Documentación: cómo instalar, usar, ejemplos
-└── requirements.txt            # (Inicialmente vacío o con librerías si añadimos alguna)
+├── README.md           # Esta documentación
+└── requirements.txt    # Dependencias (actualmente vacío)
 ```
-
-**Descripción de cada Archivo/Módulo:**
-
-1.  **`main.py`:**
-    *   **Responsabilidad:** Orquestar todo el proceso.
-    *   **Tareas:**
-        *   Importar funciones de los otros módulos.
-        *   Definir y parsear los argumentos de línea de comandos (CLI) usando `argparse`:
-            *   `--vault` (ruta a la bóveda, obligatorio).
-            *   `--target` (ruta relativa objetivo, opcional, puede aparecer varias veces).
-            *   `--ext` (extensión a incluir, opcional, por defecto '.md', puede aparecer varias veces).
-            *   `--prompt-template` (plantilla como string, opcional).
-            *   `--prompt-file` (ruta a archivo de plantilla, opcional, alternativa al anterior).
-            *   `--placeholder` (el texto a reemplazar en la plantilla, opcional, default `"{contexto_extraido}"`).
-            *   `--output` (ruta a archivo de salida para el prompt final, opcional, si no, imprime a consola).
-        *   Llamar a `file_handler.find_relevant_files` para obtener la lista de archivos a procesar.
-        *   Llamar a `tree_generator.generate_tree_string` para crear el árbol.
-        *   Iterar sobre los archivos relevantes, llamando a `formatter.format_file_content` para cada uno.
-        *   Combinar el árbol y los contenidos formateados en `contexto_combinado`.
-        *   Llamar a `prompt_handler.load_template` para obtener la plantilla.
-        *   Llamar a `prompt_handler.inject_context` para generar el prompt final.
-        *   Imprimir el prompt final en consola o guardarlo en el archivo de salida.
-        *   Manejar errores generales y mostrar mensajes informativos al usuario.
-
-2.  **`file_handler.py`:**
-    *   **Responsabilidad:** Interactuar con el sistema de archivos.
-    *   **Funciones:**
-        *   `find_relevant_files(vault_path, target_paths, extensions)`:
-            *   Usa `pathlib.Path(vault_path).rglob('*')` o `os.walk` para recorrer la bóveda.
-            *   Filtra por las `extensions` especificadas.
-            *   Si `target_paths` no está vacío, filtra los archivos para que estén dentro de al menos uno de esos targets (comparando rutas relativas).
-            *   Devuelve una lista ordenada de objetos `pathlib.Path` de los archivos relevantes.
-        *   `read_file_content(file_path)`:
-            *   Abre y lee el contenido de un archivo.
-            *   Maneja la codificación (intentar UTF-8 por defecto, quizás con fallback).
-            *   Maneja `FileNotFoundError` y otros `IOError`.
-            *   Devuelve el contenido como una única cadena de texto.
-
-3.  **`tree_generator.py`:**
-    *   **Responsabilidad:** Crear la representación visual del árbol de directorios.
-    *   **Funciones:**
-        *   `generate_tree_string(file_paths, vault_path)`:
-            *   Toma la lista de `pathlib.Path` relevantes y la ruta base de la bóveda.
-            *   Calcula las rutas relativas de cada archivo.
-            *   Construye la estructura jerárquica (puede ser complejo, quizás usando un diccionario anidado o procesando las rutas ordenadas).
-            *   Genera el string del árbol con los prefijos `├──`, `└──`, `│   `.
-            *   Asegura el orden correcto.
-            *   Devuelve el string multi-línea del árbol.
-
-4.  **`formatter.py`:**
-    *   **Responsabilidad:** Dar formato específico al contenido de los archivos y combinarlo con el árbol.
-    *   **Funciones:**
-        *   `format_file_content(file_path, vault_path)`:
-            *   Obtiene la ruta relativa del archivo desde `vault_path`.
-            *   Llama a `file_handler.read_file_content` para obtener el texto.
-            *   Añade el encabezado con la ruta relativa (p.ej., `/ruta/relativa/archivo.md:\n-----\n`).
-            *   Enumera las líneas (` 1 | linea1\n 2 | linea2\n`). Asegurar alineación de números.
-            *   Añade el separador final (`\n-----\n`).
-            *   Devuelve el bloque de texto formateado para ese archivo.
-        *   `combine_context(tree_string, formatted_contents)`:
-            *   Toma el string del árbol y una lista (o diccionario) de los contenidos ya formateados por `format_file_content`.
-            *   Los une en un solo bloque de texto, usualmente el árbol primero, luego cada contenido de archivo (ordenado por ruta) separado por un espacio o separador adicional si se desea.
-            *   Devuelve el string `contexto_combinado` completo.
-
-5.  **`prompt_handler.py`:**
-    *   **Responsabilidad:** Gestionar la plantilla del prompt.
-    *   **Funciones:**
-        *   `load_template(template_str, template_file)`:
-            *   Verifica si se proporcionó `template_str` o `template_file`. Da prioridad a uno (p.ej., `template_file` si ambos existen).
-            *   Si es `template_file`, lo lee.
-            *   Si no hay ninguno, devuelve una plantilla por defecto simple o lanza un error.
-            *   Devuelve el contenido de la plantilla como string.
-        *   `inject_context(template_string, context_block, placeholder)`:
-            *   Realiza el reemplazo del `placeholder` dentro del `template_string` con el `context_block`.
-            *   Devuelve el prompt final como string.
-
-6.  **`README.md`:**
-    *   Explicación del propósito del script.
-    *   Instrucciones de instalación (si hay dependencias).
-    *   Instrucciones de uso detalladas con ejemplos de CLI para varios casos (toda la bóveda, targets específicos, diferentes extensiones, uso de plantillas).
-    *   Descripción de los argumentos CLI.
-
-**Primeros Pasos Concretos:**
-
-1.  **Crea la estructura de carpetas:** `mkdir obsidian-context-builder && cd obsidian-context-builder && mkdir templates`
-2.  **Crea los archivos `.py` vacíos:** `touch main.py file_handler.py tree_generator.py formatter.py prompt_handler.py README.md requirements.txt`
-3.  **Empieza por `main.py`:** Define la estructura básica con `argparse` para manejar los argumentos `--vault`, `--ext`, `--target` y `--prompt-template` (puedes añadir los demás después).
-4.  **Implementa `file_handler.py`:** Céntrate en la función `find_relevant_files`. Usa `pathlib` para esto. Haz pruebas simples imprimiendo la lista de archivos encontrados.
-5.  **Continúa con `formatter.py`:** Implementa `format_file_content` (leyendo el archivo y añadiendo números de línea). Puedes probarlo llamándolo desde `main.py` para un archivo específico.
-6.  **Aborda `tree_generator.py`:** Esta parte puede requerir más lógica. Busca librerías existentes o implementa tu propia lógica para generar el árbol a partir de una lista de rutas relativas.
-7.  **Implementa `prompt_handler.py`:** Funciones relativamente sencillas para leer la plantilla y reemplazar el placeholder.
-8.  **Ensambla todo en `main.py`:** Llama a las funciones en el orden correcto y combina los resultados.
-9.  **Refina y añade manejo de errores:** Considera casos borde y añade `try...except`.
-10. **Escribe el `README.md`**.
-
-Este plan te da una hoja de ruta clara para empezar a construir tu herramienta. ¡Ve paso a paso y prueba cada componente!
