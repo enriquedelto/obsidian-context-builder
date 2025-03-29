@@ -1,4 +1,3 @@
-# main.py
 import argparse
 from pathlib import Path
 import sys
@@ -8,20 +7,131 @@ from typing import List, Optional, Dict # Añadir Dict
 import file_handler
 import tree_generator
 import formatter
-import prompt_handler
+import prompt_handler # Asegúrate que prompt_handler también tenga DEFAULT_PLACEHOLDERS o pásalo
 
-# Definir los placeholders por defecto (usando Dict ahora)
+# Definir los placeholders por defecto (puede vivir aquí o en prompt_handler)
 DEFAULT_PLACEHOLDERS: Dict[str, str] = {
     "contexto_extraido": "{contexto_extraido}",
     "ruta_destino": "{ruta_destino}",
-    "etiqueta_jerarquica_1": "{etiqueta_jerarquica_1}", # Asegúrate que coincida con la plantilla
+    "etiqueta_jerarquica_1": "{etiqueta_jerarquica_1}",
     "etiqueta_jerarquica_2": "{etiqueta_jerarquica_2}",
     "etiqueta_jerarquica_3": "{etiqueta_jerarquica_3}"
-    # Añade más si necesitas pre-calcular más etiquetas jerárquicas
 }
 DEFAULT_EXTENSIONS = ['.md']
 
+
+def generate_hierarchical_tags(relative_note_path: Path) -> List[str]:
+    """Extrae etiquetas jerárquicas de una ruta relativa a la bóveda."""
+    # (Misma función que antes)
+    tags = []
+    current_parts = []
+    for part in relative_note_path.parent.parts:
+        if not part or part == '.':
+            continue
+        cleaned_part = part.replace(" ", "_").replace("-", "_")
+        current_parts.append(cleaned_part)
+        tags.append("/".join(current_parts))
+    return list(reversed(tags))
+
+# --- ¡NUEVA FUNCIÓN REFACTORIZADA! ---
+def generate_prompt_core(
+    vault_path: Path,
+    target_paths: List[str],
+    extensions: List[str],
+    output_mode: str,
+    output_note_path: Path, # Ruta relativa a la bóveda
+    template_string: str
+) -> str:
+    """
+    Lógica central para generar el prompt final.
+    Toma parámetros y devuelve el string del prompt procesado.
+    """
+    print("--- Iniciando Lógica Core ---")
+    print(f"Core - Bóveda: {vault_path}")
+    print(f"Core - Targets: {target_paths}")
+    print(f"Core - Extensiones: {extensions}")
+    print(f"Core - Modo Contexto: {output_mode}")
+    print(f"Core - Ruta Nota Destino: {output_note_path}")
+
+    # 1. Encontrar archivos relevantes
+    relevant_files: List[Path] = file_handler.find_relevant_files(
+        vault_path, target_paths, extensions
+    )
+    if not relevant_files and output_mode != 'tree':
+        print("\nCore - Advertencia: No se encontraron archivos relevantes.")
+
+    # 2. Generar string del árbol (si aplica)
+    tree_string = ""
+    if output_mode in ['tree', 'both']:
+        print("\nCore - Generando estructura de árbol...")
+        tree_string = tree_generator.generate_tree_string(relevant_files, vault_path)
+        if not tree_string.strip() or tree_string.startswith(" (No se encontraron"):
+             print("Core - Advertencia: No se generó estructura de árbol.")
+
+    # 3. Formatear contenido (si aplica)
+    formatted_contents: List[str] = []
+    if output_mode in ['content', 'both']:
+        if relevant_files:
+             print("\nCore - Formateando contenido de archivos...")
+             for file_path in relevant_files:
+                 formatted = formatter.format_file_content(file_path, vault_path)
+                 if formatted:
+                     formatted_contents.append(formatted)
+             if not formatted_contents:
+                  print("Core - Advertencia: No se pudo formatear contenido.")
+        else:
+             print("\nCore - No hay archivos relevantes para formatear contenido.")
+
+    # 4. Construir bloque de contexto
+    print(f"\nCore - Construyendo bloque de contexto (Modo: {output_mode})...")
+    context_block = ""
+    if output_mode == 'tree':
+        context_block = tree_string
+    elif output_mode == 'content':
+        context_block = "".join(formatted_contents).strip()
+    elif output_mode == 'both':
+        if tree_string.strip() and formatted_contents:
+            context_block = tree_string.strip() + "\n" + "".join(formatted_contents).strip()
+        elif tree_string.strip():
+             context_block = tree_string.strip()
+        elif formatted_contents:
+             context_block = "".join(formatted_contents).strip()
+        else:
+             context_block = "(No se generó ni árbol ni contenido para el contexto)"
+    print(f"Core - Contexto generado (primeros 100 chars): {context_block[:100]}...")
+
+
+    # 5. Preparar valores para reemplazo
+    ruta_destino_relativa_str = output_note_path.as_posix()
+    hierarchical_tags = generate_hierarchical_tags(output_note_path)
+
+    replacements: Dict[str, str] = {
+        DEFAULT_PLACEHOLDERS["contexto_extraido"]: context_block,
+        DEFAULT_PLACEHOLDERS["ruta_destino"]: ruta_destino_relativa_str,
+    }
+
+    num_tags_to_fill = len([k for k in DEFAULT_PLACEHOLDERS if k.startswith("etiqueta_jerarquica_")])
+    for i, tag in enumerate(hierarchical_tags[:num_tags_to_fill]):
+        placeholder_key = f"etiqueta_jerarquica_{i+1}"
+        if placeholder_key in DEFAULT_PLACEHOLDERS:
+            replacements[DEFAULT_PLACEHOLDERS[placeholder_key]] = tag
+
+    for i in range(len(hierarchical_tags), num_tags_to_fill):
+         placeholder_key = f"etiqueta_jerarquica_{i+1}"
+         if placeholder_key in DEFAULT_PLACEHOLDERS:
+            replacements[DEFAULT_PLACEHOLDERS[placeholder_key]] = ""
+
+    # 6. Inyectar placeholders
+    print("\nCore - Inyectando placeholders en la plantilla...")
+    final_prompt = prompt_handler.inject_context_multi(template_string, replacements)
+
+    print("--- Fin Lógica Core ---")
+    return final_prompt
+# --- FIN NUEVA FUNCIÓN REFACTORIZADA ---
+
+
 def parse_arguments() -> argparse.Namespace:
+    # (Sin cambios aquí)
     """Define y parsea los argumentos de la línea de comandos."""
     parser = argparse.ArgumentParser(
         description="Generador de Contexto Obsidian para Prompts LLM.",
@@ -59,8 +169,6 @@ def parse_arguments() -> argparse.Namespace:
         metavar='EXTENSION',
         help=f"Extensión de archivo a incluir (ej: .md, .canvas). Repetir para múltiples extensiones. Por defecto: {DEFAULT_EXTENSIONS}"
     )
-
-    # Grupo para asegurar que solo se use una opción de plantilla
     template_group = parser.add_mutually_exclusive_group(required=True)
     template_group.add_argument(
         "--prompt-template",
@@ -72,8 +180,6 @@ def parse_arguments() -> argparse.Namespace:
         type=Path,
         help="Ruta a un archivo de texto que contiene la plantilla del prompt."
     )
-
-    # --- ¡NUEVO ARGUMENTO! ---
     parser.add_argument(
         "--output-mode",
         type=str,
@@ -81,12 +187,10 @@ def parse_arguments() -> argparse.Namespace:
         default='both',
         help="Especifica qué incluir en el contexto: 'tree' (solo estructura), 'content' (solo contenidos), 'both' (ambos). Default: both"
     )
-    # --- FIN NUEVO ARGUMENTO ---
-
     parser.add_argument(
         "--output-note-path",
-        type=str, # Cambiado a str para manejar rutas relativas fácilmente
-        required=True, # Mantenido requerido para la plantilla de creación
+        type=str, # Mantenido como str aquí
+        required=True,
         help="Ruta relativa (desde la bóveda) donde se crearía/ubicaría la nueva nota (usada para tema y etiquetas)."
     )
     parser.add_argument(
@@ -98,159 +202,60 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s 0.2.0' # Incremento de versión
+        version='%(prog)s 0.2.0'
     )
-
     args = parser.parse_args()
-
-    # Normalizar extensiones
     if not args.ext:
         args.ext = DEFAULT_EXTENSIONS
     args.ext = [f".{e.lstrip('.')}" for e in args.ext]
-
-    # Resolver ruta de la bóveda a absoluta
     args.vault = args.vault.resolve()
+    # --- Procesamiento de output_note_path se hará dentro de main ---
+    return args
 
-    # Convertir output_note_path a Path relativo a la bóveda para consistencia interna
-    # Esto asume que el usuario introduce la ruta relativa desde la bóveda
-    args.output_note_path = Path(args.output_note_path)
-    if args.output_note_path.is_absolute():
+
+def main():
+    """Función principal que orquesta el proceso CLI."""
+    args = parse_arguments()
+
+    # Validar y convertir output_note_path aquí
+    output_note_path_relative = Path(args.output_note_path)
+    if output_note_path_relative.is_absolute():
          print("Advertencia: --output-note-path debería ser una ruta relativa a la bóveda. Intentando convertir...", file=sys.stderr)
          try:
-            args.output_note_path = args.output_note_path.relative_to(args.vault)
+            output_note_path_relative = output_note_path_relative.relative_to(args.vault)
          except ValueError:
              print(f"Error: No se pudo hacer relativa la ruta {args.output_note_path} a la bóveda {args.vault}.", file=sys.stderr)
              sys.exit(1)
 
-    return args
-
-def generate_hierarchical_tags(relative_note_path: Path) -> List[str]:
-    """Extrae etiquetas jerárquicas de una ruta relativa a la bóveda."""
-    tags = []
-    current_parts = []
-    # Iterar sobre las partes del directorio padre
-    for part in relative_note_path.parent.parts:
-        if not part or part == '.': # Ignorar raíz, punto o partes vacías
-            continue
-        # Limpiar parte (ej: reemplazar espacios con _) - Ajusta tu convención
-        cleaned_part = part.replace(" ", "_").replace("-", "_")
-        current_parts.append(cleaned_part)
-        tags.append("/".join(current_parts))
-
-    # Devolver de más general a más específica (invirtiendo)
-    return list(reversed(tags))
-
-def main():
-    """Función principal que orquesta el proceso."""
-    args = parse_arguments()
-
-    print("--- Iniciando Generador de Contexto Obsidian ---")
-    print(f"Bóveda: {args.vault}")
-    print(f"Modo de Salida Contexto: {args.output_mode}")
-    print(f"Ruta Nota Destino (para tema/tags): {args.output_note_path}")
-
-    # 1. Encontrar archivos relevantes
-    relevant_files: List[Path] = file_handler.find_relevant_files(
-        args.vault, args.target, args.ext
-    )
-
-    if not relevant_files and args.output_mode != 'tree': # Si no hay archivos y pedimos contenido, advertir
-        print("\nAdvertencia: No se encontraron archivos relevantes que coincidan con los criterios.")
-        # Podríamos salir, pero quizás sólo queremos el árbol (si aplica) o generar una nota sin contexto de contenido
-        # sys.exit(0)
-
-    # --- LÓGICA CONDICIONAL PARA GENERACIÓN ---
-    tree_string = ""
-    if args.output_mode in ['tree', 'both']:
-        print("\nGenerando estructura de árbol...")
-        # Pasamos sólo los archivos encontrados, incluso si está vacío,
-        # para que tree_generator pueda devolver el mensaje adecuado.
-        tree_string = tree_generator.generate_tree_string(relevant_files, args.vault)
-        if not tree_string.strip() or tree_string.startswith(" (No se encontraron"):
-             print("Advertencia: No se generó estructura de árbol (posiblemente no hay archivos o directorios relevantes).")
-
-
-    formatted_contents: List[str] = []
-    if args.output_mode in ['content', 'both']:
-        if relevant_files: # Solo formatear si hay archivos
-             print("\nFormateando contenido de archivos...")
-             for file_path in relevant_files:
-                 # print(f" - Procesando: {file_path.relative_to(args.vault)}") # Verboso
-                 formatted = formatter.format_file_content(file_path, args.vault)
-                 if formatted:
-                     formatted_contents.append(formatted)
-             if not formatted_contents:
-                  print("Advertencia: No se pudo formatear contenido (archivos vacíos o con errores de lectura).")
-        else:
-             print("\nNo hay archivos relevantes para formatear contenido.")
-    # --- FIN LÓGICA CONDICIONAL ---
-
-
-    # 4. Construir el bloque de contexto según el modo
-    print(f"\nConstruyendo bloque de contexto (Modo: {args.output_mode})...")
-    context_block = ""
-    if args.output_mode == 'tree':
-        context_block = tree_string
-    elif args.output_mode == 'content':
-        context_block = "".join(formatted_contents).strip() # Unir contenidos, quitar espacios extra
-    elif args.output_mode == 'both':
-        # Unir árbol y contenido, asegurando un salto de línea si ambos existen
-        if tree_string.strip() and formatted_contents:
-            context_block = tree_string.strip() + "\n" + "".join(formatted_contents).strip()
-        elif tree_string.strip():
-             context_block = tree_string.strip()
-        elif formatted_contents:
-             context_block = "".join(formatted_contents).strip()
-        else: # Ambos vacíos o con errores
-             context_block = "(No se generó ni árbol ni contenido)"
-
-    # print("\n--- Bloque de Contexto Combinado (muestra) ---")
-    # print(context_block[:500] + "..." if len(context_block) > 500 else context_block) # Imprimir muestra
-
-    # 5. Cargar plantilla
+    # Cargar plantilla desde archivo o string
     try:
         template_string = prompt_handler.load_template(args.prompt_template, args.prompt_file)
     except ValueError as e:
         print(f"\nError: {e}", file=sys.stderr)
         sys.exit(1)
 
-    # 6. Preparar valores para los placeholders
-    # Ruta destino relativa desde la bóveda
-    ruta_destino_relativa_str = args.output_note_path.as_posix()
-    # Calcular etiquetas jerárquicas (usando la función mejorada)
-    hierarchical_tags = generate_hierarchical_tags(args.output_note_path)
-
-    # Crear diccionario de reemplazos dinámico
-    replacements: Dict[str, str] = {
-        DEFAULT_PLACEHOLDERS["contexto_extraido"]: context_block,
-        DEFAULT_PLACEHOLDERS["ruta_destino"]: ruta_destino_relativa_str,
-    }
-
-    # Añadir etiquetas jerárquicas disponibles a los placeholders {etiqueta_jerarquica_X}
-    # Asegúrate que los nombres coinciden con los de DEFAULT_PLACEHOLDERS y la plantilla
-    num_tags_to_fill = len([k for k in DEFAULT_PLACEHOLDERS if k.startswith("etiqueta_jerarquica_")])
-    for i, tag in enumerate(hierarchical_tags[:num_tags_to_fill]):
-        placeholder_key = f"etiqueta_jerarquica_{i+1}"
-        if placeholder_key in DEFAULT_PLACEHOLDERS:
-            replacements[DEFAULT_PLACEHOLDERS[placeholder_key]] = tag
-        else:
-             print(f"Advertencia: Placeholder '{placeholder_key}' no definido en DEFAULT_PLACEHOLDERS.", file=sys.stderr)
-
-    # Rellenar placeholders de etiquetas restantes (si los hay) con string vacío o un marcador
-    for i in range(len(hierarchical_tags), num_tags_to_fill):
-         placeholder_key = f"etiqueta_jerarquica_{i+1}"
-         if placeholder_key in DEFAULT_PLACEHOLDERS:
-            replacements[DEFAULT_PLACEHOLDERS[placeholder_key]] = "" # O un texto como "(no disponible)"
+    # --- LLAMAR A LA LÓGICA CORE ---
+    try:
+        final_prompt = generate_prompt_core(
+            vault_path=args.vault,
+            target_paths=args.target,
+            extensions=args.ext,
+            output_mode=args.output_mode,
+            output_note_path=output_note_path_relative, # Usar la relativa
+            template_string=template_string
+        )
+    except Exception as e:
+         print(f"\nError durante la generación del prompt: {e}", file=sys.stderr)
+         # Podrías imprimir traceback aquí si quieres más detalle
+         # import traceback
+         # traceback.print_exc()
+         sys.exit(1)
+    # --- FIN LLAMADA CORE ---
 
 
-    # 6. Inyectar todos los placeholders
-    print("\nInyectando contexto y metadatos en la plantilla...")
-    final_prompt = prompt_handler.inject_context_multi(template_string, replacements)
-
-    # 7. Mostrar o guardar resultado
+    # Mostrar o guardar resultado
     if args.output:
         try:
-            # Asegurarse que el directorio de salida exista (si args.output incluye carpetas)
             args.output.parent.mkdir(parents=True, exist_ok=True)
             with open(args.output, 'w', encoding='utf-8') as f:
                 f.write(final_prompt)
@@ -268,7 +273,7 @@ def main():
         print("\n--- Prompt Final (salida a consola) ---")
         print(final_prompt)
 
-    print("\n--- Proceso Completado ---")
+    print("\n--- Proceso CLI Completado ---")
 
 if __name__ == "__main__":
     main()
