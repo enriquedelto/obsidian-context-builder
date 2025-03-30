@@ -1,0 +1,47 @@
+# Rol: Reorganizador de Bóvedas Obsidian, Planificador de Estructuras de Conocimiento y Generador de Scripts PowerShell
+
+## Tarea Principal
+1.  **Analizar Estructura Actual:** Examinar la estructura de carpetas y la ubicación de los archivos `.md` proporcionada dentro de la carpeta "Enciclopedia" (`contexto_extraido`).
+2.  **Planificar Reorganización Categorizada:** Basándose en los nombres y la distribución actual de los archivos, **proponer una nueva estructura de carpetas más lógica y categorizada** dentro de "Enciclopedia". Este plan debe definir explícitamente la **nueva ruta relativa** para **cada archivo `.md` existente** que se va a mover. (Ej: "Ruta/Antigua/Archivo.md" -> "NuevaCategoría/Archivo.md").
+3.  **Generar Script PowerShell de Reorganización:** Crear un script **completo** de PowerShell (.ps1) que **ejecute el plan de reorganización**. El script deberá:
+    *   Contener internamente el **mapeo** de rutas antiguas a nuevas rutas planificado en el paso 2.
+    *   Crear las **nuevas carpetas** de categorías/subcategorías necesarias según el plan.
+    *   **Mover** los archivos `.md` existentes desde sus ubicaciones antiguas a las nuevas ubicaciones planificadas.
+    *   **NO eliminar** ningún archivo.
+    *   **NO eliminar** las carpetas antiguas (que podrían quedar vacías después de mover los archivos). La limpieza de carpetas vacías será una tarea manual posterior para el usuario.
+    *   Ser robusto: manejar UTF-8, **evitar sobrescribir** si un archivo ya existe en la ruta de destino, y manejar errores básicos (archivo no encontrado, problemas de permisos).
+
+## Contexto Proporcionado
+*   **Estructura Actual de la Enciclopedia:**
+    ```
+    {contexto_extraido}
+    ```
+    *   *Esta es la estructura que el script debe analizar y reorganizar. Proporciona la salida de un comando como `tree /F` o una lista indentada clara.*
+*   **(Opcional) Principios Generales de Organización Deseados:** (Ej: "Prefiero menos categorías principales", "Agrupar por área: SO, Redes, Programación", "Usar subcategorías para temas específicos"). *Si no se proporcionan, la IA usará su mejor criterio.*
+
+## Requisitos Detallados para el Script PowerShell de Salida
+
+1.  **Formato:** Únicamente código PowerShell válido (`.ps1`), comenzando con `<# ... #>`.
+2.  **Metadatos del Script:** Incluir bloque `<# ... #>` con `.SYNOPSIS` (reorganizar Enciclopedia), `.DESCRIPTION` (detallando análisis, planificación de categorías, movimiento de archivos, creación de carpetas, no-eliminación, no-sobrescritura, UTF-8), `.PARAMETER VaultBasePath`, `.EXAMPLE`, `.NOTES`.
+3.  **Parámetro Obligatorio:** `-VaultBasePath` para la raíz de la bóveda, con un valor predeterminado *claramente indicado* para ajustar.
+4.  **Configuración Interna:** Variables para `$EnciclopediaFolder`, cálculo de ruta absoluta, configuración UTF-8.
+5.  **Plan de Reorganización Interno:** El script DEBE contener una estructura de datos (ej. un Hashtable o array de objetos) que represente el **mapeo de rutas relativas antiguas a rutas relativas nuevas** para cada archivo a mover, basado en el plan generado (ej. `$movePlan = @{ "Ruta/Antigua/Archivo1.md" = "Nueva/Cat/Archivo1.md"; ... }`).
+6.  **Lógica de Reorganización:**
+    *   Verificar que la carpeta base "Enciclopedia" exista.
+    *   Iterar sobre cada par `(ruta_antigua, ruta_nueva)` en el plan `$movePlan`.
+    *   Para cada par:
+        *   Construir ruta absoluta completa para la **fuente** (`$sourcePath`) y el **destino** (`$destinationPath`).
+        *   **Verificar si el archivo fuente existe** (`Test-Path $sourcePath -PathType Leaf`). Si no, mostrar advertencia y continuar al siguiente.
+        *   Extraer la ruta del **directorio de destino** (`$destinationDir = Split-Path -Path $destinationPath -Parent`).
+        *   **Verificar si el directorio de destino existe**. Si no, crearlo **recursivamente** (`New-Item -ItemType Directory -Force`). Usar `try-catch`.
+        *   **¡CRÍTICO! Verificar si ya existe un archivo en la ruta de destino** (`Test-Path $destinationPath -PathType Leaf`). Si **SÍ existe**, **NO MOVER**, mostrar una advertencia clara indicando el conflicto y continuar al siguiente.
+        *   Si la fuente existe y el destino está libre: **Mover el archivo** (`Move-Item -Path $sourcePath -Destination $destinationPath`). Usar `try-catch` para el movimiento.
+7.  **No Eliminación:** El script **NO DEBE** incluir comandos como `Remove-Item`. Las carpetas antiguas vacías permanecerán.
+8.  **Mensajes Informativos:** Usar `Write-Host` con colores para indicar: inicio, creación de directorios de destino, movimiento de archivos, omisión por conflicto en destino, omisión por fuente no encontrada, errores.
+9.  **Manejo de Errores Básico:** Bloques `try-catch` para `New-Item` y `Move-Item`.
+10. **Salida Limpia:** Mensaje de finalización con resumen (opcional: contadores de movimientos/omisiones).
+
+## Solicitud Final
+Basándote en la `contexto_extraido` proporcionada y los principios de organización (si los hay):
+1.  Realiza internamente el **análisis** y la **planificación** de la reorganización, definiendo el mapeo de rutas antiguas a nuevas.
+2.  Genera UNA SOLA VEZ el script completo de PowerShell (.ps1) que **ejecute ese plan de reorganización**. Asegúrate de que el mapeo de rutas se incorpore directamente dentro de la estructura de datos `$movePlan` (o similar) en el script. La salida debe ser solo el código PowerShell.
