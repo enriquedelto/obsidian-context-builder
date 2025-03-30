@@ -1,0 +1,49 @@
+# Rol: Generador de Scripts PowerShell y Experto en Obsidian
+
+## Tarea Principal
+Analizar la lista de enlaces [[Wikilinks]] *no resueltos* proporcionada a continuación (`{lista_enlaces_faltantes}`) y generar un script **completo** de PowerShell (.ps1). Este script deberá crear la estructura de carpetas necesaria y archivos `.md` vacíos correspondientes a dichos enlaces dentro de una carpeta específica (por defecto "Enciclopedia") de una bóveda de Obsidian. El script debe ser robusto, manejar UTF-8 y evitar sobrescribir archivos existentes.
+
+## Contexto Proporcionado
+*   **Lista de Enlaces Faltantes (para incorporar al script):**
+    ```
+    {lista_enlaces_faltantes}
+    ```
+    *   *Esta lista contiene las rutas relativas (desde la carpeta "Enciclopedia") de los archivos .md a crear. El script generado debe incluir esta lista internamente.*
+*   **(Opcional) Contexto General de la Bóveda:**
+    ```
+    {contexto_extraido}
+    ```
+    *   *Puede usarse para entender la estructura general, pero la lista de arriba es la fuente principal para la creación.*
+*   **(Opcional) Nota Origen:** `{ruta_destino}` (Podría ser la nota de donde se extrajeron los enlaces faltantes).
+
+## Requisitos Detallados para el Script PowerShell de Salida
+
+1.  **Formato:** El resultado debe ser **únicamente** código PowerShell válido, listo para guardarse como un archivo `.ps1`. Debe empezar con el bloque de comentarios de metadatos `<# ... #>`.
+2.  **Metadatos del Script:** Incluir un bloque de comentarios al inicio (`<# ... #>`) con:
+    *   `.SYNOPSIS`: Breve descripción de lo que hace el script.
+    *   `.DESCRIPTION`: Explicación más detallada, mencionando la creación de carpetas/archivos, la no-sobrescritura y el manejo de UTF-8.
+    *   `.PARAMETER VaultBasePath`: Describir el parámetro para la ruta base de la bóveda.
+    *   `.EXAMPLE`: Mostrar cómo ejecutar el script (con y sin el parámetro).
+    *   `.NOTES`: Autor (puede ser "Generado por IA"), fecha, requisitos (PowerShell).
+3.  **Parámetro Obligatorio:** El script DEBE incluir un parámetro `-VaultBasePath` para especificar la ruta raíz de la bóveda Obsidian. Debe tener un valor predeterminado razonable (ej: `"D:\Obsidian\MiBoveda"` o `"C:\Users\TuUsuario\Documents\ObsidianVault"`, indica claramente que debe ajustarse).
+4.  **Configuración Interna:**
+    *   Definir una variable para el nombre de la carpeta destino (ej: `$EnciclopediaFolder = "Enciclopedia"`).
+    *   Calcular la ruta absoluta a esta carpeta usando `Join-Path` con `$VaultBasePath`.
+    *   Establecer explícitamente el manejo de UTF-8 para la salida (`$OutputEncoding`, `[System.Console]::OutputEncoding`).
+5.  **Lista de Ítems a Crear:** El script DEBE contener una variable array de PowerShell (ej: `$itemsToCreate`) que se inicialice **directamente con la lista de rutas relativas proporcionada en `{lista_enlaces_faltantes}`**. Cada elemento del array debe ser una cadena como `"Tema/Subtema/Archivo A Crear.md"`.
+6.  **Lógica de Creación:**
+    *   Verificar si la carpeta base "Enciclopedia" existe. Si no, crearla usando `New-Item -ItemType Directory -Force`.
+    *   Iterar sobre cada ruta relativa en el array `$itemsToCreate`.
+    *   Para cada ruta:
+        *   Construir la ruta absoluta completa (`Join-Path`).
+        *   Extraer la ruta del directorio padre (`Split-Path -Parent`).
+        *   Verificar si el directorio padre existe (`Test-Path -PathType Container`). Si no, crearlo **recursivamente** (`New-Item -ItemType Directory -Force`). Incluir manejo de errores básico (`try-catch`).
+        *   Verificar si el archivo `.md` final existe (`Test-Path -PathType Leaf`).
+        *   **Si el archivo NO existe**, crearlo vacío usando `New-Item -ItemType File`. Incluir manejo de errores básico (`try-catch`).
+        *   **Si el archivo YA existe**, mostrar un mensaje indicando que se omite y **NO modificarlo**.
+7.  **Mensajes Informativos:** Usar `Write-Host` para indicar qué carpetas y archivos se están creando y cuáles se omiten por existir. Usar colores (`-ForegroundColor`) para mejorar la legibilidad (ej: Cyan para inicio, Yellow para crear carpetas, Green para éxito/archivos creados, Gray para omitidos).
+8.  **Manejo de Errores Básico:** Usar bloques `try-catch` al menos para las operaciones `New-Item` para capturar y mostrar errores (ej: permisos, rutas inválidas).
+9.  **Salida Limpia:** El script debe terminar con un mensaje claro de finalización.
+
+## Solicitud Final
+Basándote **estrictamente** en la `{lista_enlaces_faltantes}` proporcionada arriba y siguiendo **todos** los requisitos detallados, genera UNA SOLA VEZ el script completo de PowerShell (.ps1). Asegúrate de que la lista de enlaces se incorpore directamente dentro del array `$itemsToCreate` en el script. La salida debe ser solo el código PowerShell, empezando con `<#`.
