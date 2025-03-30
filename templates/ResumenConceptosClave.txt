@@ -1,8 +1,7 @@
 # Rol: Extractor de Conocimiento, Lexicógrafo y Sintetizador
 
 ## Tarea Principal
-Analizar el texto proporcionado (`{contexto_extraido}`), identificar los 5-10 conceptos, términos técnicos o nombres propios más importantes. Para cada uno, generar una definición concisa (1-2 frases) y formatearlo como un enlace interno `[[...]]`. Finalmente, presentar estos conceptos definidos y enlazados dentro de un resumen estructurado o una lista organizada.
-
+Analizar el texto proporcionado (`contexto_extraido`), identificar los 5-10 conceptos, términos técnicos o nombres propios más importantes. Para cada uno, generar una definición concisa (1-2 frases) y formatearlo *obligatoriamente* como un enlace interno `[[...]]`. Presentar el resultado como una lista de definiciones claramente estructurada en Markdown.
 ## Contexto a Analizar
 ```
 {contexto_extraido}
@@ -10,14 +9,13 @@ Analizar el texto proporcionado (`{contexto_extraido}`), identificar los 5-10 co
 *(El resumen podría guardarse en `{ruta_destino}`)*
 
 ## Requisitos de Salida
-1.  **Identificación de Conceptos Clave:** Selecciona los 5 a 10 términos más fundamentales o recurrentes del texto.
-2.  **Formato de Enlace Obligatorio:** Cada concepto clave identificado *debe* estar formateado como un enlace Obsidian `[[Concepto Clave]]` en la salida final.
-3.  **Definiciones Concisas:** Proporciona una definición breve y clara (1-2 frases) para cada concepto clave, basada en la información del contexto o conocimiento estándar del dominio.
-4.  **Estructura Organizada:** Presenta el resultado de forma clara y utilizable. Opciones:
-    *   **Lista de Definiciones:** Una lista de viñetas donde cada elemento es `*   [[Concepto Clave]]: Definición concisa.`
-    *   **Párrafo(s) de Resumen:** Uno o más párrafos que integren los conceptos clave (enlazados) y sus definiciones de manera fluida.
-    *   **Tabla Simple (Markdown):** Si aplica, una tabla con columnas para "Concepto" (con enlace) y "Definición".
-5.  **Contextualización:** El resumen/lista debe reflejar las relaciones o el flujo principal de ideas presentado en el `{contexto_extraido}`.
+1.  **Identificación de Conceptos Clave:** Selecciona los 5 a 10 términos más cruciales o recurrentes del **texto proporcionado**. Prioriza aquellos que probablemente tendrían o deberían tener su propia nota.
+2.  **Formato de Enlace Obligatorio:** Cada concepto clave identificado *debe* aparecer *exactamente una vez* como un enlace `[[Concepto Clave]]` en la salida.
+3.  **Definiciones Concisas:** Proporciona una definición breve (1-2 frases máx.) para cada concepto, derivada del **contexto** o del conocimiento estándar si **el contexto** no la define. La definición debe seguir inmediatamente al enlace.
+4.  **Estructura (Lista de Viñetas):** Presenta el resultado *exclusivamente* como una lista de viñetas Markdown. Cada elemento debe seguir este formato exacto: `*   [[Concepto Clave]]: Definición concisa aquí.`
+5.  **Limitación de Tablas:** **No uses tablas Markdown** para presentar este resumen, ya que los enlaces `[[...]]` no funcionan dentro de ellas. Usa la lista de viñetas especificada.
+6.  **Orden Lógico:** Intenta ordenar la lista de conceptos de una manera lógica si es posible.
+7.  **Contextualización:** El resumen/lista debe reflejar las relaciones o el flujo principal de ideas presentado en **el texto analizado**.
 
-## Solicitud
-Analiza el `{contexto_extraido}`. Identifica los 5-10 conceptos/términos clave. Genera una definición concisa para cada uno. Presenta el resultado como una lista de definiciones en Markdown (o un párrafo/tabla resumen), asegurándote de que cada concepto clave esté formateado como un enlace Obsidian `[[...]]`.
+## Solicitud Final
+Analiza el texto inyectado arriba donde dice `contexto_extraido`. Identifica los 5-10 conceptos/términos clave. Genera una definición concisa para cada uno. Produce UNA SOLA VEZ el resultado como una lista de viñetas Markdown, donde cada elemento siga el formato `*   [[Concepto]]: Definición.`, asegurando que cada concepto sea un enlace y que no se usen tablas.

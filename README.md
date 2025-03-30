@@ -2,31 +2,47 @@
 
 **Obsidian Context Builder** es una herramienta de Python con doble interfaz (CLI y GUI) diseñada para ayudarte a crear prompts para Modelos de Lenguaje Grandes (LLMs) usando información de tu bóveda de Obsidian.
 
-*   **Modo CLI (Línea de Comandos):** Extrae automáticamente la estructura de directorios y/o el contenido de archivos específicos de tu bóveda, los formatea y los inyecta en plantillas de prompt predefinidas. Ideal para análisis contextual automatizado.
-*   **Modo GUI (Interfaz Gráfica - Streamlit):** Ofrece una interfaz visual para seleccionar plantillas y gestionar bóvedas. En este modo, **pegas manualmente** el contexto deseado (que puedes generar con la CLI u otras herramientas) en un área de texto, y la herramienta lo inyecta en la plantilla junto con metadatos derivados de la ruta destino. Ideal para un flujo de trabajo más interactivo donde ya tienes el contexto preparado.
+*   **Modo CLI (Línea de Comandos):** Extrae automáticamente la estructura de directorios y/o el contenido de archivos específicos de tu bóveda basándose en las rutas objetivo que proporciones, los formatea y los inyecta en plantillas de prompt predefinidas. Ideal para análisis contextual automatizado y scripting.
+*   **Modo GUI (Interfaz Gráfica - Streamlit):** Ofrece una interfaz visual para seleccionar plantillas y gestionar bóvedas guardadas. El usuario identifica los archivos/carpetas relevantes en su explorador y **pega sus rutas** (relativas a la bóveda o absolutas, ej: `Asignaturas/Cálculo/Funciones` o `D:\Obsidian\Y1Q2\Notas Diarias\2024-01-15.md`) en un área de texto. La herramienta **genera automáticamente el contexto** (árbol y/o contenido) a partir de esas rutas y lo inyecta en la plantilla seleccionada. Ideal para un flujo de trabajo más interactivo y visual.
 
 Esto te permite generar rápidamente prompts contextualizados para tareas como:
 
-*   Resumir notas existentes (pegando su contenido en la GUI o usando la CLI).
-*   Generar contenido para nuevas notas basadas en contexto circundante (pegándolo en la GUI o usando la CLI).
+*   Resumir notas existentes.
+*   Generar contenido para nuevas notas basadas en contexto circundante.
 *   Identificar conexiones entre temas.
 *   Crear preguntas de estudio sobre un conjunto de notas.
+*   Enriquecer notas existentes con más información o enlaces.
 *   ¡Y mucho más!
+
+## ¿Por Qué Usar Obsidian Context Builder?
+
+Preparar manualmente el contexto para un LLM copiando estructuras de directorios (quizás usando herramientas como `tree` o scripts personalizados) y pegando el contenido de múltiples archivos en un prompt puede ser **extremadamente tedioso, lento y propenso a errores**, especialmente cuando se trabaja con contextos grandes o se necesita generar prompts frecuentemente.
+
+**Obsidian Context Builder soluciona estos problemas:**
+
+*   **Automatiza la Recolección:** La CLI extrae y formatea automáticamente la estructura y el contenido basándose en simples rutas objetivo.
+*   **Simplifica la Selección (GUI):** La GUI permite pegar fácilmente las rutas relevantes, y la herramienta se encarga del resto.
+*   **Inyección Inteligente:** Inserta el contexto generado y otros metadatos (como la ruta destino o etiquetas jerárquicas) en los lugares correctos de tus plantillas reutilizables usando placeholders.
+*   **Consistencia:** Asegura que el contexto siempre tenga el mismo formato (separadores, numeración de líneas).
+*   **Ahorro de Tiempo:** Reduce drásticamente el tiempo dedicado a la preparación manual de prompts.
+*   **Menos Errores:** Minimiza los errores de copiado y pegado.
+*   **Gestión Centralizada:** Permite guardar y reutilizar rutas de bóvedas y plantillas de prompts.
+
+En resumen, agiliza y estandariza el proceso de creación de prompts ricos en contexto para interactuar con LLMs sobre tu base de conocimiento en Obsidian.
 
 ## Características Principales
 
-*   **Doble Interfaz:** Funciona como script de línea de comandos (`main.py`) o como aplicación web local (`gui_streamlit.py`).
-*   **Gestión de Bóvedas (CLI & GUI):** Guarda y selecciona fácilmente entre múltiples rutas de bóvedas de Obsidian. Recuerda la última utilizada para ejecuciones posteriores (tanto en CLI como en GUI).
-*   **Gestión de Plantillas (CLI & GUI):** Utiliza plantillas predefinidas para tareas comunes o carga las tuyas desde archivos `.txt` ubicados en la carpeta `templates/`.
-*   **Contexto Automático (CLI):**
-    *   **Exploración Flexible:** Recorre tu bóveda de Obsidian seleccionada.
-    *   **Filtrado Preciso (`--target`, `--ext`):** Selecciona el contexto basándote en directorios/archivos específicos y extensiones.
-    *   **Extracción de Contexto:** Genera automáticamente la estructura de directorios (`tree`) y/o el contenido formateado (`content`).
+*   **Doble Interfaz:** Script de línea de comandos (`main.py`) y aplicación web local (`gui_streamlit.py`).
+*   **Gestión de Bóvedas (CLI & GUI):** Guarda y selecciona fácilmente entre múltiples rutas de bóvedas. Recuerda la última utilizada.
+*   **Gestión de Plantillas (CLI & GUI):** Carga plantillas desde archivos `.txt` ubicados en la carpeta `templates/`. Permite listar las disponibles. *(Nota: Las plantillas predefinidas se eliminaron en favor de archivos externos).*
+*   **Contexto Automático (Basado en Rutas):**
+    *   **Exploración Flexible (CLI & GUI):** Recorre tu bóveda seleccionada a partir de las rutas objetivo proporcionadas.
+    *   **Filtrado Preciso (`--target`/Input GUI, `--ext`):** Selecciona el contexto basándote en directorios/archivos específicos y extensiones.
+    *   **Extracción de Contexto:** Genera automáticamente la estructura de directorios (`tree`) y/o el contenido formateado (`content`) de los elementos especificados en las rutas objetivo.
     *   **Modo de Salida Configurable (`--output-mode`):** Elige qué incluir (`tree`, `content`, `both`).
-*   **Contexto Manual (GUI):** Permite pegar directamente el texto del contexto (árbol, contenido, etc.) en un área dedicada.
-*   **Inyección en Plantillas:** Reemplaza placeholders (`{contexto_extraido}`, `{ruta_destino}`, `{etiqueta_jerarquica_N}`) en la plantilla seleccionada con la información correspondiente.
-*   **Etiquetas Jerárquicas:** Genera automáticamente etiquetas basadas en la ruta de la nota destino para usar en el YAML frontmatter o en el prompt.
-*   **Salida Flexible:** Imprime el prompt final en la consola (CLI) o en el área de texto (GUI), y opcionalmente guárdalo en un archivo.
+*   **Inyección en Plantillas:** Reemplaza placeholders (`{contexto_extraido}`, `{ruta_destino}`, `{etiqueta_jerarquica_N}`) en la plantilla seleccionada.
+*   **Etiquetas Jerárquicas:** Genera automáticamente etiquetas basadas en la ruta de la nota destino.
+*   **Salida Flexible:** Imprime el prompt final o guárdalo en un archivo.
 
 ## Requisitos
 
@@ -66,23 +82,23 @@ python main.py [opciones_gestion] [opciones_generacion]
 
 **Gestión de Bóvedas:** (Se ejecutan y el script termina)
 
-*   `--add-vault NOMBRE RUTA`: Añade o actualiza una bóveda con un nombre corto y su ruta completa.
-*   `--remove-vault NOMBRE`: Elimina una bóveda guardada por su nombre.
+*   `--add-vault NOMBRE RUTA`: Añade o actualiza una bóveda.
+*   `--remove-vault NOMBRE`: Elimina una bóveda guardada.
 *   `--list-vaults`: Muestra las bóvedas guardadas.
 
 **Gestión de Plantillas:** (Se ejecuta y el script termina)
 
-*   `--list-templates`: Muestra las plantillas disponibles (predeterminadas y en `/templates`).
+*   `--list-templates`: Muestra las plantillas disponibles en `/templates`.
 
 **Generación de Prompt:** (Requieren que una bóveda sea seleccionable)
 
-*   `--select-vault NOMBRE`: (Opcional) Especifica qué bóveda guardada usar. Si no se usa, intenta la última recordada o pide selección interactiva.
-*   `--target RUTA_RELATIVA`: (Opcional) Ruta relativa (a la bóveda) para incluir en el contexto. Repetir para múltiples. Default: toda la bóveda.
-*   `--ext .EXTENSION`: (Opcional) Extensión de archivo a incluir. Repetir para múltiples. Default: `.md`.
-*   `--template NOMBRE_O_RUTA`: (Opcional) Nombre de una plantilla (ver `--list-templates`) o ruta a un archivo `.txt`. Si no se usa, pide selección interactiva.
-*   `--output-mode {tree,content,both}`: (Opcional) Qué contexto generar automáticamente (`tree`, `content`, o `both`). Default: `both`.
-*   `--output-note-path RUTA_RELATIVA_NOTA`: (**Requerido para generar**) Ruta relativa *dentro* de la bóveda donde se crearía/ubicaría la nota objetivo (usada para etiquetas y placeholder `{ruta_destino}`).
-*   `--output RUTA_ARCHIVO_SALIDA`: (Opcional) Guarda el prompt final en un archivo. Default: imprime en consola.
+*   `--select-vault NOMBRE`: (Opcional) Especifica qué bóveda usar. Si no, usa la última o pregunta.
+*   `--target RUTA_RELATIVA`: (Opcional) Ruta relativa (a la bóveda) para incluir. Repetir para múltiples. Default: toda la bóveda.
+*   `--ext .EXTENSION`: (Opcional) Extensión a incluir. Repetir para múltiples. Default: `.md`.
+*   `--template NOMBRE_ARCHIVO_O_RUTA`: (Opcional) Nombre de plantilla de `/templates` (ej: "Archivo: GenerarNota") o ruta a un archivo `.txt`. Si no, pregunta.
+*   `--output-mode {tree,content,both}`: (Opcional) Qué contexto generar. Default: `both`.
+*   `--output-note-path RUTA_RELATIVA_NOTA`: (**Requerido**) Ruta relativa *dentro* de la bóveda para la nota objetivo.
+*   `--output RUTA_ARCHIVO_SALIDA`: (Opcional) Guarda el prompt en un archivo.
 
 **Otros:**
 
@@ -91,44 +107,67 @@ python main.py [opciones_gestion] [opciones_generacion]
 
 ### Placeholders en Plantillas
 
-Las plantillas pueden usar los siguientes marcadores:
-
-*   `{contexto_extraido}`: Reemplazado por el árbol/contenido generado (CLI) o el texto pegado (GUI).
-*   `{ruta_destino}`: Reemplazado por la `RUTA_RELATIVA_NOTA` proporcionada.
-*   `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ... `{etiqueta_jerarquica_5}`: Reemplazados por etiquetas generadas desde `RUTA_RELATIVA_NOTA` (e.g., `Asignaturas/Sistemas_Operativos` para `_1`, `Asignaturas` para `_2`, si la nota está en `Asignaturas/Sistemas_Operativos/Conceptos.md`).
+*   `{contexto_extraido}`: Reemplazado por el árbol/contenido generado automáticamente.
+*   `{ruta_destino}`: Reemplazado por la `RUTA_RELATIVA_NOTA`.
+*   `{etiqueta_jerarquica_1}`, ..., `{etiqueta_jerarquica_5}`: Etiquetas generadas desde `RUTA_RELATIVA_NOTA`.
 
 ### Ejemplos de Uso (CLI)
 
-*   **Añadir tu bóveda principal:**
+*   **Añadir bóveda:**
     ```bash
-    python main.py --add-vault "Principal" "D:\Obsidian\MiBoveda"
+    python main.py --add-vault "Estudios" "D:\Obsidian\Estudios"
     ```
-
-*   **Listar bóvedas y plantillas:**
+*   **Listar:**
     ```bash
     python main.py --list-vaults --list-templates
     ```
-
-*   **Generar prompt para nota (usando la bóveda 'Principal', plantilla predefinida 'Generar Nota Simple', contexto de la carpeta 'Ideas', guardando el prompt):**
+*   **Generar prompt para nota (usando bóveda 'Estudios', plantilla de archivo 'EnriquecerNota', contexto de carpeta 'Asignaturas/SO', guardando):**
     ```bash
-    python main.py --select-vault "Principal" --template "Generar Nota Simple" --target "Ideas" --output-note-path "Ideas/Nueva Idea Sobre AI.md" --output prompt_idea_ai.txt
+    python main.py --select-vault "Estudios" --template "Archivo: EnriquecerNota" --target "Asignaturas/Sistemas Operativos" --output-note-path "Asignaturas/Sistemas Operativos/Conceptos/Multiprogramacion.md" --output prompt_enriquecer_multi.txt
     ```
-
-*   **Generar resumen usando la última bóveda, plantilla de archivo, SÓLO contenido de notas diarias:**
+*   **Usar última bóveda, plantilla 'GenerarPreguntas', SÓLO contenido de una nota:**
     ```bash
-    # Asumiendo que 'templates/mi_plantilla_resumen.txt' existe
-    python main.py --template "templates/mi_plantilla_resumen.txt" --output-mode content --target "Notas Diarias/2024-01" --output-note-path "Resumen Enero 2024.md"
-    ```
-*   **Selección interactiva (si no se especifica bóveda ni plantilla):**
-    ```bash
-    python main.py --target "Asignaturas/Cálculo" --output-note-path "Asignaturas/Cálculo/Conceptos/NuevoConcepto.md"
-    # El script preguntará qué bóveda y qué plantilla usar
+    python main.py --template "Archivo: GenerarPreguntas" --output-mode content --target "Asignaturas/Cálculo/Teoremas Clave/Teorema de Bolzano.md" --output-note-path "Repasos/Preguntas_Bolzano.md"
     ```
 
 ## Uso (GUI)
 
-Ejecuta la interfaz gráfica con Streamlit (asegúrate de haber instalado las dependencias con `pip install -r requirements.txt`):
+Ejecuta la interfaz gráfica con Streamlit:
 
 ```bash
 streamlit run gui_streamlit.py
+```
+
+La interfaz te permitirá:
+
+1.  **Seleccionar Bóveda:** Elige una bóveda guardada previamente.
+2.  **Seleccionar Plantilla:** Elige una plantilla de la carpeta `/templates`.
+3.  **Pegar Rutas Objetivo:** En el área de texto, pega las rutas (una por línea, relativas o absolutas) de las carpetas/archivos que quieres usar como contexto. Si dejas esto vacío, se usará toda la bóveda seleccionada.
+4.  **Configurar Opciones:** Selecciona las extensiones a incluir y el modo de salida del contexto (árbol, contenido o ambos).
+5.  **Especificar Ruta Destino:** Indica la ruta relativa donde se ubicaría la nota a generar/modificar (necesario para placeholders).
+6.  **Generar:** Pulsa el botón. La herramienta generará el contexto basado en las rutas y lo inyectará en la plantilla.
+7.  **Ver/Guardar:** Revisa el prompt resultante y cópialo o guárdalo en un archivo opcionalmente.
+8.  **(Opcional) Gestionar Bóvedas:** Añade o elimina bóvedas guardadas.
+
+## Estructura del Proyecto
+
+```
+obsidian-context-builder/
+│
+├── main.py             # Punto de entrada CLI
+├── gui_streamlit.py    # Punto de entrada GUI
+├── config_handler.py   # Gestión de config (bóvedas, etc.)
+├── file_handler.py     # Búsqueda y lectura de archivos
+├── tree_generator.py   # Generación de estructura de árbol
+├── formatter.py        # Formateo de contenido de archivos
+├── prompt_handler.py   # Carga/gestión de plantillas, inyección
+│
+├── templates/          # CARPETA PARA PLANTILLAS DE USUARIO (.txt)
+│   └── GenerarNota.txt # Ejemplo (puedes añadir las otras aquí)
+│   └── ...             # Otros archivos .txt de plantillas
+│
+├── obsidian_context_builder_config.json # Archivo de config (auto-generado)
+├── README.md           # Esta documentación
+├── requirements.txt    # Dependencias (streamlit)
+└── .gitignore          # Ignora __pycache__
 ```

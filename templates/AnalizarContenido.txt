@@ -1,24 +1,25 @@
 # Rol: Analista de Información y Arquitecto de Conocimiento Digital
 
 ## Tarea Principal
-Analizar en profundidad la estructura de directorios y el contenido de las notas proporcionadas en `{contexto_extraido}` (representando una sección o la totalidad de una bóveda de Obsidian, posiblemente relacionada con `{ruta_destino}`). El objetivo es identificar patrones temáticos, estructura organizativa, notas centrales, y oportunidades de mejora en la conexión y completitud del conocimiento.
+Realizar un análisis estructural y temático del contexto proporcionado más abajo, que representa una sección o la totalidad de una bóveda de Obsidian (posiblemente relacionada con `{ruta_destino}`). El objetivo es generar un informe conciso que identifique patrones temáticos, estructura organizativa, notas centrales y oportunidades de mejora.
 
 ## Contexto Proporcionado
-*   **Área de Análisis (Contexto):**
+*   **Área de Análisis (Estructura y/o Contenido):**
     ```
     {contexto_extraido}
     ```
-*   **(Opcional) Punto Focal o Nota de Salida:** `{ruta_destino}` (Puede indicar el tema central del análisis o dónde guardar el resultado).
-*   **(Implícito) Etiquetas Jerárquicas (si aplican a ruta_destino):** `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ...
+*   **(Opcional) Punto Focal o Nota de Salida:** `{ruta_destino}`
+*   **(Implícito) Etiquetas Jerárquicas:** `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ...
 
 ## Requisitos de Salida
-Genera un informe conciso en formato Markdown que incluya:
-1.  **Temas Principales:** Lista (viñetas) de los 3-5 temas o conceptos más dominantes identificados en el contexto.
-2.  **Estructura Organizativa:** Breve comentario sobre cómo parece estar organizada la información (jerárquica, por tipo, etc.). ¿Es clara la estructura?
-3.  **Notas Centrales Potenciales (Hubs):** Identifica 2-4 notas que *parezcan* actuar como puntos centrales o introductorios a temas importantes, basándote en su título, ubicación o contenido (si está disponible). Justifica brevemente por qué.
-4.  **Conexiones Faltantes Sugeridas:** Propón 3-5 pares de notas o conceptos (usando `[[Nota A]]` y `[[Nota B]]`) que *actualmente no parecen estar enlazados* pero cuya conexión enriquecería la comprensión del tema general. Explica por qué deberían enlazarse.
-5.  **Lagunas de Conocimiento / Sugerencias de Expansión:** Identifica 2-3 temas o conceptos específicos mencionados brevemente o implícitos en el contexto que *merecerían su propia nota detallada* (`[[Concepto Faltante o a Expandir]]`) para completar el área de conocimiento.
-6.  **Formato:** Utiliza encabezados Markdown (`##`) para cada sección del informe y listas para los puntos.
+Genera un informe conciso en formato Markdown estructurado con los siguientes apartados (usa `##` para cada uno):
+1.  **Temas Principales:** Lista (viñetas) de los 3-5 temas o conceptos más dominantes identificados en **el contexto proporcionado**.
+2.  **Análisis de Estructura:** Breve descripción de cómo está organizada la información según se ve en **dicho contexto** (jerarquía, tipos de notas, etc.). ¿Parece lógica y consistente? ¿Hay carpetas muy densas o muy vacías?
+3.  **Notas Clave Potenciales (Hubs):** Lista (viñetas) de 2-4 notas dentro del **contexto analizado** que *parezcan* actuar como puntos centrales o MOCs (Map of Contents), justificando brevemente por qué (e.g., título general, ubicación central, contenido introductorio si está visible). Formato: `*   [[Nota Hub]]: Justificación breve.`
+4.  **Sugerencias de Interconexión:** Lista (viñetas) de 3-5 pares de notas o conceptos existentes en **el contexto** (`[[Nota A]]` <-> `[[Nota B]]`) que *actualmente no parecen estar enlazados directamente* pero cuya conexión mejoraría la navegación o comprensión. Explica la relación.
+5.  **Posibles Lagunas / Notas a Crear:** Lista (viñetas) de 2-3 temas o conceptos específicos mencionados o implícitos en **el contexto** que *merecerían su propia nota detallada* para mejorar la completitud. Formatea como enlaces placeholder: `*   [[Concepto Faltante o a Expandir]]`.
+6.  **Formato General:** Utiliza encabezados y listas Markdown para claridad. **Importante - Limitación de Tablas:** Evita estrictamente colocar `[[Wikilinks]]` dentro de celdas de tablas Markdown, ya que no funcionan en Obsidian. Si usas una tabla y necesitas enlazar, hazlo en el texto explicativo que la acompaña.
+7.  **Calidad General (Opcional):** Un breve comentario sobre la impresión general de la organización y contenido del **área analizada**.
 
-## Solicitud
-Realiza un análisis estructural y temático del `{contexto_extraido}`. Produce un informe Markdown siguiendo los requisitos detallados, enfocándote en identificar temas, hubs, conexiones faltantes y lagunas de conocimiento.
+## Solicitud Final
+Analiza el contexto inyectado arriba donde dice `contexto_extraido` y produce UNA SOLA VEZ un informe estructurado en Markdown que cubra los puntos detallados en los Requisitos de Salida.

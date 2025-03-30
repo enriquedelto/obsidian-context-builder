@@ -7,221 +7,120 @@ import os
 
 # --- NUEVAS PLANTILLAS PREDETERMINADAS ---
 # (El resto del código de plantillas sigue igual)
-DEFAULT_TEMPLATES: Dict[str, str] = {
-    "Generar Nota Simple": """\
-# Rol: Experto en {etiqueta_jerarquica_1}
-
-## Tarea
-Genera contenido introductorio para una nueva nota en Obsidian titulada aproximadamente como sugiere la ruta `{ruta_destino}`.
-
-## Contexto Relevante
-{contexto_extraido}
-
-## Solicitud
-Escribe una definición clara y concisa del concepto principal indicado por la ruta `{ruta_destino}`. Añade una breve explicación de su importancia en el contexto de `{etiqueta_jerarquica_1}`. Incluye enlaces `[[...]]` a conceptos clave mencionados en el contexto si son relevantes. Empieza directamente con el contenido Markdown, sin YAML.
-""",
-    "Resumir Contenido": """\
-# Rol: Asistente de Síntesis
-
-## Tarea
-Resume los puntos clave del siguiente contenido extraído de Obsidian.
-
-## Contenido a Resumir
-{contexto_extraido}
-
-## Solicitud
-Proporciona un resumen conciso (ej. 3-5 puntos bullet) de la información principal presentada en el contexto anterior. Identifica los temas centrales.
-""",
-    "Generar Preguntas Estudio": """\
-# Rol: Tutor Académico
-
-## Tarea
-Formula preguntas de estudio basadas en el siguiente material académico extraído de Obsidian.
-
-## Material de Estudio
-{contexto_extraido}
-
-## Solicitud
-Genera 3-5 preguntas significativas que evalúen la comprensión del material proporcionado. Las preguntas deben fomentar el pensamiento crítico y cubrir los conceptos más importantes.
-""",
-    # Añade tu plantilla anterior si quieres mantenerla como predeterminada
-    "Generar Nota Completa (Original)": """\
-# Rol: Experto Académico y Gestor de Conocimiento en Obsidian
-
-Actúa como un experto académico y especialista en gestión del conocimiento, con habilidad para generar contenido educativo estructurado, preciso y optimizado para Obsidian.
-
----
-## Tarea Principal
-
-Generar el contenido completo en formato Markdown (.md) para una *nueva* nota de Obsidian. El tema principal de la nota se deriva de la `Ruta de Archivo Destino` proporcionada. El contenido debe ser académicamente riguroso, bien estructurado para el aprendizaje y altamente interconectado dentro del contexto de la `Estructura y Contenido Existente`.
-
----
-## Contexto Proporcionado
-
-*   **Ruta de Archivo Destino:** `{ruta_destino}`
-    *   *Esta ruta define el tema central y la ubicación de la nota a crear.*
-
-*   **Estructura y Contenido Existente:**
-    ```
-    {contexto_extraido}
-    ```
-    *   *Usa esta información para identificar notas existentes a las que enlazar y para entender el contexto temático general.*
-
----
-## Requisitos Detallados de Salida
-
-1.  **Generación de Contenido Enfocado:** Crea contenido original y coherente centrado exclusivamente en el tema inferido de la `Ruta de Archivo Destino`. El nivel de detalle debe ser apropiado para un entorno académico (e.g., nivel universitario o de estudio avanzado), proporcionando una visión general sólida o profundizando según sugiera el título/ruta. Evita información no pertinente al tema central definido por la ruta.
-
-2.  **Estructura y Organización Lógica:** Organiza el contenido generado usando encabezados Markdown (`#`, `##`, `###`, etc.). Asegura un flujo claro y pedagógico:
-    *   Introducción / Definición clara del concepto.
-    *   Desarrollo de Conceptos Clave / Secciones principales.
-    *   Ejemplos concretos (si aplica y enriquece la explicación).
-    *   Implicaciones / Aplicaciones / Conclusiones (si aplica).
-    *   (Opcional) Sección "Véase También" o "Conceptos Relacionados" al final, con enlaces `[[...]]`.
-
-3.  **Formato Markdown:**
-    *   Utiliza Markdown estándar de forma efectiva (negrita `** **`, cursiva `* *`, listas `-`, `1.`, citas `>`, etc.).
-    *   Usa LaTeX (`$...$` para inline, `$$...$$` para bloques) para notación matemática o científica *solo si el tema lo requiere*.
-    *   Usa bloques de código (``` ``` con especificación de lenguaje si es posible) si es pertinente al tema (e.g., algoritmos, ejemplos de código).
-
-4.  **Rigor Académico y Precisión:** Asegúrate de que toda la información generada (definiciones, hechos, teorías, explicaciones) sea precisa, actualizada y consistente con el conocimiento establecido en el dominio temático correspondiente. Cita fuentes si es posible o necesario para el rigor académico, aunque no es obligatorio si se enfoca en la explicación conceptual.
-
-5.  **Interconexión Extensiva con Obsidian (`[[...]]`):** Este es un punto *crucial*. Integra activamente enlaces internos `[[...]]` aprovechando la `Estructura y Contenido Existente`:
-    *   **Identifica y Enlaza Proactivamente:** Dentro del contenido generado, identifica términos clave, conceptos, personas, lugares, eventos, teorías u otras ideas relevantes que *probablemente* tengan (o deberían tener) su propia nota en la bóveda según el contexto proporcionado.
-    *   **Enlace a Existentes:** Si la `Estructura y Contenido Existente` indica claramente que una nota relacionada ya existe (se ve en el árbol o en el contenido de otras notas), enlaza a ella usando su nombre de archivo exacto (e.g., `[[Concepto Previo Existente]]`).
-    *   **Crea Enlaces Placeholder (Implícitos):** Si un concepto importante mencionado *merece* su propia nota pero no parece existir en el contexto proporcionado (o no estás seguro), crea un enlace igualmente. El formato debe ser `[[Nombre Descriptivo del Concepto]]`. **NO** indiques explícitamente que es un placeholder. El objetivo es que todos los conceptos clave sean enlaces, existan o no aún.
-    *   **Enlaces a Secciones:** Si es relevante y conoces una sección específica en una nota existente (visible en el contexto), considera enlazar a ella (`[[Nota Relacionada#Sección Específica]]`).
-    *   **Objetivo:** Crear una nota que actúe como un nodo densamente conectado dentro de la base de conocimiento, fomentando la navegación y el descubrimiento.
-
-6.  **YAML Frontmatter (Formato Estricto):** Incluye un bloque YAML al inicio del archivo. **Sigue este formato EXACTAMENTE**:
-    ```yaml
-    ---
-    tags:
-      - {etiqueta_jerarquica_1} # Derivada de la ruta, e.g., Asignaturas/Sistemas_Operativos/Conceptos
-      - {etiqueta_jerarquica_2} # Derivada de la ruta, más general, e.g., Asignaturas/Sistemas_Operativos
-      # ... (más etiquetas jerárquicas si la ruta es más profunda)
-      - {etiqueta_conceptual_central_1} # Palabra clave principal del tema de la nota
-      - {etiqueta_conceptual_central_2} # Otra palabra clave principal
-      - {etiqueta_conceptual_relacionada_1} # Concepto secundario pero relevante
-      - {etiqueta_conceptual_relacionada_2} # Otro concepto secundario
-      # ... (añade más etiquetas conceptuales relevantes y específicas, evitando las muy genéricas)
-    ---
-    ```
-    *   **Derivación de Etiquetas Jerárquicas:** Extrae la estructura de directorios de la `{ruta_destino}`. Cada nivel de directorio se convierte en parte de una etiqueta jerárquica, usando `/` como separador. Si un nombre de carpeta contiene espacios, reemplázalos consistentemente con guiones bajos (`_`) o medios (`-`) en la etiqueta. Incluye etiquetas para la ruta completa y para niveles superiores.
-    *   **Etiquetas Conceptuales:** Añade palabras clave (simples o compuestas con `_` o `-`) que describan el *contenido específico* de la nota generada. Sé preciso y relevante. **NO uses `#`** dentro del YAML. Todas las entradas deben ser elementos de lista (`-`).
-
-7.  **Claridad y Tono:** Mantén un tono pedagógico claro, conciso y formal, adecuado para el nivel académico implícito en la ruta. Define términos técnicos la primera vez que aparezcan o, preferiblemente, enlázalos (`[[Término Técnico]]`).
-
-8.  **Completitud y Contextualización:** Asegúrate de que la nota cubra los aspectos esenciales del tema solicitado en `{ruta_destino}`. Si el tema requiere entender conceptos previos, defínelos brevemente o, idealmente, crea enlaces `[[Concepto Prerrequisito]]` (existente o placeholder).
-
-9.  **Síntesis:** Presenta la información de manera sintetizada y bien organizada, no como una simple enumeración de hechos, sino como una explicación coherente y estructurada.
-
----
-## Solicitud Final
-
-Genera el contenido completo en formato Markdown para la **nueva nota** ubicada en `{ruta_destino}`. Cumple estrictamente con todos los requisitos detallados, prestando especial atención a la **interconexión mediante enlaces `[[...]]`** basados en el contexto proporcionado y al **formato exacto del YAML frontmatter** especificado en el punto 6. El resultado debe ser una nota precisa, bien estructurada y profundamente integrada en la estructura de conocimiento de Obsidian. Empieza directamente con el bloque YAML `---`.
-"""
-}
+DEFAULT_TEMPLATES: Dict[str, str] = {}
 # --- FIN PLANTILLAS ---
 
-
-def get_available_templates() -> Dict[str, str]:
-    """Devuelve un diccionario con los nombres de las plantillas disponibles."""
-    # (Mismo código que antes)
-    available = DEFAULT_TEMPLATES.copy()
+def get_template_folder_path() -> Path:
+    """Obtiene la ruta a la carpeta 'templates'."""
     try:
         script_dir = Path(__file__).parent.resolve()
     except NameError:
         script_dir = Path.cwd()
-    templates_dir = script_dir / "templates"
+    return script_dir / "templates"
+
+def get_available_templates() -> Dict[str, str]:
+    """Devuelve un diccionario con los nombres de las plantillas disponibles
+       (SOLO las encontradas en la carpeta /templates)."""
+    available = DEFAULT_TEMPLATES.copy() # Empezará vacío ahora
+    templates_dir = get_template_folder_path()
 
     if templates_dir.is_dir():
-        for item in templates_dir.iterdir():
-            if item.is_file() and item.suffix.lower() == '.txt':
-                template_name = f"Archivo: {item.name}"
-                # Guardar la ruta absoluta como string para asegurar consistencia
-                available[template_name] = str(item.resolve())
-    return available
+        try:
+            for item in templates_dir.iterdir():
+                if item.is_file() and item.suffix.lower() == '.txt' and not item.name.startswith('.'):
+                    # Usar un nombre descriptivo que incluya el origen
+                    template_name = f"Archivo: {item.stem}" # Nombre sin extensión
+                    available[template_name] = str(item.resolve())
+        except OSError as e:
+            print(f"Advertencia: No se pudo listar la carpeta de plantillas '{templates_dir}': {e}", file=sys.stderr)
+    # else: # Opcional: Informar si la carpeta no existe
+         # print(f"Info: Carpeta '{templates_dir.name}' no encontrada, no se cargarán plantillas personalizadas.", file=sys.stderr)
 
+    return available # Devolverá solo los archivos encontrados
 
 def load_template(template_name_or_path: str) -> str:
-    """Carga la plantilla por nombre (predeterminada o de archivo) o ruta directa."""
-    # (Mismo código que antes)
-    available_templates = get_available_templates()
+    """
+    Carga la plantilla por nombre (SOLO de archivo en /templates) o ruta directa.
 
+    Args:
+        template_name_or_path: Nombre de la plantilla de archivo (con prefijo "Archivo: ")
+                               o ruta completa a un archivo .txt.
+
+    Returns:
+        El contenido de la plantilla como string.
+
+    Raises:
+        ValueError: Si el nombre o la ruta no son válidos o el archivo no se puede leer.
+    """
+    available_templates = get_available_templates() # Ahora solo contiene archivos
+
+    # 1. Comprobar si es un nombre conocido de la carpeta /templates
     if template_name_or_path in available_templates:
-        template_source = available_templates[template_name_or_path]
-        file_path: Optional[Path] = None
-        source_type: str = ""
+        file_path_str = available_templates[template_name_or_path]
+        file_path = Path(file_path_str)
+        source_type = "archivo (templates/)"
+        print(f"Usando plantilla desde {source_type}: {file_path.name}", file=sys.stderr)
+        try:
+            return file_path.read_text(encoding='utf-8')
+        except Exception as e:
+            raise ValueError(f"Error al leer el archivo de plantilla {file_path}: {e}")
 
-        if template_source.startswith("Archivo: "):
-             # El path viene después del prefijo, hay que limpiarlo
-             path_str = template_source.split("Archivo: ", 1)[1]
-             file_path = Path(path_str)
-             source_type = "archivo (templates/)"
-        elif Path(template_source).is_file(): # Comprobar si el valor es una ruta válida directamente
-            file_path = Path(template_source)
-            source_type = "archivo (ruta directa?)"
-        else: # Es predeterminada
-            print(f"Usando plantilla predeterminada: '{template_name_or_path}'")
-            return template_source
-
-        # Cargar desde archivo si file_path se determinó
-        if file_path and file_path.is_file():
-            print(f"Usando plantilla desde {source_type}: {file_path.name}")
-            try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    return f.read()
-            except Exception as e:
-                raise ValueError(f"Error al leer el archivo de plantilla {file_path}: {e}")
-        else:
-             # Este caso podría darse si la ruta guardada en available_templates dejó de ser válida
-             raise ValueError(f"El archivo de plantilla '{template_name_or_path}' referenciado no existe o la ruta no es válida: {file_path}")
-
-    else: # Intentar como ruta directa
+    # 2. Si no es un nombre conocido, intentar tratarlo como ruta directa
+    else:
         template_path = Path(template_name_or_path)
         if template_path.is_file() and template_path.suffix.lower() == '.txt':
-            print(f"Usando plantilla desde ruta directa: {template_path}")
+            print(f"Usando plantilla desde ruta directa: {template_path}", file=sys.stderr)
             try:
-                with open(template_path, 'r', encoding='utf-8') as f:
-                    return f.read()
+                return template_path.read_text(encoding='utf-8')
             except Exception as e:
                 raise ValueError(f"Error al leer el archivo de plantilla {template_path}: {e}")
         else:
-            available_names = "\n - ".join(available_templates.keys())
-            raise ValueError(f"No se encontró la plantilla predeterminada, el archivo en /templates, ni la ruta directa: '{template_name_or_path}'.\nDisponibles:\n - {available_names}")
-
+            # Error más informativo ahora que no hay predeterminadas
+            available_names_list = sorted(available_templates.keys())
+            err_msg = f"Plantilla no encontrada: '{template_name_or_path}'.\n"
+            err_msg += f"No es un archivo en '{get_template_folder_path().name}/' ni una ruta válida a un archivo .txt.\n"
+            if available_names_list:
+                 # Mostrar nombres limpios
+                 display_names = [f"📄 {Path(available_templates[name]).stem}" for name in available_names_list]
+                 err_msg += f"Plantillas disponibles en /templates:\n - " + "\n - ".join(display_names)
+            else:
+                 err_msg += f"No hay plantillas .txt en la carpeta '{get_template_folder_path().name}'."
+            raise ValueError(err_msg)
 
 # inject_context e inject_context_multi permanecen igual
 def inject_context(template_string: str, context_block: str, placeholder: str) -> str:
     """Reemplaza el placeholder en la plantilla con el bloque de contexto."""
     if placeholder not in template_string:
         print(f"Advertencia: El placeholder '{placeholder}' no se encontró en la plantilla.", file=sys.stderr)
-        return template_string + "\n\n--- CONTEXTO ADICIONAL (Placeholder no encontrado) ---\n" + context_block
-    print(f"Inyectando contexto en el placeholder: '{placeholder}'")
+        return template_string # No añadir contexto si no hay placeholder
+    print(f"Inyectando contexto en el placeholder: '{placeholder}'", file=sys.stderr)
     return template_string.replace(placeholder, context_block)
-
 
 def inject_context_multi(template: str, replacements: dict[str, Optional[str]]) -> str:
     """Inyecta múltiples valores en sus respectivos placeholders."""
     result = template
-    found_placeholders = 0
-    for placeholder, value in replacements.items():
-        # Asegurarse de que el placeholder existe antes de reemplazar
-        if placeholder in result:
-             # Reemplazar None o string vacío por ""
-             replacement_value = value if value is not None else ""
-             result = result.replace(placeholder, replacement_value)
-             found_placeholders +=1
-        # else: # Opcional: Advertir
-        #     if placeholder not in ["{contexto_extraido}", "{ruta_destino}"]:
-        #          print(f"Advertencia: Placeholder '{placeholder}' definido pero no encontrado.", file=sys.stderr)
+    placeholders_found = set()
 
-    if found_placeholders == 0 and replacements: # Advertir si había algo que reemplazar pero no se encontró nada
-         print("Advertencia: No se encontró ningún placeholder conocido para reemplazar en la plantilla.", file=sys.stderr)
+    # Usar directamente los placeholders definidos globalmente si es necesario
+    # desde donde se llame a esta función (por ejemplo, desde main.py)
+    # o pasarlos como argumento si se prefiere desacoplar.
+    # Asumiendo que DEFAULT_PLACEHOLDERS está disponible (importado en main)
+    # y que `replacements` usa las llaves correctas (ej. "{contexto_extraido}")
+
+    for placeholder_fmt, value_to_inject in replacements.items():
+        # Usar los placeholders definidos en DEFAULT_PLACEHOLDERS como referencia
+        # (Aunque los reemplazos ya vienen con el formato {placeholder})
+
+        # Asegurarse de que el placeholder existe antes de reemplazar
+        if placeholder_fmt in result:
+             replacement_value = value_to_inject if value_to_inject is not None else ""
+             result = result.replace(placeholder_fmt, replacement_value)
+             placeholders_found.add(placeholder_fmt)
+
+    if not placeholders_found and replacements and any(replacements.values()):
+         print("Advertencia: No se reemplazó ningún placeholder conocido en la plantilla. ¿Es correcta la plantilla o los placeholders?", file=sys.stderr)
 
     return result
-
 
 # --- FUNCIONES INTERACTIVAS ---
 # Si la función `select_vault_interactive` estaba aquí, necesita el import

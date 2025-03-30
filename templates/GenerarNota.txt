@@ -5,70 +5,58 @@ Actúa como un experto académico y especialista en gestión del conocimiento, c
 ---
 ## Tarea Principal
 
-Generar el contenido completo en formato Markdown (.md) para una *nueva* nota de Obsidian. El tema principal de la nota se deriva de la `Ruta de Archivo Destino` proporcionada. El contenido debe ser académicamente riguroso, bien estructurado para el aprendizaje y altamente interconectado dentro del contexto de la `Estructura y Contenido Existente`.
+Generar el contenido completo en formato Markdown (.md) para una **nueva** nota de Obsidian. El tema principal de la nota se deriva de la `Ruta de Archivo Destino` proporcionada. El contenido debe ser académicamente riguroso, bien estructurado para el aprendizaje y altamente interconectado dentro del contexto proporcionado.
 
 ---
 ## Contexto Proporcionado
 
 *   **Ruta de Archivo Destino:** `{ruta_destino}`
     *   *Esta ruta define el tema central y la ubicación de la nota a crear.*
-
-*   **Estructura y Contenido Existente:**
+*   **Etiquetas Jerárquicas Implícitas:** `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ...
+    *   *Derivadas de la ruta destino, usar para el YAML frontmatter.*
+*   **Estructura y Contenido Existente de la Bóveda (Parcial o Completo):**
     ```
     {contexto_extraido}
     ```
-    *   *Usa esta información para identificar notas existentes a las que enlazar y para entender el contexto temático general.*
+    *   *Usa esta información para entender el contexto temático general e identificar notas existentes a las que enlazar.*
 
 ---
 ## Requisitos Detallados de Salida
 
-1.  **Generación de Contenido Enfocado:** Crea contenido original y coherente centrado exclusivamente en el tema inferido de la `Ruta de Archivo Destino`. El nivel de detalle debe ser apropiado para un entorno académico (e.g., nivel universitario o de estudio avanzado), proporcionando una visión general sólida o profundizando según sugiera el título/ruta. Evita información no pertinente al tema central definido por la ruta.
-
-2.  **Estructura y Organización Lógica:** Organiza el contenido generado usando encabezados Markdown (`#`, `##`, `###`, etc.). Asegura un flujo claro y pedagógico:
-    *   Introducción / Definición clara del concepto.
-    *   Desarrollo de Conceptos Clave / Secciones principales.
-    *   Ejemplos concretos (si aplica y enriquece la explicación).
-    *   Implicaciones / Aplicaciones / Conclusiones (si aplica).
-    *   (Opcional) Sección "Véase También" o "Conceptos Relacionados" al final, con enlaces `[[...]]`.
-
+1.  **Generación de Contenido Enfocado:** Crea contenido original y coherente centrado *exclusivamente* en el tema inferido de la `{ruta_destino}`. El nivel de detalle debe ser apropiado para un entorno académico, proporcionando una visión general sólida o profundizando según sugiera el título/ruta. Evita desviarte a temas no pertinentes.
+2.  **Estructura y Organización Lógica:** Organiza el contenido generado usando encabezados Markdown (`#`, `##`, `###`, etc.). Asegura un flujo claro y pedagógico: Introducción/Definición clara, Desarrollo de Conceptos Clave, Ejemplos concretos (si aplica), Implicaciones/Aplicaciones/Conclusiones, y opcionalmente una sección "Véase También" con enlaces `[[...]]`.
 3.  **Formato Markdown:**
     *   Utiliza Markdown estándar de forma efectiva (negrita `** **`, cursiva `* *`, listas `-`, `1.`, citas `>`, etc.).
-    *   Usa LaTeX (`$...$` para inline, `$$...$$` para bloques) para notación matemática o científica *solo si el tema lo requiere*.
-    *   Usa bloques de código (``` ``` con especificación de lenguaje si es posible) si es pertinente al tema (e.g., algoritmos, ejemplos de código).
-
-4.  **Rigor Académico y Precisión:** Asegúrate de que toda la información generada (definiciones, hechos, teorías, explicaciones) sea precisa, actualizada y consistente con el conocimiento establecido en el dominio temático correspondiente. Cita fuentes si es posible o necesario para el rigor académico, aunque no es obligatorio si se enfoca en la explicación conceptual.
-
-5.  **Interconexión Extensiva con Obsidian (`[[...]]`):** Este es un punto *crucial*. Integra activamente enlaces internos `[[...]]` aprovechando la `Estructura y Contenido Existente`:
-    *   **Identifica y Enlaza Proactivamente:** Dentro del contenido generado, identifica términos clave, conceptos, personas, lugares, eventos, teorías u otras ideas relevantes que *probablemente* tengan (o deberían tener) su propia nota en la bóveda según el contexto proporcionado.
-    *   **Enlace a Existentes:** Si la `Estructura y Contenido Existente` indica claramente que una nota relacionada ya existe (se ve en el árbol o en el contenido de otras notas), enlaza a ella usando su nombre de archivo exacto (e.g., `[[Concepto Previo Existente]]`).
-    *   **Crea Enlaces Placeholder (Implícitos):** Si un concepto importante mencionado *merece* su propia nota pero no parece existir en el contexto proporcionado (o no estás seguro), crea un enlace igualmente. El formato debe ser `[[Nombre Descriptivo del Concepto]]`. **NO** indiques explícitamente que es un placeholder. El objetivo es que todos los conceptos clave sean enlaces, existan o no aún.
-    *   **Enlaces a Secciones:** Si es relevante y conoces una sección específica en una nota existente (visible en el contexto), considera enlazar a ella (`[[Nota Relacionada#Sección Específica]]`).
-    *   **Objetivo:** Crear una nota que actúe como un nodo densamente conectado dentro de la base de conocimiento, fomentando la navegación y el descubrimiento.
-
+    *   Usa LaTeX (`$...$` inline, `$$...$$` bloque) para notación matemática/científica *solo si el tema lo requiere*.
+    *   Usa bloques de código (``` ``` con lenguaje) si es pertinente (ej. algoritmos).
+    *   **Importante - Limitación de Tablas:** `[[Wikilinks]]` **NO funcionan** si se colocan directamente dentro de celdas de tablas Markdown (`| [[Esto No Funciona]] |`). Si necesitas referenciar un concepto enlazable desde una tabla, menciona el término sin enlace en la celda y añade el `[[Wikilink Correspondiente]]` en el texto *fuera* de la tabla.
+4.  **Rigor Académico y Precisión:** Asegúrate de que toda la información generada (definiciones, hechos, teorías) sea precisa, actualizada y consistente con el conocimiento establecido en el dominio temático.
+5.  **Interconexión Extensiva con Obsidian (`[[...]]`) - CRUCIAL:** Integra activamente enlaces internos `[[...]]` aprovechando el **contexto proporcionado**:
+    *   **Identifica y Enlaza:** Dentro del contenido generado, identifica proactivamente términos clave, conceptos, personas, lugares, etc., que *probablemente* tengan (o deberían tener) su propia nota.
+    *   **Enlace a Existentes:** Si **el contexto** muestra que una nota (`[[NotaExistente.md]]`) ya existe, enlaza a ella: `[[NotaExistente]]`.
+    *   **Crea Placeholders:** Si un concepto importante merece nota propia pero no parece existir en **el contexto**, crea un enlace placeholder descriptivo: `[[Concepto Clave Nuevo]]`. NO indiques que es placeholder.
+    *   **Enlaces a Secciones:** Usa `[[NotaRelacionada#Sección Específica]]` si es relevante y se puede inferir del **contexto**.
+    *   **Objetivo:** Crear una nota que actúe como un nodo densamente conectado.
 6.  **YAML Frontmatter (Formato Estricto):** Incluye un bloque YAML al inicio del archivo. **Sigue este formato EXACTAMENTE**:
     ```yaml
     ---
     tags:
-      - {etiqueta_jerarquica_1} # Derivada de la ruta, e.g., Asignaturas/Sistemas_Operativos/Conceptos
-      - {etiqueta_jerarquica_2} # Derivada de la ruta, más general, e.g., Asignaturas/Sistemas_Operativos
+      - {etiqueta_jerarquica_1} # Derivada de la ruta (más específica)
+      - {etiqueta_jerarquica_2} # Derivada de la ruta (más general)
       # ... (más etiquetas jerárquicas si la ruta es más profunda)
-      - {etiqueta_conceptual_central_1} # Palabra clave principal del tema de la nota
-      - {etiqueta_conceptual_central_2} # Otra palabra clave principal
-      - {etiqueta_conceptual_relacionada_1} # Concepto secundario pero relevante
-      - {etiqueta_conceptual_relacionada_2} # Otro concepto secundario
-      # ... (añade más etiquetas conceptuales relevantes y específicas, evitando las muy genéricas)
+      - etiqueta_conceptual_central_1 # Palabra clave principal del tema (generada por ti)
+      - etiqueta_conceptual_central_2 # Otra palabra clave principal (generada por ti)
+      - etiqueta_conceptual_relacionada_1 # Concepto secundario relevante (generado por ti)
+      # ... (añade 2-4 etiquetas conceptuales MÁS, específicas y relevantes, generadas por ti)
     ---
     ```
-    *   **Derivación de Etiquetas Jerárquicas:** Extrae la estructura de directorios de la `{ruta_destino}`. Cada nivel de directorio se convierte en parte de una etiqueta jerárquica, usando `/` como separador. Si un nombre de carpeta contiene espacios, reemplázalos consistentemente con guiones bajos (`_`) o medios (`-`) en la etiqueta. Incluye etiquetas para la ruta completa y para niveles superiores.
-    *   **Etiquetas Conceptuales:** Añade palabras clave (simples o compuestas con `_` o `-`) que describan el *contenido específico* de la nota generada. Sé preciso y relevante. **NO uses `#`** dentro del YAML. Todas las entradas deben ser elementos de lista (`-`).
-
-7.  **Claridad y Tono:** Mantén un tono pedagógico claro, conciso y formal, adecuado para el nivel académico implícito en la ruta. Define términos técnicos la primera vez que aparezcan o, preferiblemente, enlázalos (`[[Término Técnico]]`).
-
-8.  **Completitud y Contextualización:** Asegúrate de que la nota cubra los aspectos esenciales del tema solicitado en `{ruta_destino}`. Si el tema requiere entender conceptos previos, defínelos brevemente o, idealmente, crea enlaces `[[Concepto Prerrequisito]]` (existente o placeholder).
-
-9.  **Síntesis:** Presenta la información de manera sintetizada y bien organizada, no como una simple enumeración de hechos, sino como una explicación coherente y estructurada.
+    *   *Usa las etiquetas `{etiqueta_jerarquica_N}` proporcionadas implícitamente.*
+    *   *Genera tú mismo las etiquetas conceptuales (sin llaves) basándote en el contenido que crees. Deben ser palabras clave en minúsculas, usando `_` o `-` para espacios. Sé preciso y relevante.*
+7.  **Claridad y Tono:** Mantén un tono pedagógico claro, conciso y formal, adecuado al nivel académico. Define o enlaza (`[[Término Técnico]]`) términos especializados.
+8.  **Completitud y Contextualización:** Cubre los aspectos esenciales del tema solicitado en `{ruta_destino}`. Si requiere conceptos previos, defínelos brevemente o enlaza `[[Concepto Prerrequisito]]`.
+9.  **Síntesis:** Presenta la información de forma sintetizada y organizada, no como enumeración de hechos.
 
 ---
 ## Solicitud Final
 
-Genera el contenido completo en formato Markdown para la **nueva nota** ubicada en `{ruta_destino}`. Cumple estrictamente con todos los requisitos detallados, prestando especial atención a la **interconexión mediante enlaces `[[...]]`** basados en el contexto proporcionado y al **formato exacto del YAML frontmatter** especificado en el punto 6. El resultado debe ser una nota precisa, bien estructurada y profundamente integrada en la estructura de conocimiento de Obsidian. Empieza directamente con el bloque YAML `---`.
+Genera UNA SOLA VEZ el contenido completo en formato Markdown para la **nueva nota** ubicada en `{ruta_destino}`, utilizando el **contexto proporcionado** (inyectado arriba) como referencia. Cumple estrictamente con todos los requisitos detallados, prestando especial atención a la interconexión (`[[...]]`) y al formato YAML exacto (generando tú las etiquetas conceptuales). Empieza directamente con el bloque YAML `---`.
