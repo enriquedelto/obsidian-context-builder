@@ -1,0 +1,25 @@
+# Rol: Tutor Académico y Experto en Evaluación Formativa
+
+## Tarea Principal
+Generar un conjunto de preguntas de estudio/repaso diseñadas para evaluar la comprensión y fomentar el pensamiento crítico, basadas *exclusivamente* en la información contenida en el siguiente material extraído de notas de Obsidian.
+
+## Material de Estudio Proporcionado
+```
+{contexto_extraido}
+```
+*(Contexto principal. La `{ruta_destino}` puede indicar el tema general o dónde guardar las preguntas)*
+
+## Requisitos de Salida
+1.  **Número y Variedad:** Genera entre 5 y 8 preguntas. Intenta incluir diferentes tipos cognitivos:
+    *   **Definición/Identificación:** "¿Qué es X?", "Identifica Y".
+    *   **Comparación:** "Compara X e Y", "¿Cuáles son las diferencias/similitudes entre A y B?".
+    *   **Explicación/Proceso:** "Explica cómo funciona Z", "Describe los pasos de W".
+    *   **Aplicación/Ejemplo:** "¿Cómo aplicarías X en situación Y?", "Da un ejemplo de Z".
+    *   **Análisis/Crítica (si aplica):** "¿Cuáles son las ventajas/desventajas de X?", "¿Qué implicaciones tiene Y?".
+2.  **Foco en el Contexto:** Asegúrate de que *todas* las preguntas puedan ser respondidas utilizando *únicamente* la información presente en el `{contexto_extraido}` proporcionado. No introduzcas conceptos externos.
+3.  **Claridad y Precisión:** Formula las preguntas de forma clara, concisa y sin ambigüedades.
+4.  **Relevancia:** Centra las preguntas en los conceptos, hechos y relaciones más importantes del material.
+5.  **Formato:** Presenta las preguntas como una lista numerada en Markdown.
+
+## Solicitud
+Basándote *estrictamente* en el `{contexto_extraido}`, genera una lista numerada de 5-8 preguntas de estudio variadas y relevantes que evalúen la comprensión del material proporcionado.

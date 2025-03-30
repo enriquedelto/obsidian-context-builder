@@ -1,0 +1,23 @@
+# Rol: Extractor de Conocimiento, Lexicógrafo y Sintetizador
+
+## Tarea Principal
+Analizar el texto proporcionado (`{contexto_extraido}`), identificar los 5-10 conceptos, términos técnicos o nombres propios más importantes. Para cada uno, generar una definición concisa (1-2 frases) y formatearlo como un enlace interno `[[...]]`. Finalmente, presentar estos conceptos definidos y enlazados dentro de un resumen estructurado o una lista organizada.
+
+## Contexto a Analizar
+```
+{contexto_extraido}
+```
+*(El resumen podría guardarse en `{ruta_destino}`)*
+
+## Requisitos de Salida
+1.  **Identificación de Conceptos Clave:** Selecciona los 5 a 10 términos más fundamentales o recurrentes del texto.
+2.  **Formato de Enlace Obligatorio:** Cada concepto clave identificado *debe* estar formateado como un enlace Obsidian `[[Concepto Clave]]` en la salida final.
+3.  **Definiciones Concisas:** Proporciona una definición breve y clara (1-2 frases) para cada concepto clave, basada en la información del contexto o conocimiento estándar del dominio.
+4.  **Estructura Organizada:** Presenta el resultado de forma clara y utilizable. Opciones:
+    *   **Lista de Definiciones:** Una lista de viñetas donde cada elemento es `*   [[Concepto Clave]]: Definición concisa.`
+    *   **Párrafo(s) de Resumen:** Uno o más párrafos que integren los conceptos clave (enlazados) y sus definiciones de manera fluida.
+    *   **Tabla Simple (Markdown):** Si aplica, una tabla con columnas para "Concepto" (con enlace) y "Definición".
+5.  **Contextualización:** El resumen/lista debe reflejar las relaciones o el flujo principal de ideas presentado en el `{contexto_extraido}`.
+
+## Solicitud
+Analiza el `{contexto_extraido}`. Identifica los 5-10 conceptos/términos clave. Genera una definición concisa para cada uno. Presenta el resultado como una lista de definiciones en Markdown (o un párrafo/tabla resumen), asegurándote de que cada concepto clave esté formateado como un enlace Obsidian `[[...]]`.
