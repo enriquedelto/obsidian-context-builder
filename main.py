@@ -56,13 +56,13 @@ def parse_arguments() -> argparse.Namespace:
         description="Generador de Contexto Obsidian para Prompts LLM.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""Ejemplos:
-  # Usar última bóveda, seleccionar plantilla interactiva
+  # Usar última bóveda, seleccionar plantilla interactivamente
   python main.py --target "Asignaturas/Cálculo" --output-note-path "Asignaturas/Cálculo/Resumen.md"
 
-  # Usar una bóveda específica guardada por nombre y plantilla
+  # Usar bóveda específica guardada y plantilla
   python main.py --select-vault "Trabajo" --template "Archivo:ResumenConceptosClave" --target "ProyectosActivos" --output-note-path "ResumenProyectos.md"
 
-  # Usar una ruta de bóveda directa SIN guardarla
+  # Usar ruta de bóveda directa
   python main.py --vault-path "/ruta/temporal/boveda" --template "Archivo:GenerarNota" --target "Conceptos" --output-note-path "Conceptos/NuevaIdea.md"
 
   # Excluir extensiones
@@ -78,26 +78,26 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     vault_selection_group = parser.add_mutually_exclusive_group()
-    vault_selection_group.add_argument( "--select-vault", type=str, metavar='NOMBRE', help="Nombre de la bóveda guardada a usar." )
-    vault_selection_group.add_argument( "--vault-path", type=Path, metavar='RUTA_DIRECTORIO', help="Ruta directa a una bóveda (no se guarda)." )
+    vault_selection_group.add_argument( "--select-vault", type=str, metavar='NOMBRE', help="Nombre de bóveda guardada." )
+    vault_selection_group.add_argument( "--vault-path", type=Path, metavar='RUTA_DIRECTORIO', help="Ruta directa a bóveda." )
 
     vault_management_group = parser.add_argument_group('Gestión de Bóvedas (ejecutar y salir)')
-    vault_management_group.add_argument( "--add-vault", nargs=2, metavar=('NOMBRE', 'RUTA'), help="Añade o actualiza una bóveda guardada." )
-    vault_management_group.add_argument( "--remove-vault", type=str, metavar='NOMBRE', help="Elimina una bóveda guardada." )
-    vault_management_group.add_argument( "--list-vaults", action='store_true', help="Muestra bóvedas guardadas y sale." )
+    vault_management_group.add_argument( "--add-vault", nargs=2, metavar=('NOMBRE', 'RUTA'), help="Añade/actualiza bóveda guardada." )
+    vault_management_group.add_argument( "--remove-vault", type=str, metavar='NOMBRE', help="Elimina bóveda guardada." )
+    vault_management_group.add_argument( "--list-vaults", action='store_true', help="Muestra bóvedas y sale." )
 
     gen_group = parser.add_argument_group('Generación de Prompt')
     gen_group.add_argument( "--target", type=str, action='append', default=[], metavar='RUTA_RELATIVA', help="Ruta relativa (a bóveda) a incluir. Repetir. Vacío = toda la bóveda." )
     gen_group.add_argument( "--ext", type=str, action='append', default=[], metavar='EXTENSION', help=f"Extensión a INCLUIR (ej: .md). Default: {core.DEFAULT_EXTENSIONS}" )
     gen_group.add_argument( "--exclude-ext", type=str, action='append', default=[], metavar='EXTENSION', help="Extensión a EXCLUIR (ej: .log)." )
     gen_group.add_argument( "--template", type=str, metavar='NOMBRE_O_RUTA', help="Nombre plantilla ('Archivo:Nombre') o ruta a .txt." )
-    gen_group.add_argument( "--list-templates", action='store_true', help="Muestra plantillas disponibles y sale." )
+    gen_group.add_argument( "--list-templates", action='store_true', help="Muestra plantillas y sale." )
     gen_group.add_argument( "--output-mode", type=str, choices=['tree', 'content', 'both'], default='both', help="Qué contexto incluir. Default: both" )
     # <<< MODIFICADO: Help text actualizado para reflejar opcionalidad >>>
     gen_group.add_argument( "--output-note-path", type=str, metavar='RUTA_RELATIVA', help="Ruta relativa (en bóveda) para nota objetivo. Opcional, pero necesaria para placeholders {ruta_destino} y {etiqueta_jerarquica_N}." )
     gen_group.add_argument( "--output", type=Path, default=None, metavar='ARCHIVO_SALIDA', help="Archivo opcional para guardar prompt." )
 
-    parser.add_argument( '--version', action='version', version='%(prog)s 1.1.0' ) # <-- Versión actualizada
+    parser.add_argument( '--version', action='version', version='%(prog)s 1.1.0' )
 
     args = parser.parse_args()
 
@@ -146,19 +146,18 @@ def main():
             if vault_choice: selected_vault_name, selected_vault_path = vault_choice; print(f"Bóveda seleccionada: '{selected_vault_name}'")
             else: print("No se seleccionó bóveda. Abortando.", file=sys.stderr); sys.exit(1)
 
-    # 2. Validar argumentos restantes (output_note_path es opcional)
+    # 2. Validar argumentos restantes (ya no se valida output_note_path aquí)
     if not selected_vault_path: print("Error fatal: No se pudo determinar bóveda.", file=sys.stderr); sys.exit(1)
 
     # 3. Validar y convertir output_note_path SI SE PROPORCIONÓ
     output_note_path_relative: Optional[Path] = None
-    if args.output_note_path: # <<< CHEQUEO AÑADIDO >>>
+    if args.output_note_path: # <<< CHEQUEO MOVIDO AQUÍ >>>
         try:
             temp_path = Path(args.output_note_path)
             if temp_path.is_absolute(): output_note_path_relative = temp_path.relative_to(selected_vault_path.resolve())
             else: output_note_path_relative = Path(args.output_note_path.lstrip('/\\'))
         except ValueError: print(f"Error: Ruta nota destino absoluta '{args.output_note_path}' no en bóveda.", file=sys.stderr); sys.exit(1)
         except Exception as e: print(f"Error procesando ruta nota destino: {e}", file=sys.stderr); sys.exit(1)
-    # <<< ELIMINADO EL else: print("Error: --output-note-path requerido...") >>>
 
     # 4. Determinar la plantilla a usar
     template_string: Optional[str] = None
@@ -193,8 +192,7 @@ def main():
     # 6. Mostrar o guardar resultado
     if args.output:
         try:
-            output_file = args.output.resolve()
-            output_file.parent.mkdir(parents=True, exist_ok=True)
+            output_file = args.output.resolve(); output_file.parent.mkdir(parents=True, exist_ok=True)
             output_file.write_text(final_prompt, encoding='utf-8')
             print(f"\n--- Prompt Final Guardado ---"); print(f"Ruta: {output_file}")
         except Exception as e:
@@ -203,7 +201,7 @@ def main():
     else:
         print("\n--- Prompt Final (consola) ---"); print(final_prompt)
 
-    # 7. Guardar la bóveda usada como la última (si no fue manual)
+    # 7. Guardar la bóveda usada como la última
     if selected_vault_name and not used_manual_path:
         config_handler.set_last_vault(selected_vault_name)
     elif used_manual_path:

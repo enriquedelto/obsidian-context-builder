@@ -70,10 +70,10 @@ def generate_prompt_core(
     # 1. Encontrar archivos relevantes
     print("\nCore - Buscando archivos relevantes...", file=sys.stderr) # Mensaje añadido
     relevant_files: List[Path] = file_handler.find_relevant_files(
-        vault_path,
-        target_paths,
-        extensions,
-        excluded_extensions or [] # <<< ASEGURARSE DE PASARLO >>>
+        vault_path=vault_path,
+        target_paths=target_paths,
+        extensions=extensions,
+        excluded_extensions=excluded_extensions or [] # <<< ASEGURARSE DE PASARLO >>>
     )
     if not relevant_files and output_mode != 'tree':
         print("\nCore - Advertencia: No se encontraron archivos relevantes (considerando inclusiones/exclusiones) para incluir contenido.", file=sys.stderr)
