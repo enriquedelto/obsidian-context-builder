@@ -28,9 +28,6 @@ def generate_hierarchical_tags(relative_note_path: Optional[Path]) -> List[str]:
     Extrae etiquetas jerárquicas de una ruta relativa a la bóveda.
     Devuelve lista vacía si la ruta es None o no tiene directorio padre.
     """
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    # <<<                  ESTA FUNCIÓN AHORA ESTÁ EN core.py                     >>>
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     if relative_note_path is None:
         return []
     tags = []
@@ -62,9 +59,6 @@ def generate_prompt_core(
     """
     Lógica central para generar el prompt final.
     """
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    # <<<                 ESTA FUNCIÓN AHORA ESTÁ EN core.py                      >>>
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     print("--- Iniciando Lógica Core ---", file=sys.stderr)
     print(f"Core - Bóveda: {vault_path}", file=sys.stderr)
     print(f"Core - Targets: {target_paths}", file=sys.stderr)
@@ -73,12 +67,13 @@ def generate_prompt_core(
     print(f"Core - Modo Contexto: {output_mode}", file=sys.stderr)
     print(f"Core - Ruta Nota Destino: {output_note_path if output_note_path else 'No especificada'}", file=sys.stderr)
 
-    # 1. Encontrar archivos relevantes (NECESITA ACTUALIZAR file_handler.find_relevant_files para usar excluded_extensions)
+    # 1. Encontrar archivos relevantes
+    print("\nCore - Buscando archivos relevantes...", file=sys.stderr) # Mensaje añadido
     relevant_files: List[Path] = file_handler.find_relevant_files(
         vault_path,
         target_paths,
         extensions,
-        # excluded_extensions or [] # <-- Pasar cuando file_handler lo acepte
+        excluded_extensions or [] # <<< ASEGURARSE DE PASARLO >>>
     )
     if not relevant_files and output_mode != 'tree':
         print("\nCore - Advertencia: No se encontraron archivos relevantes (considerando inclusiones/exclusiones) para incluir contenido.", file=sys.stderr)
@@ -151,7 +146,7 @@ def generate_prompt_core(
     # Advertir si placeholders clave están vacíos porque faltó la ruta
     if not ruta_destino_relativa_str and DEFAULT_PLACEHOLDERS["ruta_destino"] in template_string:
         print(f"Core - Advertencia: Placeholder {{ruta_destino}} presente pero no se proporcionó Ruta Nota Destino.", file=sys.stderr)
-    if not hierarchical_tags and any(DEFAULT_PLACEHOLDERS.get(f"etiqueta_jerarquica_{i+1}") in template_string for i in range(max_tag_level)):
+    if not hierarchical_tags and any(DEFAULT_PLACEHOLDERS.get(f"etiqueta_jerarquica_N}}") in template_string for i in range(max_tag_level)):
          print(f"Core - Advertencia: Placeholders {{etiqueta_jerarquica_N}} presentes pero no se generaron (falta Ruta Nota Destino).", file=sys.stderr)
 
     print("--- Fin Lógica Core ---", file=sys.stderr)
