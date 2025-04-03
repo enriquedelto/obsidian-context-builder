@@ -8,6 +8,7 @@ from typing import Optional, Dict, Any, List, Set, Tuple
 # Importar módulos propios necesarios para GUI
 import prompt_handler
 import config_handler
+import core
 
 # <<< MODIFICADO: Importar lógica central y constantes DESDE core.py >>>
 try:
