@@ -6,16 +6,21 @@ import traceback
 from typing import Optional, Dict, Any, List, Set, Tuple
 
 # Importar módulos propios necesarios para GUI
-import prompt_handler # Para selección/carga/preview de plantillas
-import config_handler # Para gestión de bóvedas
+import prompt_handler
+import config_handler
 
 # <<< MODIFICADO: Importar lógica central y constantes DESDE core.py >>>
 try:
-    from core import generate_prompt_core, DEFAULT_PLACEHOLDERS, generate_hierarchical_tags, DEFAULT_EXTENSIONS
+    # Importar funciones y constantes específicas necesarias
+    from core import (
+        generate_prompt_core,
+        DEFAULT_PLACEHOLDERS, # Aunque no se use directamente, puede ser útil para debug/futuro
+        generate_hierarchical_tags, # Ídem
+        DEFAULT_EXTENSIONS
+    )
 except ImportError as e:
     st.error(f"Error crítico al importar desde core: {e}. Asegúrate que core.py existe.")
     st.stop()
-# <<< ELIMINADOS imports de file_handler, tree_generator, formatter >>>
 
 # --- CONFIGURACIÓN DE PÁGINA Y TÍTULO ---
 st.set_page_config(layout="wide", page_title="Obsidian Context Builder")
@@ -23,9 +28,10 @@ st.title("Obsidian Context Builder 🔨")
 st.caption("Genera prompts para LLMs usando el contexto de tu bóveda Obsidian.")
 
 # --- Funciones Auxiliares ---
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# <<<      Funciones auxiliares sin cambios aquí                              >>>
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 def display_template_content(template_name: Optional[str]):
-    """Muestra el contenido de la plantilla seleccionada."""
-    # ... (código sin cambios) ...
     content = ""; error_msg = None
     if template_name:
         try: content = prompt_handler.load_template(template_name)
@@ -35,8 +41,6 @@ def display_template_content(template_name: Optional[str]):
     st.text_area( "Contenido Plantilla Seleccionada", content, height=150, disabled=True, key="template_preview_area" )
 
 def validate_and_get_targets(target_input_str: str, vault_path: Path) -> Tuple[List[str], List[str]]:
-    """Valida las rutas ingresadas y las devuelve como relativas a la bóveda."""
-    # ... (código sin cambios) ...
     raw_targets = [p.strip().strip('"') for p in target_input_str.splitlines() if p.strip()]
     valid_relative_targets = []; invalid_targets = []
     vault_path_resolved = vault_path.resolve()
@@ -66,16 +70,14 @@ DEFAULT_CATEGORY = "❓ Sin Categoría"
 def get_categorized_templates(available_templates: Dict[str, str]) -> Tuple[List[str], Dict[str, List[Dict[str, str]]]]:
     """Procesa plantillas disponibles y devuelve categorías ordenadas y mapa categoría -> detalles."""
     # ... (código sin cambios) ...
-    category_map: Dict[str, List[Dict[str, str]]] = {}
+    category_map: Dict[str, List[Dict[str, str]]] = {};
     for key, _ in available_templates.items():
         if key.startswith("Archivo: "):
-            stem = key.split("Archivo: ", 1)[1]
-            category = TEMPLATE_CATEGORIES.get(stem, DEFAULT_CATEGORY)
+            stem = key.split("Archivo: ", 1)[1]; category = TEMPLATE_CATEGORIES.get(stem, DEFAULT_CATEGORY)
             if category not in category_map: category_map[category] = []
             category_map[category].append({"key": key, "stem": stem})
     for category in category_map: category_map[category].sort(key=lambda x: x["stem"])
-    sorted_categories = sorted(category_map.keys())
-    return sorted_categories, category_map
+    sorted_categories = sorted(category_map.keys()); return sorted_categories, category_map
 
 # --- Carga Inicial y Estado de Sesión ---
 if 'config_loaded' not in st.session_state:
@@ -102,7 +104,10 @@ if 'config_loaded' not in st.session_state:
 
 # --- Barra Lateral (Configuración Principal) ---
 with st.sidebar:
-    # ... (código de selección de bóveda y plantilla sin cambios) ...
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # <<<      Código de la barra lateral sin cambios aquí                        >>>
+    # <<<      (Selección Bóveda, Plantilla, Ruta Destino Opcional)             >>>
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     st.header("⚙️ Configuración Principal")
     current_mode_index = 1 if st.session_state.get('vault_selection_mode') == "Manual" else 0
     st.session_state.vault_selection_mode = st.radio( "Fuente Bóveda:", ["Guardada", "Manual"], key='vault_mode_radio', horizontal=True, index=current_mode_index )
@@ -146,8 +151,12 @@ with st.sidebar:
     st.subheader("Nota Objetivo")
     output_note_path_str = st.text_input( "Ruta Relativa (Opcional)", placeholder="Carpeta/NotaObjetivo.md", key='input_output_note_path', help="Ruta DENTRO de bóveda. Necesaria para {ruta_destino} y {etiqueta_jerarquica_N}." ).strip()
 
+
 # --- Área Principal (Entrada y Salida) ---
-# ... (código sin cambios) ...
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# <<<      Código del área principal sin cambios aquí                         >>>
+# <<<      (Targets, Opciones Generación, Previsualización, Salida)           >>>
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("🎯 Rutas de Contexto (Targets)")
@@ -164,7 +173,9 @@ with col2:
 st.divider()
 
 # --- Botón de Generación y Lógica Principal ---
-# ... (código sin cambios, ya usa `core.generate_prompt_core`) ...
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# <<<      Lógica del botón sin cambios aquí, ya usa core.generate_prompt_core>>>
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 vault_ready = False
 if st.session_state.vault_selection_mode == "Guardada": vault_ready = st.session_state.get('selected_vault_name') is not None
 elif st.session_state.vault_selection_mode == "Manual": vault_ready = st.session_state.get('manual_vault_path') != ""
@@ -208,7 +219,12 @@ if st.button("🚀 Generar Prompt", type="primary", use_container_width=True, di
             except Exception as e: st.error(f"Error procesando ruta destino: {e}"); st.stop()
 
         with st.spinner("⚙️ Generando contexto y prompt..."):
-            final_prompt = core.generate_prompt_core( vault_path=vault_path, target_paths=valid_targets, extensions=extensions, output_mode=output_mode, output_note_path=output_note_path_relative, template_string=template_content, excluded_extensions=excluded_extensions )
+            # <<< LLAMADA A core.py >>>
+            final_prompt = core.generate_prompt_core(
+                 vault_path=vault_path, target_paths=valid_targets, extensions=extensions,
+                 output_mode=output_mode, output_note_path=output_note_path_relative, # Puede ser None
+                 template_string=template_content, excluded_extensions=excluded_extensions
+            )
 
         st.success("✅ ¡Prompt generado!")
         st.subheader("Resultado")
@@ -225,8 +241,8 @@ if st.button("🚀 Generar Prompt", type="primary", use_container_width=True, di
             current_selected_vault_name = st.session_state.get('selected_vault_name')
             if current_selected_vault_name: config_handler.set_last_vault(current_selected_vault_name); st.session_state.last_vault_name = current_selected_vault_name
 
-    except ValueError as ve: st.error(f"❌ Error Config/Validación: {ve}") # Errores de load_template, etc.
-    except AssertionError as ae: st.error(f"❌ Error: {ae}") # Errores de validación interna
+    except ValueError as ve: st.error(f"❌ Error Config/Validación: {ve}")
+    except AssertionError as ae: st.error(f"❌ Error: {ae}")
     except Exception as e: st.error(f"❌ Error Inesperado:"); st.exception(e)
 
 

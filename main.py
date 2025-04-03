@@ -3,25 +3,17 @@ import argparse
 from pathlib import Path
 import sys
 from typing import List, Optional, Dict, Tuple
-# import os # Probablemente ya no necesario
+# import os # Eliminado, no parece usarse
 
 # Importar módulos propios necesarios para CLI
 import prompt_handler # Para selección/carga de plantillas
 import config_handler # Para gestión de bóvedas
 import core           # <<< NUEVO: Importar la lógica central
 
-# --- DEFINICIONES MOVIDAS A core.py ---
-# DEFAULT_PLACEHOLDERS
-# DEFAULT_EXTENSIONS
-# generate_hierarchical_tags
-# generate_prompt_core
-# --------------------------------------
-
 # --- FUNCIONES INTERACTIVAS (Permanecen aquí) ---
 def select_vault_interactive(vaults: Dict[str, str]) -> Optional[Tuple[str, Path]]:
     """Permite al usuario seleccionar una bóveda de una lista numerada."""
-    # ... (código sin cambios) ...
-    if not vaults: print("No hay bóvedas guardadas.", file=sys.stderr); return None
+    if not vaults: print("No hay bóvedas guardadas. Use --add-vault.", file=sys.stderr); return None
     print("\nBóvedas guardadas:"); vault_list = list(vaults.items())
     for i, (name, path) in enumerate(vault_list): print(f"  {i+1}. {name} ({path})")
     while True:
@@ -39,7 +31,6 @@ def select_vault_interactive(vaults: Dict[str, str]) -> Optional[Tuple[str, Path
 
 def select_template_interactive(templates: Dict[str, str]) -> Optional[str]:
     """Permite al usuario seleccionar una plantilla de una lista numerada."""
-    # ... (código sin cambios) ...
     if not templates: print("No hay plantillas en ./templates.", file=sys.stderr); return None
     print("\nPlantillas disponibles (./templates):"); template_list = list(templates.keys())
     for i, name in enumerate(template_list):
@@ -62,6 +53,9 @@ def select_template_interactive(templates: Dict[str, str]) -> Optional[str]:
 
 def parse_arguments() -> argparse.Namespace:
     """Define y parsea los argumentos de la línea de comandos."""
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # <<<    Se usa core.DEFAULT_EXTENSIONS y se actualiza la versión y ayuda    >>>
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     parser = argparse.ArgumentParser(
         description="Generador de Contexto Obsidian para Prompts LLM.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -87,41 +81,32 @@ def parse_arguments() -> argparse.Namespace:
 """
     )
 
-    # --- Grupo Mutuamente Excluyente para Selección de Bóveda ---
     vault_selection_group = parser.add_mutually_exclusive_group()
     vault_selection_group.add_argument( "--select-vault", type=str, metavar='NOMBRE', help="Nombre de la bóveda guardada a usar." )
     vault_selection_group.add_argument( "--vault-path", type=Path, metavar='RUTA_DIRECTORIO', help="Ruta directa a una bóveda (no se guarda)." )
 
-    # --- Argumentos de Gestión de Bóvedas ---
     vault_management_group = parser.add_argument_group('Gestión de Bóvedas (ejecutar y salir)')
     vault_management_group.add_argument( "--add-vault", nargs=2, metavar=('NOMBRE', 'RUTA'), help="Añade o actualiza una bóveda guardada." )
     vault_management_group.add_argument( "--remove-vault", type=str, metavar='NOMBRE', help="Elimina una bóveda guardada." )
     vault_management_group.add_argument( "--list-vaults", action='store_true', help="Muestra bóvedas guardadas y sale." )
 
-    # --- Argumentos de Generación de Prompt ---
     gen_group = parser.add_argument_group('Generación de Prompt')
-    gen_group.add_argument( "--target", type=str, action='append', default=[], metavar='RUTA_RELATIVA', help="Ruta relativa (a bóveda) a incluir. Repetir para múltiples. Vacío = toda la bóveda." )
-    gen_group.add_argument( "--ext", type=str, action='append', default=[], metavar='EXTENSION', help=f"Extensión a INCLUIR (ej: .md). Default: {core.DEFAULT_EXTENSIONS}" ) # <-- Usa constante de core
-    gen_group.add_argument( "--exclude-ext", type=str, action='append', default=[], metavar='EXTENSION', help="Extensión a EXCLUIR (ej: .log). Repetir para múltiples." )
-    gen_group.add_argument( "--template", type=str, metavar='NOMBRE_O_RUTA', help="Nombre de plantilla de /templates (ej: 'Archivo:GenerarNota') o ruta a .txt." )
+    gen_group.add_argument( "--target", type=str, action='append', default=[], metavar='RUTA_RELATIVA', help="Ruta relativa (a bóveda) a incluir. Repetir. Vacío = toda la bóveda." )
+    gen_group.add_argument( "--ext", type=str, action='append', default=[], metavar='EXTENSION', help=f"Extensión a INCLUIR (ej: .md). Default: {core.DEFAULT_EXTENSIONS}" ) # Usa core.
+    gen_group.add_argument( "--exclude-ext", type=str, action='append', default=[], metavar='EXTENSION', help="Extensión a EXCLUIR (ej: .log)." )
+    gen_group.add_argument( "--template", type=str, metavar='NOMBRE_O_RUTA', help="Nombre plantilla ('Archivo:Nombre') o ruta a .txt." )
     gen_group.add_argument( "--list-templates", action='store_true', help="Muestra plantillas disponibles y sale." )
     gen_group.add_argument( "--output-mode", type=str, choices=['tree', 'content', 'both'], default='both', help="Qué contexto incluir. Default: both" )
-    gen_group.add_argument( "--output-note-path", type=str, metavar='RUTA_RELATIVA', help="Ruta relativa (en bóveda) para nota objetivo. Opcional, pero necesaria para placeholders {ruta_destino} y {etiqueta_jerarquica_N}." ) # <-- Help actualizado
-    gen_group.add_argument( "--output", type=Path, default=None, metavar='ARCHIVO_SALIDA', help="Archivo opcional para guardar prompt. Si no, imprime en consola." )
+    gen_group.add_argument( "--output-note-path", type=str, metavar='RUTA_RELATIVA', help="Ruta relativa (en bóveda) para nota objetivo. Opcional, pero necesaria para placeholders {ruta_destino} y {etiqueta_jerarquica_N}." )
+    gen_group.add_argument( "--output", type=Path, default=None, metavar='ARCHIVO_SALIDA', help="Archivo opcional para guardar prompt." )
 
-    # --- Otros Argumentos ---
-    parser.add_argument( '--version', action='version', version='%(prog)s 1.0.0' # <-- Versión mayor por refactorización
-    )
+    parser.add_argument( '--version', action='version', version='%(prog)s 1.0.0' ) # Versión actualizada
 
     args = parser.parse_args()
 
-    # Post-procesar extensiones incluidas
-    ext_set = set(args.ext) if args.ext else set(core.DEFAULT_EXTENSIONS) # <-- Usa constante de core
-    args.ext = [f".{e.lower().lstrip('.')}" for e in ext_set if e.strip()]
-
-    # Post-procesar extensiones excluidas
-    exclude_ext_set = set(args.exclude_ext) if args.exclude_ext else set()
-    args.exclude_ext = [f".{e.lower().lstrip('.')}" for e in exclude_ext_set if e.strip()]
+    # Post-procesar extensiones incluidas y excluidas
+    args.ext = [f".{e.lower().lstrip('.')}" for e in (set(args.ext) if args.ext else set(core.DEFAULT_EXTENSIONS)) if e.strip()]
+    args.exclude_ext = [f".{e.lower().lstrip('.')}" for e in set(args.exclude_ext) if e.strip()]
 
     return args
 
@@ -142,7 +127,6 @@ def main():
             print("\nPlantillas Disponibles (./templates):")
             available_templates = prompt_handler.get_available_templates()
             if available_templates:
-                # Ordenar y mostrar nombres limpios
                 for name in sorted(available_templates.keys()):
                     display_name = name
                     if name.startswith("Archivo: "):
@@ -150,11 +134,8 @@ def main():
                         except: display_name = f"📄 {name.split('Archivo: ')[1]} (?)"
                     print(f"  - {display_name}")
             else: print("  (No se encontraron plantillas .txt)")
-        if args.add_vault:
-            name, path_str = args.add_vault
-            config_handler.add_vault(name, path_str)
-        if args.remove_vault:
-            config_handler.remove_vault(args.remove_vault)
+        if args.add_vault: config_handler.add_vault(args.add_vault[0], args.add_vault[1])
+        if args.remove_vault: config_handler.remove_vault(args.remove_vault)
         print("\nAcción(es) de gestión completada(s).")
         sys.exit(0)
 
@@ -163,10 +144,13 @@ def main():
 
     # 1. Determinar la bóveda a usar
     selected_vault_path: Optional[Path] = None; selected_vault_name: Optional[str] = None; used_manual_path = False
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # <<<           Lógica de selección de bóveda sin cambios aquí                >>>
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     if args.vault_path:
         try:
             manual_path = args.vault_path.resolve()
-            if not manual_path.is_dir(): print(f"Error: Ruta manual (--vault-path) inválida: {args.vault_path}", file=sys.stderr); sys.exit(1)
+            if not manual_path.is_dir(): print(f"Error: Ruta manual inválida: {args.vault_path}", file=sys.stderr); sys.exit(1)
             selected_vault_path = manual_path; selected_vault_name = f"(Ruta Manual: {args.vault_path.name})"; used_manual_path = True
             print(f"Usando bóveda de ruta manual: '{selected_vault_path}'")
         except Exception as e: print(f"Error procesando ruta manual '{args.vault_path}': {e}", file=sys.stderr); sys.exit(1)
@@ -206,9 +190,8 @@ def main():
                  output_note_path_relative = temp_path.relative_to(selected_vault_path.resolve())
             else:
                  output_note_path_relative = Path(args.output_note_path.lstrip('/\\'))
-        except ValueError: print(f"Error: Ruta nota destino absoluta '{args.output_note_path}' no en bóveda '{selected_vault_path}'.", file=sys.stderr); sys.exit(1)
-        except Exception as e: print(f"Error procesando ruta nota destino '{args.output_note_path}': {e}", file=sys.stderr); sys.exit(1)
-    # else: # Ya no se imprime el INFO aquí, se hace en core si es necesario
+        except ValueError: print(f"Error: Ruta nota destino absoluta '{args.output_note_path}' no en bóveda.", file=sys.stderr); sys.exit(1)
+        except Exception as e: print(f"Error procesando ruta nota destino: {e}", file=sys.stderr); sys.exit(1)
 
     # 4. Determinar la plantilla a usar
     template_string: Optional[str] = None
@@ -228,14 +211,17 @@ def main():
     # 5. Llamar a la lógica core
     try:
         print("\n--- Ejecutando Generación Core ---")
-        final_prompt = core.generate_prompt_core( # <<< LLAMADA A core.py
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        # <<<                LLAMADA A LA FUNCIÓN EN core.py                        >>>
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        final_prompt = core.generate_prompt_core(
             vault_path=selected_vault_path,
             target_paths=args.target,
             extensions=args.ext,
             output_mode=args.output_mode,
             output_note_path=output_note_path_relative, # Puede ser None
             template_string=template_string,
-            excluded_extensions=args.exclude_ext # Pasar exclusiones
+            excluded_extensions=args.exclude_ext # Pasar exclusiones (necesita implementación en file_handler)
         )
     except Exception as e:
          print(f"\nError durante la generación: {e}", file=sys.stderr)
@@ -258,7 +244,7 @@ def main():
     if selected_vault_name and not used_manual_path:
         config_handler.set_last_vault(selected_vault_name)
     elif used_manual_path:
-        print("INFO: No se actualiza última bóveda usada (se usó --vault-path).", file=sys.stderr)
+        print("INFO: No se actualiza última bóveda usada (--vault-path).", file=sys.stderr)
 
     print("\n--- Proceso CLI Completado ---")
 
