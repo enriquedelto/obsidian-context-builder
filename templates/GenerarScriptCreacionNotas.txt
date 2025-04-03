@@ -1,49 +1,53 @@
-# Rol: Generador de Scripts PowerShell, Planificador de Conocimiento y Experto en Obsidian
+# Rol: Planificador de Conocimiento, Generador de Estructuras de Carpetas y Scripts PowerShell (¡CON PRECAUCIÓN!)
 
 ## Tarea Principal
-1.  **Analizar y Filtrar:** Procesar la lista de enlaces [[Wikilinks]] *no resueltos* proporcionada (`{lista_enlaces_faltantes}`). Filtrar esta lista para **excluir** enlaces que apunten a secciones específicas (conteniendo `#`) o que parezcan rutas existentes fuera de la Enciclopedia (conteniendo `/`). El objetivo es obtener una lista limpia de **conceptos atómicos** adecuados para una enciclopedia.
-2.  **Planificar Categorización:** Para la lista filtrada de conceptos, **determinar una estructura de carpetas lógica y categorizada** dentro de la carpeta "Enciclopedia" (ej. `Sistemas Operativos/Planificación`, `Programación/Compilación`, `Hardware/CPU`, `Informática General/Conceptos`, etc.). La categorización debe ser significativa y basada en el dominio del conocimiento de los conceptos.
-3.  **Generar Script PowerShell:** Crear un script **completo** de PowerShell (.ps1) que implemente la estructura de carpetas categorizada planificada en el paso 2. El script deberá:
-    *   Contener internamente la lista de rutas *categorizadas* (ej. `"Sistemas Operativos/Planificación/Concepto.md"`).
-    *   Crear las carpetas de categorías/subcategorías necesarias dentro de la carpeta "Enciclopedia".
-    *   Crear archivos `.md` vacíos para cada concepto dentro de su carpeta asignada.
-    *   Ser robusto, manejar UTF-8 (sin BOM) y **evitar sobrescribir** archivos o carpetas existentes.
+1.  **Procesar Lista:** Analizar la lista de conceptos o nombres de archivo proporcionada en `{lista_conceptos}`. Filtrarla si es necesario (ej. quitar duplicados, extensiones).
+2.  **Planificar Estructura:** Determinar una estructura de carpetas lógica y categorizada *dentro* de una carpeta base (`{carpeta_objetivo}`) donde se crearán los nuevos archivos `.md` para cada concepto.
+3.  **Generar Script PowerShell:** Crear un script PowerShell (.ps1) que implemente la estructura planificada, creando las carpetas necesarias y los archivos `.md` vacíos correspondientes.
 
 ## Contexto Proporcionado
-*   **Lista de Enlaces Faltantes (Bruta):**
+*   **Lista de Conceptos/Nombres de Archivo:**
     ```
-    {lista_enlaces_faltantes}
+    {lista_conceptos}
     ```
-    *   *Esta es la lista inicial a filtrar y categorizar.*
+    *   *Lista de los nombres para los que se deben crear archivos .md. Puede ser una lista simple, o enlaces [[Wikilink]]. El script deberá extraer el nombre base.*
+*   **Carpeta Base para Creación:** `{carpeta_objetivo}`
+    *   *Ruta relativa (desde la raíz de la bóveda) donde se crearán las nuevas carpetas y archivos.*
 *   **(Opcional) Contexto General de la Bóveda:**
     ```
     {contexto_extraido}
     ```
-    *   *Puede usarse para entender la estructura existente y refinar la categorización si es necesario.*
-*   **(Opcional) Nota Origen:** `{ruta_destino}` (Podría ser la nota de donde se extrajeron los enlaces faltantes).
+    *   *Puede usarse para refinar la categorización propuesta.*
 
 ## Requisitos Detallados para el Script PowerShell de Salida
 
-1.  **Formato:** Únicamente código PowerShell válido (`.ps1`), comenzando con `<# ... #>`.
-2.  **Metadatos del Script:** Incluir bloque `<# ... #>` con `.SYNOPSIS`, `.DESCRIPTION` (detallando filtrado, categorización, no-sobrescritura, UTF-8), `.PARAMETER VaultBasePath`, `.EXAMPLE`, `.NOTES`.
-3.  **Parámetro Obligatorio:** `-VaultBasePath` para la raíz de la bóveda, con un valor predeterminado *claramente indicado* para ajustar.
-4.  **Configuración Interna:** Variables para `$EnciclopediaFolder`, cálculo de ruta absoluta, configuración UTF-8.
-5.  **Lista de Ítems a Crear (Categorizada):** El script DEBE contener una variable array (`$itemsToCreate`) inicializada con la **lista de rutas relativas ya categorizadas y filtradas**, producto de la planificación (ej. `"Sistemas Operativos/Planificación/Concepto.md"`).
-6.  **Lógica de Creación:**
-    *   Verificar/crear la carpeta base "Enciclopedia".
-    *   Iterar sobre cada ruta *categorizada* en `$itemsToCreate`.
+1.  **¡¡¡ADVERTENCIA DE SEGURIDAD!!!**
+    *   **Revisar el script cuidadosamente ANTES de ejecutarlo.**
+    *   **Hacer una COPIA DE SEGURIDAD COMPLETA de la bóveda antes.**
+    *   El script **NO debe sobrescribir** archivos o carpetas existentes.
+2.  **Formato:** Únicamente código PowerShell válido (`.ps1`), comenzando con bloque de comentarios de ayuda.
+3.  **Metadatos del Script:** Incluir `<# ... #>` con `.SYNOPSIS` (Crear estructura de carpetas y archivos .md vacíos), `.DESCRIPTION` (Detallando procesamiento de lista, categorización, creación segura (no-sobrescritura), UTF-8 sin BOM, necesidad de revisión y backup), `.PARAMETER VaultBasePath`, `.PARAMETER TargetFolderRelativePath`, `.EXAMPLE`, `.NOTES` (¡Incluyendo advertencia!).
+4.  **Parámetros Obligatorios:**
+    *   `-VaultBasePath`: Ruta a la raíz de la bóveda.
+    *   `-TargetFolderRelativePath`: Ruta relativa de la carpeta base para la creación (debe coincidir con `{carpeta_objetivo}`).
+5.  **Procesamiento y Planificación Interna:** El script debe:
+    *   Contener la lista original (o procesada) de conceptos/nombres.
+    *   Contener una estructura (ej. array `$itemsToCreate`) con las **rutas relativas finales y categorizadas** (respecto a `TargetFolderRelativePath`) para cada archivo `.md` a crear. Ejemplo: `$itemsToCreate = @("Categoria1/ConceptoA.md", "Categoria2/SubCat/ConceptoB.md")`. Este array es el resultado de la planificación de la estructura.
+    *   Incluir lógica para extraer nombres base limpios de la lista `{lista_conceptos}` (ej. quitar `[[`, `]]`, `#section`, `.md`).
+6.  **Lógica de Creación Segura:**
+    *   Construir ruta absoluta de la carpeta objetivo (`$targetPathAbs`). Verificar/crear si no existe.
+    *   Iterar sobre cada ruta relativa final (`$relDestPath`) en `$itemsToCreate`.
     *   Para cada ruta:
-        *   Construir ruta absoluta completa.
-        *   Extraer ruta del directorio padre (puede tener múltiples niveles: `Categoría/Subcategoría`).
-        *   Verificar si el directorio padre existe (`Test-Path -PathType Container`). Si no, crearlo **recursivamente** (`New-Item -ItemType Directory -Force`). Usar `try-catch`.
-        *   Verificar si el archivo `.md` final existe (`Test-Path -PathType Leaf`).
-        *   **Si NO existe**, crearlo vacío (UTF-8 sin BOM, e.g., con `[System.IO.File]::WriteAllText($path, "", [System.Text.UTF8Encoding]::new($false))`). Usar `try-catch`.
-        *   **Si YA existe**, omitirlo y mostrar mensaje.
-7.  **Mensajes Informativos:** Usar `Write-Host` con colores para indicar progreso (inicio, creación de carpetas/archivos, omisiones).
-8.  **Manejo de Errores Básico:** Bloques `try-catch` para operaciones `New-Item`.
-9.  **Salida Limpia:** Mensaje de finalización con resumen (opcional: contadores).
+        *   Construir ruta absoluta completa del archivo (`$destFileAbs = Join-Path $targetPathAbs $relDestPath`).
+        *   Extraer directorio padre (`$destDirAbs = Split-Path -Path $destFileAbs -Parent`).
+        *   **Crear directorio padre:** Si no existe (`Test-Path $destDirAbs -PathType Container`), crearlo recursivamente (`New-Item -ItemType Directory -Force`). Usar `try-catch`.
+        *   **¡CRÍTICO - Verificar archivo!** `Test-Path $destFileAbs -PathType Leaf`. Si **SÍ existe**, NO CREAR, mostrar advertencia de omisión y continuar.
+        *   Si el archivo NO existe: Crearlo vacío con codificación UTF-8 sin BOM (ej. `[System.IO.File]::WriteAllText($destFileAbs, "", [System.Text.UTF8Encoding]::new($false))`). Usar `try-catch`.
+7.  **Mensajes Informativos:** `Write-Host` con colores (inicio, advertencia seguridad, creación dir/archivo, omisiones, errores).
+8.  **Manejo de Errores:** Bloques `try-catch` para `New-Item` y la escritura del archivo.
+9.  **Salida Limpia:** Mensaje final con resumen (creados/omitidos).
 
 ## Solicitud Final
-Basándote en la `{lista_enlaces_faltantes}` y siguiendo el **proceso refinado** (filtrado, categorización por IA, generación de script):
-1.  Realiza internamente el filtrado y la planificación de categorías.
-2.  Genera UNA SOLA VEZ el script completo de PowerShell (.ps1) que implemente dicha estructura categorizada. Asegúrate de que la lista *categorizada* se incorpore directamente dentro del array `$itemsToCreate`. La salida debe ser solo el código PowerShell.
+Basándote en la `{lista_conceptos}` y la `{carpeta_objetivo}` (y opcionalmente `contexto_extraido` para la categorización):
+1.  Realiza internamente el procesamiento de la lista y la planificación de la estructura categorizada dentro de `{carpeta_objetivo}`.
+2.  Genera UNA SOLA VEZ el script completo de PowerShell (.ps1) que implemente esa creación. Asegúrate de que las rutas finales categorizadas estén en `$itemsToCreate` y que se incluyan todas las advertencias y verificaciones de seguridad. La salida debe ser solo el código PowerShell.

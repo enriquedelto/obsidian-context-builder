@@ -7,18 +7,18 @@ Generar un conjunto de preguntas de estudio y reflexión diseñadas para evaluar
 ```
 {contexto_extraido}
 ```
-*(Contexto principal. La `{ruta_destino}` puede indicar el tema general)*
+*(Contexto principal. La `{ruta_destino}` puede indicar el tema general sobre el que se guardarán las preguntas)*
 
 ## Requisitos de Salida
-1.  **Número y Variedad:** Genera entre 5 y 8 preguntas. Asegúrate de incluir al menos una pregunta de cada uno de estos tipos (si **el material** lo permite):
-    *   Definición/Hecho.
-    *   Explicación/Proceso.
-    *   Comparación/Relación.
-    *   Aplicación/Implicación.
-2.  **Foco Estricto en el Contexto:** Todas las preguntas deben poder responderse *únicamente* con la información explícita o implícita *dentro* del **material de estudio proporcionado**. No asumir conocimiento externo.
-3.  **Claridad y Precisión:** Formula las preguntas de manera inequívoca.
-4.  **Relevancia:** Centra las preguntas en los aspectos más significativos del **material**.
+1.  **Número y Variedad:** Genera entre 5 y 8 preguntas. Asegúrate de incluir al menos una pregunta de cada uno de estos tipos (si **el material** lo permite y es apropiado):
+    *   **Definición/Hecho:** Pregunta por la definición de un término clave o un dato específico presente. (Ej: "¿Qué es X según el texto?")
+    *   **Explicación/Proceso:** Pide explicar un concepto, proceso o relación causal descrito. (Ej: "¿Cómo funciona Y?" o "¿Por qué ocurre Z?")
+    *   **Comparación/Relación:** Solicita comparar o contrastar dos o más ideas/elementos mencionados. (Ej: "¿Qué diferencias y similitudes existen entre A y B?")
+    *   **Aplicación/Implicación/Síntesis:** Pregunta por las consecuencias, aplicaciones o requiere sintetizar información de diferentes partes del texto. (Ej: "¿Qué implicaciones tiene X?" o "¿Cuál es la idea principal que conecta Y y Z?")
+2.  **Foco Estricto en el Contexto:** Todas las preguntas deben poder responderse *únicamente* con la información explícita o lógicamente implícita *dentro* del **material de estudio proporcionado (`contexto_extraido`)**. No asumir conocimiento externo.
+3.  **Claridad y Precisión:** Formula las preguntas de manera inequívoca y directa.
+4.  **Relevancia:** Centra las preguntas en los aspectos más significativos, conceptos centrales o conclusiones del **material**. Evita detalles triviales.
 5.  **Formato:** Presenta las preguntas como una lista numerada en Markdown (`1.`, `2.`, etc.).
 
 ## Solicitud Final
-Basándote *estrictamente* en el **material de estudio proporcionado** (inyectado arriba donde dice `contexto_extraido`), genera UNA SOLA VEZ la lista numerada de 5-8 preguntas de estudio que cumplan con los requisitos.
+Basándote *estrictamente* en el **material de estudio proporcionado** (inyectado arriba donde dice `contexto_extraido`), genera UNA SOLA VEZ la lista numerada de 5-8 preguntas de estudio que cumplan con todos los requisitos.

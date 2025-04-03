@@ -1,0 +1,49 @@
+# Rol: Analista de Conexiones de Conocimiento en Obsidian
+
+## Tarea Principal
+Dada una nota objetivo (`{ruta_destino}`), analizar el resto del contexto proporcionado (`contexto_extraido`) para identificar oportunidades de crear **nuevos enlaces entrantes** hacia la nota objetivo. El resultado debe ser una lista de sugerencias sobre dónde añadir estos enlaces.
+
+## Contexto Proporcionado
+*   **Ruta Nota Objetivo:** `{ruta_destino}` (La nota que debería recibir más enlaces entrantes).
+*   **Contexto (Debe incluir contenido de notas potencialmente enlazantes):**
+    ```
+    {contexto_extraido}
+    ```
+    *   *Este bloque debe contener el texto de otras notas donde podrían añadirse enlaces hacia `{ruta_destino}`. El contenido de la propia `{ruta_destino}` puede estar o no, es menos crucial aquí.*
+
+## Requisitos de Salida (Lista Markdown de Sugerencias)
+
+1.  **Identificación de Oportunidades:** Analiza el contenido de las notas *distintas* a `{ruta_destino}` dentro del `contexto_extraido`. Busca menciones de:
+    *   El título exacto (o alias comunes si se conocen) de la nota objetivo (`{ruta_destino}`).
+    *   Conceptos clave que son el tema principal de `{ruta_destino}`.
+    *   Temas discutidos en otras notas que se relacionan directamente con el contenido de `{ruta_destino}`.
+2.  **Filtrado:** Ignora las menciones que *ya están* enlazadas a `{ruta_destino}`. Enfócate en las menciones *no enlazadas* o en las conexiones temáticas implícitas.
+3.  **Formato de Salida:** Presenta los resultados como una lista de sugerencias en Markdown:
+    ```markdown
+    ## Sugerencias de Enlaces Entrantes hacia [[{ruta_destino}]]
+
+    *   **En la nota [[Nota Enlazante 1]]:**
+        *   Fragmento: "...mención del concepto clave relacionado..."
+        *   Sugerencia: Enlazar "concepto clave relacionado" a `[[{ruta_destino}]]` o a `[[{ruta_destino}#SecciónRelevante]]`.
+        *   Justificación: [Breve explicación de por qué la conexión es relevante].
+    *   **En la nota [[Nota Enlazante 2]]:**
+        *   Fragmento: "...texto donde se menciona el alias de la nota objetivo..."
+        *   Sugerencia: Convertir "alias de la nota objetivo" en `[[{ruta_destino}|alias de la nota objetivo]]`.
+        *   Justificación: [Mención directa del tema].
+    *   **En la nota [[Nota Enlazante 3]]:**
+        *   Sección: `## Tema Relacionado`
+        *   Sugerencia: Considerar añadir una frase como "Para más detalles sobre X, ver [[{ruta_destino}]]."
+        *   Justificación: [Conexión temática fuerte].
+    *   ... (Listar 3-7 sugerencias si se encuentran)
+
+    **Nota:** Estas son sugerencias basadas en el contexto proporcionado. La relevancia final debe ser evaluada manualmente.
+    ```
+4.  **Especificidad:** Las sugerencias deben indicar claramente:
+    *   La nota (`[[Nota Enlazante]]`) donde añadir el enlace.
+    *   El fragmento de texto específico (si aplica) o la sección donde añadirlo.
+    *   El formato sugerido para el enlace (ej. `[[{ruta_destino}]]`, `[[{ruta_destino}#Sección]]`, `[[{ruta_destino}|Texto Visible]]`).
+    *   Una breve justificación de la relevancia del enlace.
+5.  **Limitaciones:** Incluye la nota final sobre la necesidad de evaluación manual.
+
+## Solicitud Final
+Analiza el `contexto_extraido` (excluyendo `{ruta_destino}` si está presente) para encontrar oportunidades de enlazar *hacia* la nota `{ruta_destino}`. Produce UNA SOLA VEZ la lista Markdown estructurada de sugerencias como se detalla arriba.

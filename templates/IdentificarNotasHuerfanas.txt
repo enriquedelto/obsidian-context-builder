@@ -1,0 +1,40 @@
+# Rol: Analista de Grafos de Conocimiento en Obsidian
+
+## Tarea Principal
+Analizar la estructura y los enlaces *dentro* del contexto proporcionado (`contexto_extraido`), que idealmente representa una carpeta o sección de la bóveda. El objetivo es identificar notas (archivos `.md`) que parecen estar pobremente conectadas (huérfanas o casi huérfanas) dentro de dicho contexto.
+
+## Contexto Proporcionado
+*   **Área de Análisis (Estructura y/o Contenido - el árbol es más útil aquí):**
+    ```
+    {contexto_extraido}
+    ```
+    *   *Este bloque debe mostrar la estructura de archivos y, si es posible (`output_mode=content` o `both`), el contenido para analizar enlaces internos.*
+*   **(Opcional) Carpeta Raíz del Análisis:** `{ruta_destino}` (Puede indicar la carpeta principal que se está analizando, si el contexto es de una subsección).
+
+## Requisitos de Salida (Lista Markdown)
+Genera una lista en formato Markdown que identifique las notas potencialmente huérfanas detectadas *dentro del contexto proporcionado*.
+
+1.  **Identificación:** Busca archivos `.md` que cumplan *alguno* de estos criterios basándose *únicamente* en la información del `contexto_extraido`:
+    *   **Pocos o Ningún Enlace Saliente:** La nota contiene muy pocos o ningún `[[Wikilink]]` hacia *otras notas* dentro del contexto.
+    *   **Pocos o Ningún Enlace Entrante:** La nota es mencionada (enlazada con `[[...]]`) muy pocas veces o ninguna por *otras notas* dentro del contexto. (Esto requiere que el contenido de otras notas esté visible).
+2.  **Formato de Salida:** Presenta los resultados como una lista de viñetas:
+    ```markdown
+    ## Notas Potencialmente Huérfanas Detectadas en el Contexto
+
+    *   [[Nota Identificada 1]]:
+        *   Motivo: [Ej: Pocos enlaces salientes detectados en su contenido.]
+        *   Sugerencia: [Ej: Considerar enlazar a [[Concepto Relacionado A]] y [[Concepto Relacionado B]].]
+        *   Sugerencia: [Ej: Revisar si [[Nota Padre X]] debería enlazar aquí.]
+    *   [[Nota Identificada 2]]:
+        *   Motivo: [Ej: No se encontraron enlaces entrantes desde otras notas en el contexto.]
+        *   Sugerencia: [Ej: Integrar en [[MOC Principal]] o enlazar desde [[Tema General Y]].]
+        *   Sugerencia: [Ej: ¿Podría ser redundante con [[Nota Similar Z]]?]
+    *   ... (Listar 3-7 notas si se encuentran)
+
+    **Nota:** Este análisis se basa únicamente en el contexto proporcionado. Pueden existir enlaces fuera de este contexto.
+    ```
+3.  **Sugerencias Accionables:** Para cada nota identificada, proporciona 1 o 2 sugerencias concretas sobre cómo mejorar su integración (ej., a qué otras notas podría enlazar, qué notas podrían enlazar a ella, si debería fusionarse o eliminarse). Las sugerencias deben basarse en los nombres de archivo y la estructura visible en el contexto.
+4.  **Limitaciones:** Incluye la nota final sobre las limitaciones del análisis contextual.
+
+## Solicitud Final
+Analiza el `contexto_extraido` (estructura y, si es posible, contenido) para identificar notas `.md` con baja conectividad *dentro de ese contexto*. Produce UNA SOLA VEZ la lista Markdown estructurada como se detalla arriba, incluyendo motivos y sugerencias.

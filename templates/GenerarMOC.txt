@@ -1,0 +1,49 @@
+# Rol: Arquitecto de Información y Creador de Mapas de Contenido (MOC) en Obsidian
+
+## Tarea Principal
+Generar el contenido Markdown para una nueva nota de tipo "Mapa de Contenido" (MOC), ubicada en `{ruta_destino}`. Esta nota MOC debe organizar y enlazar a las principales subcarpetas y notas clave identificadas dentro del `contexto_extraido`, que representa la estructura y/o contenido de un área temática específica de la bóveda.
+
+## Contexto Proporcionado
+*   **Ruta Destino para el MOC:** `{ruta_destino}` (Ej: "AreaTematica/AreaTematica_MOC.md")
+*   **Contexto (Estructura y/o Contenido del Área a Mapear):**
+    ```
+    {contexto_extraido}
+    ```
+    *   *Analiza este contexto (idealmente la salida de `tree` o similar, pero también el contenido si está disponible) para identificar las principales subcarpetas y notas conceptualmente importantes.*
+*   **(Implícito) Etiquetas Jerárquicas del MOC:** `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ...
+
+## Requisitos de Salida (Contenido Markdown del MOC)
+
+1.  **Título Claro:** El contenido debe empezar con un título `#` que refleje el área temática cubierta por el MOC (ej. `# Mapa de Contenido: [Nombre del Área Temática]`).
+2.  **Estructura Organizada:** Organiza el MOC usando encabezados (`##`, `###`) para representar las principales subcategorías o temas dentro del área.
+3.  **Enlaces a Subcarpetas (Opcional pero Recomendado):** Si el contexto muestra subcarpetas significativas, considera enlazarlas. Podrías usar un formato como: `## [[Subcarpeta Principal 1]]` o una lista bajo un encabezado temático.
+4.  **Enlaces a Notas Clave:** Dentro de cada sección/categoría del MOC, lista y enlaza (`[[Nota Clave 1]]`, `[[Nota Clave 2]]`) las notas más importantes o representativas de ese subtema, basándote en el `contexto_extraido`.
+    *   **Selección:** Prioriza notas que parezcan ser introducciones, resúmenes, conceptos fundamentales o sub-MOCs dentro del contexto.
+    *   **Anotaciones Breves (Opcional):** Puedes añadir una descripción muy corta después de cada enlace para aclarar su contenido (ej. `* [[Concepto X]]: Definición principal.` ).
+5.  **Jerarquía Lógica:** La estructura del MOC debe reflejar una organización lógica y jerárquica del conocimiento presente en el contexto. Agrupa temas relacionados.
+6.  **Interconexión:** El MOC en sí mismo debe ser un nodo bien conectado. Asegúrate de que los enlaces `[[...]]` sean correctos según los nombres de archivo/carpeta en el contexto.
+7.  **YAML Frontmatter:** Incluye un bloque YAML apropiado para una nota MOC:
+    ```yaml
+    ---
+    tags:
+      # Etiquetas Jerárquicas (Obligatorias, basadas en la ruta del MOC)
+      - {etiqueta_jerarquica_1}
+      - {etiqueta_jerarquica_2}
+      # ...
+
+      # Etiquetas Conceptuales (Generadas por IA)
+      - moc # Etiqueta obligatoria para MOCs
+      - [area_tematica_principal] # Ej: sistemas_operativos, calculo_diferencial
+      - [subtema_1] # Si el MOC cubre varios subtemas
+      - [subtema_2]
+    aliases: ["MOC de [Área Temática]", "[Área Temática] Index"] # Sugerir 1-2 alias útiles
+    ---
+    ```
+    *   Usa `{etiqueta_jerarquica_N}`.
+    *   **Obligatorio:** Incluir la etiqueta `moc`.
+    *   Genera etiquetas conceptuales que describan el área cubierta.
+    *   Sugiere alias relevantes.
+8.  **Formato Limpio:** Usa listas de viñetas (`*` o `-`) para enumerar los enlaces dentro de cada sección.
+
+## Solicitud Final
+Analiza el `contexto_extraido` (especialmente su estructura). Identifica las subcarpetas y notas clave. Genera UNA SOLA VEZ el contenido completo en Markdown para la nota MOC que se guardará en `{ruta_destino}`. La nota MOC debe organizar y enlazar los elementos identificados de forma lógica y jerárquica. Incluye el YAML frontmatter especificado. Empieza directamente con el bloque YAML `---`.

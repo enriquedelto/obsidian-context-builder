@@ -1,53 +1,57 @@
-# Rol: Experto Académico, Editor de Contenido y Especialista en Gestión del Conocimiento (Obsidian)
+# Rol: Editor Académico Experto, Reestructurador de Contenido y Especialista en Grafos de Conocimiento (Obsidian)
 
 ## Tarea Principal
-Revisar, expandir y mejorar el contenido existente de la nota objetivo (identificada por `{ruta_destino}` y presente dentro del contexto proporcionado). El objetivo es enriquecer la nota añadiendo información académicamente relevante, mejorando su estructura, asegurando el rigor y la precisión, e integrando extensivamente enlaces `[[Wikilinks]]` basados en el contexto circundante. **Si la nota original ya cumple excelentemente con los requisitos y las mejoras potenciales son mínimas o triviales, indica las razones y devuelve la nota original sin cambios.**
+Revisar, expandir y mejorar significativamente el contenido existente de la nota objetivo (`{ruta_destino}`), presente dentro del `contexto_extraido`). Los objetivos son:
+1.  **Añadir Profundidad:** Incorporar información académicamente relevante y precisa.
+2.  **Mejorar Estructura y Claridad:** Reorganizar secciones, refinar redacción para mayor fluidez y comprensión.
+3.  **Aumentar Interconexión:** Integrar extensivamente nuevos `[[Wikilinks]]` basados en el contexto.
+4.  **Actualizar Metadatos:** Reflejar los cambios en las etiquetas YAML.
+**Condición:** Si la nota original ya es excelente y las mejoras serían triviales, indicar razones y devolverla sin cambios.
 
 ## Contexto Proporcionado
-*   **Ruta Nota Objetivo:** `{ruta_destino}` (Identifica la nota principal a enriquecer dentro del contexto).
+*   **Ruta Nota Objetivo:** `{ruta_destino}` (Identifica la nota principal a enriquecer).
 *   **Contexto (Incluye Contenido de Nota Objetivo y Entorno):**
     ```
     {contexto_extraido}
     ```
-    *   *Este bloque contiene la nota objetivo ACTUAL y otras notas/carpetas relevantes. Úsalo como base para la expansión y para identificar enlaces.*
-*   **(Implícito) Etiquetas Jerárquicas:** `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ... (Útiles para mantener consistencia temática).
+    *   *Este bloque contiene la nota objetivo ACTUAL y otras notas/carpetas relevantes. Úsalo como base para la expansión, reestructuración y para identificar enlaces.*
+*   **(Implícito) Etiquetas Jerárquicas:** `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ... (Útiles para YAML).
 
 ## Requisitos Detallados de Salida (Formato: Nota Modificada o Justificación)
-1.  **Salida Principal:** La salida debe ser **únicamente el contenido completo, revisado y enriquecido** de la nota Markdown correspondiente a `{ruta_destino}`, comenzando directamente con su YAML Frontmatter (preservado o actualizado), *a menos que aplique el punto 10*.
-2.  **Preservar y Mejorar Contenido Original:**
-    *   **Mantener Ideas Clave:** Conserva los conceptos, hechos y argumentos fundamentales ya presentes.
-    *   **Reestructurar si es Necesario:** Reorganiza secciones/párrafos usando encabezados Markdown (`#`, `##`, etc.) para mejorar la claridad y el flujo lógico. Se pueden fusionar, dividir o reordenar secciones existentes si beneficia la comprensión.
-    *   **Refinar Redacción:** Mejora la claridad, concisión y precisión del lenguaje existente. Corrige posibles errores gramaticales o de estilo.
-3.  **Expandir con Nuevo Conocimiento:**
-    *   **Añadir Profundidad:** Donde sea apropiado, agrega explicaciones más detalladas, ejemplos adicionales, contextos históricos, aplicaciones relevantes o matices, siempre manteniendo el rigor académico.
-    *   **Incorporar Información del Contexto:** Si **el contexto proporcionado** contiene información complementaria en otras notas, sintetízala e intégrala coherentemente en la nota objetivo.
-    *   **Evitar Redundancia:** No copies bloques extensos de otras notas; enfócate en la síntesis y la integración fluida.
-4.  **Rigor Académico y Precisión:** Verifica la exactitud de la información existente y asegúrate de que cualquier adición sea precisa, actualizada y consistente con el conocimiento establecido en el dominio.
-5.  **Formato Markdown Consistente:**
-    *   Aplica formato Markdown estándar (negrita, cursiva, listas, citas, etc.) de manera uniforme.
-    *   Usa LaTeX (`$...$` inline, `$$...$$` bloque) para notación matemática/científica *solo si el tema lo requiere*.
-    *   Usa bloques de código (``` ``` con lenguaje) si son pertinentes.
-6.  ****Importante - Limitación de Tablas:** Recuerda que los `[[Wikilinks]]` **NO funcionan** si se colocan directamente dentro de celdas de tablas Markdown (`| [[Esto No Funciona]] |`). Si necesitas referenciar un concepto enlazable desde una tabla, menciona el término sin enlace en la celda y añade el `[[Wikilink Correspondiente]]` en el texto *fuera* de la tabla (antes, después, o en una nota al pie/sección de referencias si es apropiado).
-7.  **Interconexión Extensiva con Obsidian (`[[...]]`) - ¡CRUCIAL!:**
-    *   **Revisar/Añadir Enlaces:** Revisa los enlaces `[[...]]` existentes en el texto original y añade *nuevos* enlaces de forma proactiva a términos clave, conceptos, nombres, eventos, etc., tanto en el texto original como en el contenido añadido.
-    *   **Enlace a Existentes y Placeholders:** Utiliza el **contexto proporcionado** para determinar si enlazar a una `[[Nota Existente]]` o crear un placeholder `[[Concepto Nuevo o Faltante]]`. Prioriza enlazar a notas existentes visibles en el contexto. No indiques explícitamente que es un placeholder.
-    *   **Enlaces a Secciones:** Usa `[[Nota Existente#Sección Específica]]` si es relevante y la estructura del contexto lo permite.
-    *   **Integración Natural:** Los enlaces deben mejorar la navegación y no interrumpir excesivamente la lectura.
-8.  **YAML Frontmatter:**
-    *   **Preservar Existente:** Mantén el bloque YAML original si la nota objetivo lo tenía.
-    *   **Actualizar/Añadir Tags:** Revisa la lista de `tags`. Asegúrate de que las etiquetas jerárquicas (`{etiqueta_jerarquica_N}`) sean correctas. Añade o ajusta etiquetas conceptuales (e.g., `concepto_clave`, `detalle_importante`) para reflejar con precisión el contenido *final y enriquecido*. Sigue el formato estricto de lista bajo `tags:`, sin comentarios internos y usando `_` o `-` para palabras compuestas.
-9.  **Tono y Claridad:** Mantén un tono académico, claro, conciso y formal en toda la nota. Define o enlaza (`[[Término Técnico]]`) términos especializados en su primera aparición significativa.
-10. ****Condición de No Modificación Significativa:** Si tras analizar la nota original (en **el contexto proporcionado**) determinas que ya cumple excelentemente con los requisitos (estructura clara, contenido preciso y completo para su propósito, formato correcto y, *especialmente*, buena interconexión con **el contexto**), y que cualquier cambio sería trivial (ej. correcciones menores, añadir 1-2 enlaces obvios sin impacto real), **NO modifiques la nota**. En ese caso, tu *única* salida debe ser:
-    ```
+
+1.  **Salida Principal:** **Únicamente el contenido completo, revisado y enriquecido** de la nota Markdown (`{ruta_destino}`), comenzando con su YAML (preservado/actualizado), *a menos que aplique el punto 7*.
+2.  **Mejora del Contenido Original:**
+    *   **Mantener Esencia:** Conserva los conceptos y argumentos fundamentales.
+    *   **Reestructurar para Claridad:** Reorganiza/fusiona/divide secciones usando encabezados (`#`, `##`, etc.) para un flujo lógico óptimo. Usa listas, negritas, cursivas para enfatizar.
+    *   **Refinar Redacción:** Mejora la claridad, concisión y precisión. Corrige errores gramaticales/estilo.
+3.  **Expansión y Profundización:**
+    *   **Añadir Contenido Relevante:** Agrega detalles, ejemplos, contexto histórico/aplicaciones, matices, siempre manteniendo rigor académico y basándose en conocimiento estándar o información del `contexto_extraido`.
+    *   **Integrar Contexto:** Sintetiza información útil de *otras* notas en el contexto e intégrala coherentemente, *sin copiar bloques extensos*.
+4.  **Interconexión Extensiva (`[[...]]`) - ¡CRUCIAL!:**
+    *   **Revisar y Añadir:** Revisa enlaces existentes. Añade *nuevos* `[[Wikilinks]]` proactivamente a términos clave, conceptos, etc., tanto en el texto original como en el añadido.
+    *   **Usar Contexto para Enlazar:** Prioriza enlazar a `[[Notas Existentes]]` visibles en el contexto. Para conceptos importantes sin nota aparente, crea placeholders descriptivos `[[Concepto Nuevo o Detallado]]`. Usa `[[Nota#Sección]]` si aplica.
+    *   **Integración Natural:** Los enlaces deben mejorar la navegación sin saturar.
+5.  **Rigor y Precisión:** Verifica la exactitud de la información (original y añadida).
+6.  **YAML Frontmatter Actualizado:**
+    *   **Preservar Base:** Mantén el bloque YAML original si existía.
+    *   **Validar Jerarquía:** Asegúrate de que `{etiqueta_jerarquica_N}` siguen siendo correctas.
+    *   **Actualizar/Añadir Conceptuales:** Revisa/añade etiquetas `tags:` conceptuales (minúsculas, `_` o `-`) para reflejar *con precisión el contenido final y enriquecido*. Asegúrate que haya etiquetas que describan el tema central y el tipo de contenido (ej: `definicion`, `proceso`, `comparacion`). Si el enriquecimiento fue significativo, añade una etiqueta como `contenido_expandido`.
+    *   **Actualizar Aliases (Opcional):** Si se añadieron conceptos con nombres alternativos, considera añadirlos a `aliases: [...]`.
+7.  **Condición de No Modificación Significativa:** Si tras analizar la nota original (en `contexto_extraido`) determinas que ya cumple excelentemente con los requisitos (estructura clara, contenido preciso/completo, formato correcto, *buena interconexión contextual*), y que cualquier cambio sería trivial (ej. corregir 1-2 typos, añadir 1 enlace obvio sin impacto real), **NO modifiques la nota**. Tu *única* salida debe ser:
+    ```markdown
     NO_MODIFICATION_NEEDED
     Razones:
-    - [Razón 1: Ej. Contenido completo y bien estructurado.]
-    - [Razón 2: Ej. Enlaces internos y externos ya adecuados y suficientes según el contexto.]
-    - [Razón 3: Ej. Mejoras potenciales serían mínimas y no justifican la reescritura.]
+    - [Razón 1: Ej. Contenido ya completo y bien estructurado para su propósito.]
+    - [Razón 2: Ej. Interconexión con el contexto proporcionado ya es adecuada y suficiente.]
+    - [Razón 3: Ej. Mejoras potenciales serían mínimas (ej: < 5% de cambio) y no justifican reescritura.]
 
     --- CONTENIDO ORIGINAL SIN CAMBIOS ---
     [Aquí pega el contenido COMPLETO y EXACTO de la nota original tal como se proporcionó en el contexto, incluyendo su YAML si lo tenía]
     ```
 
+## Formato y Restricciones Adicionales:
+*   Usa Markdown estándar. LaTeX si es necesario (`$...$`, `$$...$$`). Bloques de código (``` ```).
+*   **No uses `[[Wikilinks]]` dentro de tablas Markdown.**
+
 ## Solicitud Final
-Revisa la nota existente en `{ruta_destino}` (cuyo contenido está en **el contexto proporcionado**). Si puedes mejorarla *significativamente* añadiendo conocimiento relevante, mejorando su estructura, o integrando *nuevos y significativos* enlaces `[[...]]` (basado en el análisis del contexto completo), entonces devuelve UNA SOLA VEZ el **contenido Markdown completo y mejorado**, incluyendo el YAML actualizado si aplica. **Si, por el contrario, la nota ya es excelente y las mejoras serían mínimas, devuelve estrictamente el bloque `NO_MODIFICATION_NEEDED`** seguido de las razones y el contenido original intacto, como se especifica en el Requisito 10. Empieza la salida directamente con el YAML (si se modifica/preserva) o con el texto `NO_MODIFICATION_NEEDED`.
+Revisa la nota en `{ruta_destino}` (contenido en `contexto_extraido`). Si puedes mejorarla *significativamente* (añadiendo conocimiento, reestructurando O añadiendo enlaces relevantes basados en el contexto), devuelve UNA SOLA VEZ el **contenido Markdown completo y mejorado**, incluyendo YAML actualizado. Si no, devuelve estrictamente el bloque `NO_MODIFICATION_NEEDED` con razones y el contenido original intacto (Requisito 7). Empieza la salida directamente con el YAML (modificado/preservado) o con `NO_MODIFICATION_NEEDED`.

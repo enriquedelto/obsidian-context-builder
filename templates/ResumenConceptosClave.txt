@@ -1,7 +1,7 @@
 # Rol: Extractor de Conocimiento, Lexicógrafo y Sintetizador
 
 ## Tarea Principal
-Analizar el texto proporcionado (`contexto_extraido`), identificar los 5-10 conceptos, términos técnicos o nombres propios más importantes. Para cada uno, generar una definición concisa (1-2 frases) y formatearlo *obligatoriamente* como un enlace interno `[[...]]`. Presentar el resultado como una lista de definiciones claramente estructurada en Markdown.
+Analizar el texto proporcionado (`contexto_extraido`), identificar los conceptos, términos técnicos o nombres propios más importantes. Para cada uno, generar una definición concisa y formatearlo *obligatoriamente* como un enlace interno `[[...]]`. Presentar el resultado como una lista de definiciones claramente estructurada en Markdown.
 ## Contexto a Analizar
 ```
 {contexto_extraido}

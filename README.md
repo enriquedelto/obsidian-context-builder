@@ -154,20 +154,23 @@ La interfaz te permitirá:
 ```
 obsidian-context-builder/
 │
-├── main.py             # Punto de entrada CLI
-├── gui_streamlit.py    # Punto de entrada GUI
-├── config_handler.py   # Gestión de config (bóvedas, etc.)
-├── file_handler.py     # Búsqueda y lectura de archivos
-├── tree_generator.py   # Generación de estructura de árbol
-├── formatter.py        # Formateo de contenido de archivos
-├── prompt_handler.py   # Carga/gestión de plantillas, inyección
+├── main.py # Punto de entrada CLI
+├── gui_streamlit.py # Punto de entrada GUI
+├── core.py # <<< NUEVO: Lógica central compartida (generación prompt, tags, constantes)
 │
-├── templates/          # CARPETA PARA PLANTILLAS DE USUARIO (.txt)
-│   └── GenerarNota.txt # Ejemplo (puedes añadir las otras aquí)
-│   └── ...             # Otros archivos .txt de plantillas
+├── config_handler.py # Gestión de config (bóvedas JSON, última usada)
+├── file_handler.py # Búsqueda y lectura de archivos en bóveda
+├── tree_generator.py # Generación de estructura de árbol de archivos/carpetas
+├── formatter.py # Formateo de contenido de archivos (núm. línea, etc.)
+├── prompt_handler.py # Carga/gestión de plantillas desde /templates, inyección placeholders
+│
+├── templates/ # CARPETA PARA PLANTILLAS DE USUARIO (.txt)
+│ ├── AnalizarContenido.txt
+│ ├── EnriquecerNota.txt
+│ └── ... # Otros archivos .txt de plantillas
 │
 ├── obsidian_context_builder_config.json # Archivo de config (auto-generado)
-├── README.md           # Esta documentación
-├── requirements.txt    # Dependencias (streamlit)
-└── .gitignore          # Ignora __pycache__
+├── README.md # Esta documentación
+├── requirements.txt # Dependencias (streamlit)
+└── .gitignore # Ignora pycache
 ```

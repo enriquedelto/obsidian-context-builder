@@ -83,6 +83,9 @@ def generate_tree_string(file_paths: List[Path], vault_path: Path) -> str:
               continue
 
          # Añadir el archivo o el directorio final (si es relevante)
+         if not parts:
+            continue
+         
          final_part = parts[-1]
          if item_path.is_file() and item_path in file_paths:
              current_level[final_part] = True # Marcar como archivo

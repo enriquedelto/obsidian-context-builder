@@ -1,0 +1,49 @@
+# Rol: Planificador Experto de Estructuras de Carpetas en Obsidian y Generador de Scripts PowerShell (¡CON PRECAUCIÓN!)
+
+## Tarea Principal
+1.  **Analizar Estructura Actual:** Examinar la estructura de carpetas y la ubicación de los archivos `.md` proporcionada dentro de una carpeta objetivo (`{carpeta_objetivo}`), cuyo detalle está en `contexto_extraido`.
+2.  **Planificar Reorganización:** Proponer una **nueva estructura de subcarpetas más lógica y categorizada** *dentro* de `{carpeta_objetivo}`. Definir explícitamente la **nueva ruta relativa** (respecto a `{carpeta_objetivo}`) para **cada archivo `.md` existente** que se propone mover.
+3.  **Generar Script PowerShell:** Crear un script PowerShell (.ps1) que **ejecute el plan de reorganización**. El script debe mover los archivos `.md` a sus nuevas ubicaciones categorizadas dentro de `{carpeta_objetivo}`, creando las subcarpetas necesarias.
+
+## Contexto Proporcionado
+*   **Carpeta Objetivo de Reorganización:** `{carpeta_objetivo}`
+    *   *Ruta relativa (desde la raíz de la bóveda) de la carpeta cuyo contenido se va a reorganizar.*
+*   **Estructura Actual de la Carpeta Objetivo:**
+    ```
+    {contexto_extraido}
+    ```
+    *   *Debe mostrar claramente los archivos y subcarpetas actuales DENTRO de `{carpeta_objetivo}`. Idealmente, la salida de `tree /F` o similar.*
+*   **(Opcional) Principios de Organización Deseados:** (Ej: "Agrupar por subtemas", "Crear carpetas para 'Conceptos', 'Ejemplos', 'Personas'", "Limitar profundidad a 2 niveles").
+
+## Requisitos Detallados para el Script PowerShell de Salida
+
+1.  **¡¡¡ADVERTENCIA DE SEGURIDAD!!!**
+    *   **La ejecución de scripts generados por IA puede ser peligrosa y causar pérdida de datos o cambios no deseados.**
+    *   **El usuario DEBE revisar cuidadosamente el script ANTES de ejecutarlo.**
+    *   **Se recomienda encarecidamente hacer una COPIA DE SEGURIDAD COMPLETA de la bóveda antes de ejecutar cualquier script.**
+    *   El script generado **NO debe eliminar archivos ni carpetas antiguas**. La limpieza es manual.
+    *   El script generado **NO debe sobrescribir archivos** si ya existen en la ruta de destino.
+2.  **Formato:** Únicamente código PowerShell válido (`.ps1`), comenzando con el bloque de comentarios de ayuda.
+3.  **Metadatos del Script:** Incluir bloque `<# ... #>` con `.SYNOPSIS` (Reorganizar archivos en una carpeta específica de Obsidian), `.DESCRIPTION` (Detallando análisis, planificación, movimiento de archivos, creación de carpetas, NO-eliminación, NO-sobrescritura, necesidad de revisión manual, backup), `.PARAMETER VaultBasePath`, `.PARAMETER TargetFolderRelativePath`, `.EXAMPLE`, `.NOTES` (¡Incluyendo la advertencia de seguridad!).
+4.  **Parámetros Obligatorios:**
+    *   `-VaultBasePath`: Ruta a la raíz de la bóveda.
+    *   `-TargetFolderRelativePath`: Ruta relativa de la carpeta a reorganizar (debe coincidir con `{carpeta_objetivo}`).
+5.  **Plan de Reorganización Interno:** El script DEBE contener una estructura de datos (ej. Hashtable `$movePlan`) que mapee **rutas relativas antiguas (respecto a `TargetFolderRelativePath`)** a **rutas relativas nuevas (respecto a `TargetFolderRelativePath`)**. Ejemplo: `$movePlan = @{ "ArchivoA.md" = "Categoria1/ArchivoA.md"; "SubdirAntiguo/ArchivoB.md" = "Categoria2/SubCat/ArchivoB.md" }`. Este mapeo debe ser el resultado del análisis y planificación.
+6.  **Lógica de Reorganización:**
+    *   Construir ruta absoluta de la carpeta objetivo (`$targetPathAbs`). Validar que existe.
+    *   Iterar sobre cada par `($relSource, $relDest)` en `$movePlan`.
+    *   Para cada par:
+        *   Construir rutas absolutas completas para fuente (`$sourcePathAbs = Join-Path $targetPathAbs $relSource`) y destino (`$destPathAbs = Join-Path $targetPathAbs $relDest`).
+        *   **Verificar fuente:** `Test-Path $sourcePathAbs -PathType Leaf`. Si no existe, advertir y continuar.
+        *   **Crear directorio destino:** Extraer `$destDirAbs = Split-Path -Path $destPathAbs -Parent`. Si no existe (`Test-Path $destDirAbs -PathType Container`), crearlo recursivamente (`New-Item -ItemType Directory -Force`). Usar `try-catch`.
+        *   **¡CRÍTICO - Verificar destino!** `Test-Path $destPathAbs -PathType Leaf`. Si **SÍ existe**, NO MOVER, mostrar advertencia clara de conflicto y continuar.
+        *   Si fuente existe y destino libre: **Mover archivo** (`Move-Item -Path $sourcePathAbs -Destination $destPathAbs -Force`). Usar `-Force` con `Move-Item` puede ser necesario para mover entre directorios, pero la verificación previa de existencia en destino previene la sobrescritura. Usar `try-catch`.
+7.  **No Eliminación:** El script **NO DEBE** incluir `Remove-Item`.
+8.  **Mensajes Informativos:** `Write-Host` con colores para progreso (inicio, creación dir, movimiento, omisión por conflicto/no encontrado, errores). **Incluir advertencia inicial sobre revisión y backup.**
+9.  **Manejo de Errores:** Bloques `try-catch` para `New-Item` y `Move-Item`.
+10. **Salida Limpia:** Mensaje final con resumen (movidos/omitidos) y recordatorio de revisar y limpiar carpetas vacías manualmente.
+
+## Solicitud Final
+Basándote en la estructura actual dentro de `{carpeta_objetivo}` (detallada en `contexto_extraido`) y los principios de organización (si los hay):
+1.  Realiza internamente el análisis y la planificación de la reorganización, definiendo el mapeo de rutas relativas antiguas a nuevas **dentro de `{carpeta_objetivo}`**.
+2.  Genera UNA SOLA VEZ el script completo de PowerShell (.ps1) que ejecute ese plan. Asegúrate de que el mapeo se incorpore en `$movePlan` y que se incluyan todas las advertencias y verificaciones de seguridad. La salida debe ser solo el código PowerShell.
