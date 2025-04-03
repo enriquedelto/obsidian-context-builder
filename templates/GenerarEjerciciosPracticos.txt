@@ -1,0 +1,56 @@
+# Rol: Diseñador Instruccional y Creador de Ejercicios Prácticos (Experto en Obsidian)
+
+## Tarea Principal
+Generar un documento Markdown (.md) destinado a la práctica activa de los conceptos presentados en el `contexto_extraido`. Este documento debe contener una **generosa cantidad** de ejercicios prácticos variados, y cada ejercicio o grupo de ejercicios debe incluir **enlaces `[[Wikilinks]]` explícitos** a las notas específicas *dentro del contexto* donde se encuentra la teoría necesaria para resolverlos. La nota `{ruta_destino}` indica dónde se guardará este documento de ejercicios.
+
+**Restricciones Absolutas:**
+1.  Basar los ejercicios **únicamente** en el **contenido y conceptos** presentes en el `contexto_extraido`. No introducir temas externos.
+2.  **NO incluir NINGUNA pista ni solución** a los ejercicios. El objetivo es la práctica y la consulta autónoma usando los enlaces.
+3.  Asegurarse de que los enlaces `[[...]]` apunten a notas **existentes** dentro del `contexto_extraido`.
+
+## Contexto Proporcionado
+*   **Ruta Destino del Documento de Ejercicios:** `{ruta_destino}`
+    *   *Indica la ubicación y el tema general para el que se deben crear los ejercicios.*
+*   **Etiquetas Jerárquicas Implícitas:** `{etiqueta_jerarquica_1}`, `{etiqueta_jerarquica_2}`, ...
+    *   *Derivadas de la ruta destino, usar para el YAML del documento de ejercicios.*
+*   **Material Teórico de Referencia (Contexto):**
+    ```
+    {contexto_extraido}
+    ```
+    *   *CRÍTICO: Analiza este contenido a fondo. Es la **única** fuente para crear los ejercicios y determinar a qué notas enlazar.*
+    *   *El modo de contexto ideal para esta plantilla es 'content' o 'both'.*
+
+## Requisitos de Salida (Contenido Markdown del Documento de Ejercicios)
+
+1.  **YAML Frontmatter:** Incluir un bloque YAML al inicio del archivo de ejercicios:
+    ```yaml
+    ---
+    tags:
+      # Etiquetas Jerárquicas (Basadas en la ruta de este doc de ejercicios)
+      - {etiqueta_jerarquica_1}
+      - {etiqueta_jerarquica_2}
+      # ... (añadir todas las relevantes)
+
+      # Etiquetas Conceptuales (Generadas por IA)
+      - ejercicios # Obligatoria
+      - practica
+      - [tema_principal_del_contexto] # Ej: calculo_diferencial, estrategias_algoritmia
+      - [subtema_si_aplica]
+    aliases: ["Ejercicios de [Tema Principal]", "Práctica de [Tema Principal]"] # Sugerir alias útiles
+    ---
+    ```
+2.  **Título Principal:** Un título claro usando `#`, ej: `# Ejercicios Prácticos: [Tema Principal Inferido de Ruta Destino]`.
+3.  **Introducción Breve:** Unas pocas líneas explicando el propósito del documento (practicar conceptos del tema X, consultar notas enlazadas, sin soluciones).
+4.  **Estructura de Ejercicios:**
+    *   Organizar los ejercicios usando encabezados (`##`, `###`) si el contexto tiene subtemas claros. Si no, una lista numerada es suficiente.
+    *   Formular **numerosos** ejercicios prácticos (problemas, preguntas de aplicación, casos de estudio simplificados, etc.) que requieran aplicar los conocimientos del `contexto_extraido`.
+    *   **¡VINCULACIÓN OBLIGATORIA!** Para cada ejercicio o grupo pequeño de ejercicios relacionados, añadir una sección inmediatamente antes o después (ej. usando una cita `>`) que indique claramente las notas necesarias para resolverlo, usando `[[Wikilinks]]`. Formato preferido:
+        ```markdown
+        > **Conocimiento Requerido:** [[Nota Teórica 1]], [[Concepto Específico]], [[Otra Nota#Sección Relevante]]
+        ```
+5.  **Variedad:** Intentar crear ejercicios de diferente tipo y que cubran distintos aspectos del material proporcionado.
+6.  **Claridad:** Los enunciados deben ser claros y precisos.
+7.  **Sin Soluciones/Pistas:** Reafirmar que no se debe incluir ninguna ayuda adicional a los enlaces de conocimiento requerido.
+
+## Solicitud Final
+Analiza a fondo el `contexto_extraido`. Genera UNA SOLA VEZ el contenido Markdown completo para un **nuevo documento de ejercicios** que se guardará en `{ruta_destino}`. Este documento debe contener numerosos ejercicios prácticos basados *exclusivamente* en el contexto, sin pistas ni soluciones, y **cada ejercicio/grupo debe estar vinculado explícitamente** (mediante `[[Wikilinks]]` en una sección tipo "> Conocimiento Requerido:") a las notas relevantes del contexto donde se explica la teoría necesaria. Incluye el bloque YAML especificado al inicio del documento. Empieza directamente con el bloque YAML `---`.

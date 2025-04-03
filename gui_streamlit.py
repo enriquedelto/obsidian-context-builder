@@ -59,7 +59,7 @@ def validate_and_get_targets(target_input_str: str, vault_path: Path) -> Tuple[L
 # --- Mapeo de Plantillas a Categorías ---
 TEMPLATE_CATEGORIES = { # ... (sin cambios) ...
     "AnalizarContenido": "🔍 Análisis", "ResumenConceptosClave": "🔍 Análisis", "ValidarRigorAcademico": "🔍 Análisis", "IdentificarNotasHuerfanas":"🔍 Análisis",
-    "GenerarNota": "✨ Creación", "GenerarMOC": "✨ Creación",
+    "GenerarNota": "✨ Creación", "GenerarMOC": "✨ Creación",  "GenerarEjerciciosPracticos": "✨ Creación",
     "EnriquecerNota": "📝 Mejora",
     "MejorarEnlaces": "🔗 Enlaces", "SugerirEnlacesEntrantes": "🔗 Enlaces",
     "ReorganizarCarpeta": "🗂️ Organización (Scripts)", "GenerarScriptCreacionNotas":"🗂️ Organización (Scripts)",
@@ -190,7 +190,7 @@ if st.button("🚀 Generar Prompt", type="primary", use_container_width=True, di
         try: vault_path = Path(st.session_state.saved_vaults[final_vault_name]).resolve(); assert vault_path.is_dir()
         except: st.error(f"Ruta inválida para '{final_vault_name}'"); st.stop()
     elif st.session_state.vault_selection_mode == "Manual":
-        manual_path_str = st.session_state.get('manual_vault_path'); assert manual_path_str, "Ruta manual no introducida"
+        manual_path_str = st.session_state.get('manual_vault_path', '').strip().strip('"'); assert manual_path_str, "Ruta manual no introducida"
         try: vault_path = Path(manual_path_str).resolve(); assert vault_path.is_dir()
         except: st.error(f"Ruta manual '{manual_path_str}' inválida"); st.stop()
         final_vault_name = f"(Ruta Manual: {vault_path.name})"; used_manual_path = True

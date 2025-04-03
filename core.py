@@ -146,8 +146,22 @@ def generate_prompt_core(
     # Advertir si placeholders clave están vacíos porque faltó la ruta
     if not ruta_destino_relativa_str and DEFAULT_PLACEHOLDERS["ruta_destino"] in template_string:
         print(f"Core - Advertencia: Placeholder {{ruta_destino}} presente pero no se proporcionó Ruta Nota Destino.", file=sys.stderr)
-    if not hierarchical_tags and any(DEFAULT_PLACEHOLDERS.get(f"etiqueta_jerarquica_N}}") in template_string for i in range(max_tag_level)):
-         print(f"Core - Advertencia: Placeholders {{etiqueta_jerarquica_N}} presentes pero no se generaron (falta Ruta Nota Destino).", file=sys.stderr)
+    found_tag_placeholders_in_template = []
+    for i in range(max_tag_level):
+        level = i + 1
+        # Construye la CLAVE correcta (el nombre del placeholder)
+        placeholder_key = f"etiqueta_jerarquica_{level}"
+        # Obtiene el VALOR correcto (el formato del placeholder, ej: "{etiqueta_jerarquica_1}")
+        placeholder_format = DEFAULT_PLACEHOLDERS.get(placeholder_key)
+        # Solo procede si el placeholder existe en nuestro diccionario Y está en la plantilla
+        if placeholder_format and placeholder_format in template_string:
+            found_tag_placeholders_in_template.append(placeholder_format)
+
+    # Ahora, comprueba si no se generaron tags PERO sí había placeholders en la plantilla
+    if not hierarchical_tags and found_tag_placeholders_in_template:
+        placeholders_str = ', '.join(found_tag_placeholders_in_template) # Lista los placeholders encontrados
+        print(f"Core - Advertencia: Placeholders ({placeholders_str}) presentes pero no se generaron etiquetas (falta Ruta Nota Destino).", file=sys.stderr)
+    # --- Fin Bloque Corregido ---
 
     print("--- Fin Lógica Core ---", file=sys.stderr)
     return final_prompt
