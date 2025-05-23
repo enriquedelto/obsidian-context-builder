@@ -19,19 +19,21 @@ def get_config_path() -> Path:
 def load_config() -> Dict:
     """Carga la configuración desde el archivo JSON."""
     config_path = get_config_path()
-    if config_path.exists():
-        try:
-            with open(config_path, 'r', encoding='utf-8') as f:
-                config = json.load(f)
-                # Asegurar estructura mínima
-                config.setdefault("vaults", {})
-                config.setdefault("last_vault_name", None)
-                return config
-        except (json.JSONDecodeError, IOError) as e:
-            print(f"Advertencia: Error al leer {config_path} ({e}). Se usará configuración por defecto.", file=sys.stderr)
-            return {"vaults": {}, "last_vault_name": None}
-    else:
-        # No imprimir nada si no existe, se creará al guardar
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            # Asegurar estructura mínima
+            config.setdefault("vaults", {})
+            config.setdefault("last_vault_name", None)
+            return config
+    except FileNotFoundError:
+        print(f"Error: Configuration file not found at {config_path}. Please run the application with `--add-vault` to create one or ensure the file exists.", file=sys.stderr)
+        return {"vaults": {}, "last_vault_name": None}
+    except json.JSONDecodeError:
+        print(f"Error: Configuration file is malformed and cannot be parsed. Please check its content at {config_path}.", file=sys.stderr)
+        return {"vaults": {}, "last_vault_name": None}
+    except IOError as e: # Catch other IOErrors separately if needed
+        print(f"Advertencia: Error al leer {config_path} ({e}). Se usará configuración por defecto.", file=sys.stderr)
         return {"vaults": {}, "last_vault_name": None}
 
 def save_config(config: Dict):
